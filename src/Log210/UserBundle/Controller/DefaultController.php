@@ -1,6 +1,6 @@
 <?php
 
-namespace Livraison\LivraisonBundle\Controller;
+namespace Log210\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -10,10 +10,10 @@ class DefaultController extends Controller
 {
     /**
      * @Route("/hello/{name}")
-     * @Template()
+     * @Template("Log210UserBundle:Default:index.html.twig")
      */
     public function indexAction($name)
     {
-        return array('name' => $name);
+        return ['name' => $name];
     }
 }

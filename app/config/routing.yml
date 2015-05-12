@@ -1,9 +1,9 @@
 livraison_livraison:
-    resource: "@LivraisonLivraisonBundle/Controller/"
+    resource: "@Log210LivraisonBundle/Controller/"
     type:     annotation
     prefix:   /
 
 livraison_user:
-    resource: "@LivraisonUserBundle/Controller/"
+    resource: "@Log210UserBundle/Controller/"
     type:     annotation
     prefix:   /

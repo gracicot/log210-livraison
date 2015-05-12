@@ -1,6 +1,6 @@
 <?php
 
-namespace Livraison\LivraisonBundle\DependencyInjection;
+namespace Log210\LivraisonBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;

@@ -1,0 +1,16 @@
+@import "utility.less";
+
+.hover-me {
+	.animate-slow(width);
+	.animate-fast(color, background-color);
+	background: #44bb11;
+	width: 400px;
+
+	// The '&' character represent himself, hence 'div.hover-me'
+	&:hover {
+		.no-transition();
+		background: #116600;
+		color: white;
+		width: 600px;
+	}
+}
