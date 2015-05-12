@@ -1,3 +1,9 @@
-app:
-    resource: "@AppBundle/Controller/"
+livraison_livraison:
+    resource: "@LivraisonLivraisonBundle/Controller/"
     type:     annotation
+    prefix:   /
+
+livraison_user:
+    resource: "@LivraisonUserBundle/Controller/"
+    type:     annotation
+    prefix:   /

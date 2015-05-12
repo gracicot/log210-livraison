@@ -13,3 +13,10 @@
 .*
 !.gitignore
 !.htaccess
+db/*
+!db/.empty
+components/
+node_modules/
+web/assetic/
+web/css/
+web/js/

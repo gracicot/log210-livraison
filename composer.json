@@ -13,12 +13,15 @@
         "doctrine/dbal": "<2.5",
         "doctrine/doctrine-bundle": "~1.2",
         "twig/extensions": "~1.0",
-        "symfony/assetic-bundle": "~2.3",
+        "symfony/assetic-bundle": "^2.6",
         "symfony/swiftmailer-bundle": "~2.3",
         "symfony/monolog-bundle": "~2.4",
         "sensio/distribution-bundle": "~3.0,>=3.0.12",
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
-        "incenteev/composer-parameter-handler": "~2.0"
+        "incenteev/composer-parameter-handler": "~2.0",
+        "twbs/bootstrap": "^3.3",
+        "braincrafted/bootstrap-bundle": "^2.1",
+        "components/jquery": "^2.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
