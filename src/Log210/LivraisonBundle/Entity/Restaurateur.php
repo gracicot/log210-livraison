@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="restaurant")
  */
-class Restaurant
+class Restaurateur
 {
     /**
      * @ORM\Column(type="integer")
@@ -28,8 +28,7 @@ class Restaurant
     protected $description;
 
     /**
-     * @ManyToOne(targetEntity="Restaurateur", inversedBy="restaurants")
-     * @JoinColumn(name="restaurateur_id", referencedColumnName="id")
+     * @OneToMany(targetEntity="Restaurant", mappedBy="restaurants")
      **/
     protected $restaurateur;
 }
