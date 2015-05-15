@@ -33,7 +33,8 @@ class Restaurateur
      **/
     protected $restaurants;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->restaurants = new ArrayCollection();
     }
 
@@ -124,5 +125,10 @@ class Restaurateur
     public function getRestaurants()
     {
         return $this->restaurants;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

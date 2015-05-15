@@ -139,4 +139,9 @@ class Restaurant
     {
         return $this->restaurateur;
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }
