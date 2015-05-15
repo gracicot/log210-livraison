@@ -31,9 +31,9 @@ class RestaurantController extends Controller
 
         $entities = $em->getRepository('Log210LivraisonBundle:Restaurant')->findAll();
 
-        return array(
+        return [
             'entities' => $entities,
-        );
+        ];
     }
     /**
      * Creates a new Restaurant entity.
@@ -53,13 +53,13 @@ class RestaurantController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('restaurant_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('restaurant_show', ['id' => $entity->getId()]));
         }
 
-        return array(
+        return [
             'entity' => $entity,
             'form'   => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -71,12 +71,12 @@ class RestaurantController extends Controller
      */
     private function createCreateForm(Restaurant $entity)
     {
-        $form = $this->createForm(new RestaurantType(), $entity, array(
+        $form = $this->createForm(new RestaurantType(), $entity, [
             'action' => $this->generateUrl('restaurant_create'),
             'method' => 'POST',
-        ));
+        ]);
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', ['label' => 'Create']);
 
         return $form;
     }
@@ -93,10 +93,10 @@ class RestaurantController extends Controller
         $entity = new Restaurant();
         $form   = $this->createCreateForm($entity);
 
-        return array(
+        return [
             'entity' => $entity,
             'form'   => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -118,10 +118,10 @@ class RestaurantController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return array(
+        return [
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -144,11 +144,11 @@ class RestaurantController extends Controller
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return array(
+        return [
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -160,12 +160,12 @@ class RestaurantController extends Controller
     */
     private function createEditForm(Restaurant $entity)
     {
-        $form = $this->createForm(new RestaurantType(), $entity, array(
-            'action' => $this->generateUrl('restaurant_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new RestaurantType(), $entity, [
+            'action' => $this->generateUrl('restaurant_update', ['id' => $entity->getId()]),
             'method' => 'PUT',
-        ));
+        ]);
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', ['label' => 'Update']);
 
         return $form;
     }
@@ -193,14 +193,14 @@ class RestaurantController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('restaurant_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('restaurant_edit', ['id' => $id]));
         }
 
-        return array(
+        return [
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        );
+        ];
     }
     /**
      * Deletes a Restaurant entity.
@@ -238,9 +238,9 @@ class RestaurantController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('restaurant_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('restaurant_delete', ['id' => $id]))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', ['label' => 'Delete'])
             ->getForm()
         ;
     }
