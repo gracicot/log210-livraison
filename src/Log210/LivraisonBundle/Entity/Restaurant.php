@@ -28,8 +28,8 @@ class Restaurant
     protected $description;
 
     /**
-     * @ManyToOne(targetEntity="Restaurateur", inversedBy="restaurants")
-     * @JoinColumn(name="restaurateur_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Restaurateur", inversedBy="restaurants")
+     * @ORM\JoinColumn(name="restaurateur_id", referencedColumnName="id")
      **/
     protected $restaurateur;
 }

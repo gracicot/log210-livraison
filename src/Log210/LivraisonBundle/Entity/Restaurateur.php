@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="restaurant")
+ * @ORM\Table(name="restaurateur")
  */
 class Restaurateur
 {
@@ -28,7 +28,7 @@ class Restaurateur
     protected $description;
 
     /**
-     * @OneToMany(targetEntity="Restaurant", mappedBy="restaurants")
+     * @ORM\OneToMany(targetEntity="Restaurant", mappedBy="restaurants")
      **/
     protected $restaurateur;
 }
