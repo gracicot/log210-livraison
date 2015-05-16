@@ -193,7 +193,7 @@ class RestaurantController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('restaurant_edit', ['id' => $id]));
+            return $this->redirect($this->generateUrl('restaurant_show', ['id' => $id]));
         }
 
         return [
