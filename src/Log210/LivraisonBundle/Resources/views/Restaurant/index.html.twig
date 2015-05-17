@@ -29,14 +29,14 @@
               <td>{{ entity.adresse }}</td>
               <td>{{ entity.restaurateur }}</td>
               <td>
-              <a href="{{ path('restaurant_show', { 'id': entity.id }) }} rel="tooltip" title="Afficher"">
+              <a href="{{ path('restaurant_show', { 'id': entity.id }) }}  rel="tooltip" title="Afficher"">
               <i class="glyphicon glyphicon-cd"  ></i>
               </a>
               <a href="{{ path('restaurant_edit', { 'id': entity.id }) }}">
               <i class="glyphicon glyphicon-edit" rel="tooltip" title="Edit"></i>
               </a>
               <a href="{{ path('restaurant_delete', { 'id': entity.id }) }}">
-              <i class="glyphicon glyphicon-remove" rel="tooltip" title="Supprimer"></i>
+              <i class="glyphicon glyphicon-remove" onclick="return confirm('Voulez-vous vraiment supprimer ce restaurant?')" rel="tooltip" title="Supprimer"></i>
               </a>
 
               </td>
