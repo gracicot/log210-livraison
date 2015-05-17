@@ -14,11 +14,13 @@ class RestaurantType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('name')
-            ->add('description')
-            ->add('adresse')
-            ->add('restaurateur')
+        $builder->add(
+            $builder->create('nameSet', 'fieldset')
+                ->add('name')
+                ->add('description')
+                ->add('adresse')
+                ->add('restaurateur')
+            )
         ;
     }
     
