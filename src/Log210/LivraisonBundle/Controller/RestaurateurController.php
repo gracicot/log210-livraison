@@ -240,7 +240,7 @@ class RestaurateurController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('restaurateur_delete', ['id' => $id]))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', ['label' => 'Delete'])
+            ->add('submit', 'submit', ['label' => 'Supprimer'])
             ->getForm()
         ;
     }
