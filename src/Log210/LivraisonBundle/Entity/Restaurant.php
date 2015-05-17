@@ -33,6 +33,11 @@ class Restaurant
     protected $adresse;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    protected $phone;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Restaurateur", inversedBy="restaurants")
      * @ORM\JoinColumn(name="restaurateur_id", referencedColumnName="id")
      **/
