@@ -23,7 +23,7 @@ class RestaurantController extends Controller
      *
      * @Route("/", name="restaurant")
      * @Method("GET")
-     * @Template()
+     * @Template("Log210LivraisonBundle:Restaurant:index.html.twig")
      */
     public function indexAction()
     {
@@ -35,6 +35,7 @@ class RestaurantController extends Controller
             'entities' => $entities,
         ];
     }
+
     /**
      * Creates a new Restaurant entity.
      *
@@ -202,6 +203,7 @@ class RestaurantController extends Controller
             'delete_form' => $deleteForm->createView(),
         ];
     }
+    
     /**
      * Deletes a Restaurant entity.
      *
@@ -224,6 +226,28 @@ class RestaurantController extends Controller
             $em->remove($entity);
             $em->flush();
         }
+
+        return $this->redirect($this->generateUrl('restaurant'));
+    }
+    
+    /**
+     * Deletes a Restaurant entity.
+     *
+     * @Route("/unsafe/{id}", name="restaurant_unsafe_delete")
+     * @Method("GET")
+     */
+    public function unsafeDeleteAction(Request $request, $id)
+    {
+        // TODO: Be safe
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('Log210LivraisonBundle:Restaurant')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Restaurant entity.');
+        }
+
+        $em->remove($entity);
+        $em->flush();
 
         return $this->redirect($this->generateUrl('restaurant'));
     }
