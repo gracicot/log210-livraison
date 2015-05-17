@@ -3,20 +3,18 @@
 {% block body -%}
     <h1>Modifier Restaurant</h1>
 
-    
-
     {{ form_start(edit_form) }}
-    {{ form_errors(edit_form) }}
+        {{ form_errors(edit_form) }}
 
-    {{ form_row(edit_form.name, { 'label': 'Nom' }) }}
-    {{ form_row(edit_form.description) }}
-    {{ form_row(edit_form.adresse) }}
-    {{ form_row(edit_form.restaurateur) }}
+        {{ form_row(edit_form.name, { 'label': 'Nom' }) }}
+        {{ form_row(edit_form.description) }}
+        {{ form_row(edit_form.adresse) }}
+        {{ form_row(edit_form.phone) }}
+        {{ form_row(edit_form.restaurateur) }}
 
-    {{ form_row(edit_form.submit, { 'label': 'Enregistrer' }) }}
+        {{ form_row(edit_form.submit, { 'label': 'Enregistrer' }) }}
 
     {{ form_end(edit_form) }}
-
 
     <div>
         <a href="{{ path('restaurant') }}">

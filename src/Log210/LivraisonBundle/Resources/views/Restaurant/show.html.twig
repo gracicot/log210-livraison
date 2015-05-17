@@ -3,38 +3,43 @@
 {% block body -%}
     <h1>Restaurant</h1>
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ entity.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ entity.description }}</td>
-            </tr>
-            <tr>
-                <th>Adresse</th>
-                <td>{{ entity.adresse }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div>
+        <div>
+            <div class="col-xs-3 col-md-1">Id</div>
+            <div class="col-xs-9 col-md-11">{{ entity.id }}</div>
+        </div>
+        <div>
+            <div class="col-xs-3 col-md-1">Nom:</div>
+            <div class="col-xs-9 col-md-11">{{ entity.name }}</div>
+        </div>
+        <div>
+            <div class="col-xs-3 col-md-1">Description:</div>
+            <div class="col-xs-9 col-md-11">{{ entity.description }}</div>
+        </div>
+        <div>
+            <div class="col-xs-3 col-md-1">Adresse:</div>
+            <div class="col-xs-9 col-md-11">{{ entity.adresse }}</div>
+        </div>
+        <div>
+            <div class="col-xs-3 col-md-1">Telephone:</div>
+            <div class="col-xs-9 col-md-11">{{ entity.phone }}</div>
+        </div>
+        <div>
+            <div class="col-xs-3 col-md-1">Restaurateur:</div>
+            <div class="col-xs-9 col-md-11">{{ entity.restaurateur }}</div>
+        </div>
+    </div>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('restaurant') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('restaurant_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <div class="listeActions col-xs-12">
+        <div class="actionShow col-xs-3 col-md-1">
+            <a href="{{ path('restaurant') }}">
+                Retour
+            </a>
+        </div>
+        <div class="actionShow col-xs-2 col-md-1">
+            <a href="{{ path('restaurant_edit', { 'id': entity.id }) }}">
+                Edit
+            </a>
+        </div>
+    </div>
 {% endblock %}

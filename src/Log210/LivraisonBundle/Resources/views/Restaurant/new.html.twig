@@ -4,14 +4,15 @@
     <h1>Ajouter restaurant</h1>
 
     {{ form_start(form) }}
-    {{ form_errors(form) }}
+        {{ form_errors(form) }}
 
-    {{ form_row(form.name, { 'label': 'Nom' }) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.adresse) }}
-    {{ form_row(form.restaurateur) }}
+        {{ form_row(form.name, { 'label': 'Nom' }) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.adresse) }}
+        {{ form_row(form.phone) }}
+        {{ form_row(form.restaurateur) }}
 
-    {{ form_row(form.submit, { 'label': 'Enregistrer' }) }}
+        {{ form_row(form.submit, { 'label': 'Enregistrer' }) }}
     {{ form_end(form) }}
 
         
