@@ -123,6 +123,29 @@ class Restaurant
     }
 
     /**
+     * Set phone
+     *
+     * @param string $phone
+     * @return Restaurant
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string 
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
      * Set restaurateur
      *
      * @param \Log210\LivraisonBundle\Entity\Restaurateur $restaurateur
