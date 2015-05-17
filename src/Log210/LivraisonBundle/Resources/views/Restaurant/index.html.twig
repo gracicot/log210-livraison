@@ -3,42 +3,49 @@
 {% block body -%}
     <h1>Liste des Restaurants</h1>
 
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Adresse</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('restaurant_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.name }}</td>
-                <td>{{ entity.description }}</td>
-                <td>{{ entity.adresse }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('restaurant_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('restaurant_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
+
+    <div class="container">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Adresse</th>
+        <th>Restaurateur</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entity in entities %}
+          <tr>
+              <td><a href="{{ path('restaurant_show', { 'id': entity.id }) }}">{{ entity.id }}
+
+              </a>
+              </td>
+              <td>{{ entity.name }}</td>
+              <td>{{ entity.description }}</td>
+              <td>{{ entity.adresse }}</td>
+              <td>{{ entity.restaurateur }}</td>
+              <td>
+              <a href="{{ path('restaurant_show', { 'id': entity.id }) }} rel="tooltip" title="Afficher"">
+              <i class="glyphicon glyphicon-cd"  ></i>
+              </a>
+              <a href="{{ path('restaurant_edit', { 'id': entity.id }) }}">
+              <i class="glyphicon glyphicon-edit" rel="tooltip" title="Edit"></i>
+              </a>
+
+              </td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
         <ul>
         <li>
             <a href="{{ path('restaurant_new') }}">
-                Create a new entry
+                Créer un nouveau restaurant
             </a>
         </li>
     </ul>
