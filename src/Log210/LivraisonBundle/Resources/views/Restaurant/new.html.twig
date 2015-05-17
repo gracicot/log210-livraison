@@ -1,15 +1,23 @@
 {% extends '::layout.html.twig' %}
 
 {% block body -%}
-    <h1>Restaurant creation</h1>
+    <h1>Ajouter restaurant</h1>
 
-    {{ form(form) }}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
 
-        <ul class="record_actions">
-    <li>
+    {{ form_row(form.name, { 'label': 'Nom' }) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.adresse) }}
+    {{ form_row(form.restaurateur) }}
+
+    {{ form_row(form.submit, { 'label': 'Enregistrer' }) }}
+    {{ form_end(form) }}
+
+        
+    <div>
         <a href="{{ path('restaurant') }}">
-            Back to the list
+            Retour
         </a>
-    </li>
-</ul>
+    </div>
 {% endblock %}
