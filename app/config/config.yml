@@ -29,6 +29,10 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form:
+        resources:
+            - Log210CommonBundle:Form:bootstrap.html.twig
+
 
 braincrafted_bootstrap:
     output_dir:
@@ -38,7 +42,7 @@ braincrafted_bootstrap:
     fonts_dir: %kernel.root_dir%/../web/fonts
     auto_configure:
         assetic: true
-        twig: true
+        twig: false
     customize:
         variables_file: ~
         bootstrap_output: %kernel.root_dir%/Resources/less/bootstrap.less

@@ -1,0 +1,12 @@
+{% extends 'BraincraftedBootstrapBundle:Form:bootstrap.html.twig' %}
+
+{% block fieldset_widget %}
+	{% spaceless %}
+		<fieldset>
+			{% if legend is not empty %}
+				<legend>{{ legend }}</legend>
+			{% endif %}
+            {{ block('form_widget_compound') }}
+		</fieldset>
+	{% endspaceless %}
+{% endblock %}
