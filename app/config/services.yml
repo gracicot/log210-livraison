@@ -7,3 +7,13 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    livraisonBundle.restaurantService:
+      class: Log210\LivraisonBundle\Utils\RestaurantService
+      arguments: ["@doctrine.orm.entity_manager"]
+
+    restaurantRepository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments:
+            - Log210\LivraisonBundle\Entity\Restaurant
