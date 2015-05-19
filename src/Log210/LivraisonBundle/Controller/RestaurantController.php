@@ -27,9 +27,9 @@ class RestaurantController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $restaurantService = $this->get("livraisonBundle.restaurantService");
 
-        $entities = $em->getRepository('Log210LivraisonBundle:Restaurant')->findAll();
+        $entities = $restaurantService->getAllRestaurants();
 
         return [
             'entities' => $entities,
@@ -38,27 +38,28 @@ class RestaurantController extends Controller
 
     /**
      * Creates a new Restaurant entity.
+     * @param Request $request the request
+     * @return Response the response
      *
-     * @Route("/", name="restaurant_create")
+     * @Route("", name="restaurant_create")
      * @Method("POST")
-     * @Template("Log210LivraisonBundle:Restaurant:new.html.twig")
+     * @Template()
      */
     public function createAction(Request $request)
     {
-        $entity = new Restaurant();
-        $form = $this->createCreateForm($entity);
+        $restaurant = new Restaurant();
+        $form = $this->createCreateForm($restaurant);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+            $restaurantService = $this->get("livraisonBundle.restaurantService");
+            $restaurantService->createRestaurant($restaurant);
 
-            return $this->redirect($this->generateUrl('restaurant_show', ['id' => $entity->getId()]));
+            return $this->redirect($this->generateUrl('restaurant_show', ['id' => $restaurant->getId()]));
         }
 
         return [
-            'entity' => $entity,
+            'entity' => $restaurant,
             'form'   => $form->createView(),
         ];
     }
@@ -87,7 +88,7 @@ class RestaurantController extends Controller
      *
      * @Route("/new", name="restaurant_new")
      * @Method("GET")
-     * @Template()
+     * @Template("Log210LivraisonBundle:Restaurant:new.html.twig")
      */
     public function newAction()
     {
@@ -105,23 +106,20 @@ class RestaurantController extends Controller
      *
      * @Route("/{id}", name="restaurant_show")
      * @Method("GET")
-     * @Template()
+     * @Template("Log210LivraisonBundle:Restaurant:show.html.twig")
      */
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('Log210LivraisonBundle:Restaurant')->find($id);
+        $restaurantService = $this->get("livraisonBundle.restaurantService");
+        $entity = $restaurantService->getRestaurantById($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Restaurant entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-
         return [
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'entity'      => $entity
         ];
     }
 
@@ -130,13 +128,12 @@ class RestaurantController extends Controller
      *
      * @Route("/{id}/edit", name="restaurant_edit")
      * @Method("GET")
-     * @Template()
+     * @Template("Log210LivraisonBundle:Restaurant:edit.html.twig")
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('Log210LivraisonBundle:Restaurant')->find($id);
+        $restaurantService = $this->get("livraisonBundle.restaurantService");
+        $entity = $restaurantService->getRestaurantById($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Restaurant entity.');
@@ -179,9 +176,8 @@ class RestaurantController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('Log210LivraisonBundle:Restaurant')->find($id);
+        $restaurantService = $this->get("livraisonBundle.restaurantService");
+        $entity = $restaurantService->getRestaurantById($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Restaurant entity.');
@@ -192,7 +188,7 @@ class RestaurantController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $em->flush();
+            $restaurantService->updateRestaurant($id, $entity);
 
             return $this->redirect($this->generateUrl('restaurant_show', ['id' => $id]));
         }
@@ -216,15 +212,14 @@ class RestaurantController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('Log210LivraisonBundle:Restaurant')->find($id);
+            $restaurantService = $this->get("livraisonBundle.restaurantService");
+            $entity = $restaurantService->getRestaurantById($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Restaurant entity.');
             }
 
-            $em->remove($entity);
-            $em->flush();
+            $restaurantService->deleteRestaurant($entity);
         }
 
         return $this->redirect($this->generateUrl('restaurant'));
@@ -238,16 +233,14 @@ class RestaurantController extends Controller
      */
     public function unsafeDeleteAction(Request $request, $id)
     {
-        // TODO: Be safe
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('Log210LivraisonBundle:Restaurant')->find($id);
+        $restaurantService = $this->get("livraisonBundle.restaurantService");
+        $entity = $restaurantService->getRestaurantById($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Restaurant entity.');
         }
 
-        $em->remove($entity);
-        $em->flush();
+        $restaurantService->deleteRestaurant($entity);
 
         return $this->redirect($this->generateUrl('restaurant'));
     }
