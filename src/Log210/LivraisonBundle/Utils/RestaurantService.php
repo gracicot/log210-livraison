@@ -24,6 +24,7 @@ class RestaurantService {
     public function createRestaurant(Restaurant $restaurant) {
         $this->EntityManager->persist($restaurant);
         $this->EntityManager->flush();
+        return $restaurant;
     }
 
     public function deleteRestaurant($restaurantId) {
@@ -38,6 +39,7 @@ class RestaurantService {
         $savedRestaurant->setDescription($modifiedRestaurant->getDescription());
         $savedRestaurant->setAdresse($modifiedRestaurant->getAdresse());
         $savedRestaurant->setRestaurateur($modifiedRestaurant->getRestaurateur());
+        $savedRestaurant->setPhone($modifiedRestaurant->getPhone());
         $this->EntityManager->flush();
     }
 
