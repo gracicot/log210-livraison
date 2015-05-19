@@ -1,16 +1,28 @@
 {% extends '::layout.html.twig' %}
 
 {% block body -%}
-    <h1>Restaurant edit</h1>
+    <h1>Modifier Restaurant</h1>
 
-    {{ form(edit_form) }}
+    {{ form_start(edit_form,{'attr': {'onsubmit':'verifRestaurateur();'} }) }}
+        {{ form_errors(edit_form) }}
 
-        <ul class="record_actions">
-    <li>
+        {{ form_row(edit_form.name, { 'label': 'Nom' }) }}
+        {{ form_row(edit_form.description) }}
+        {{ form_row(edit_form.adresse) }}
+        {{ form_row(edit_form.phone) }}
+        {{ form_row(edit_form.restaurateur) }}
+
+        {{ form_row(edit_form.submit, { 'label': 'Enregistrer' }) }}
+
+    {{ form_end(edit_form) }}
+    {{ form(delete_form) }}
+
+    <div>
         <a href="{{ path('restaurant') }}">
-            Back to the list
+            Retour
         </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+
+
+    </div>
+
 {% endblock %}

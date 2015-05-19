@@ -1,44 +1,52 @@
 {% extends '::layout.html.twig' %}
 
 {% block body -%}
-    <h1>Restaurant list</h1>
+    <h1>Liste des Restaurants</h1>
 
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Adresse</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('restaurant_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+
+
+    <div class="container">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Adresse</th>
+        <th>Restaurateur</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entity in entities %}
+          <tr>
+                <td>
+                    <a href="{{ path('restaurant_show', { 'id': entity.id }) }}">{{ entity.id }}</a>
+                </td>
                 <td>{{ entity.name }}</td>
                 <td>{{ entity.description }}</td>
                 <td>{{ entity.adresse }}</td>
+                <td>{{ entity.restaurateur }}</td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('restaurant_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('restaurant_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+                    <a class="glyphicon glyphicon-cd" href="{{ path('restaurant_show', { 'id': entity.id }) }}  rel="tooltip" title="Afficher""></a>
+                    <a class="glyphicon glyphicon-edit" href="{{ path('restaurant_edit', { 'id': entity.id }) }}" rel="tooltip" title="Edit"></a>
+                    <a 
+                        class="glyphicon glyphicon-remove"
+                        href="{{ path('restaurant_unsafe_delete', { 'id': entity.id }) }}"
+                        onclick="return confirm('Voulez-vous vraiment supprimer ce restaurant?')"
+                        rel="tooltip"
+                        title="Supprimer">
+                    </a>
                 </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
         <ul>
         <li>
             <a href="{{ path('restaurant_new') }}">
-                Create a new entry
+                Créer un nouveau restaurant
             </a>
         </li>
     </ul>

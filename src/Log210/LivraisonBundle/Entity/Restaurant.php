@@ -33,6 +33,11 @@ class Restaurant
     protected $adresse;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    protected $phone;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Restaurateur", inversedBy="restaurants")
      * @ORM\JoinColumn(name="restaurateur_id", referencedColumnName="id")
      **/
@@ -115,6 +120,29 @@ class Restaurant
     public function getAdresse()
     {
         return $this->adresse;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     * @return Restaurant
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string 
+     */
+    public function getPhone()
+    {
+        return $this->phone;
     }
 
     /**

@@ -22,4 +22,14 @@ class DashboardController extends Controller
     	$theMessage = "patate";
         return ['message' => $theMessage];
     }
+
+    /**
+     * @Route("/courges")
+     * @Template("Log210LivraisonBundle:Dashboard:index.html.twig")
+     */
+    public function courgeAction(Request $request)
+    {
+    	$theMessage = "patate";
+        return ['message' => $theMessage];
+    }
 }
