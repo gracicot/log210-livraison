@@ -70,6 +70,30 @@ class ApiController extends Controller
     }
 
     /**
+     * @param Request $request the request
+     * @return Response the response
+     *
+     * @Route("/restaurants", name="create_restaurant")
+     * @Method("POST")
+     */
+    public function createRestaurantAction(Request $request) {
+        $restaurantService = $this->get("livraisonBundle.restaurantService");
+        $encoders = array(new JsonEncoder());
+        $normalizers = array(new GetSetMethodNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+
+        $restaurant = $serializer->deserialize($request->getContent(), 'Log210\LivraisonBundle\Entity\Restaurant',
+            'json');
+
+        $restaurant = $restaurantService->createRestaurant($restaurant);
+
+        $response = new Response('', Response::HTTP_CREATED);
+        $response->headers->set('Location', $this->generateUrl('get_restaurant', array(
+            'id' => $restaurant->getId()), true));
+        return $response;
+    }
+
+    /**
      * @param int $id the id of the restaurant
      * @param Request $request the request object
      * @return Response response object
