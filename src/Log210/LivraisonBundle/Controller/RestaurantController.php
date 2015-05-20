@@ -3,7 +3,7 @@
 namespace Log210\LivraisonBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Log210\CommonBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -17,6 +17,27 @@ use Log210\LivraisonBundle\Form\RestaurantType;
  */
 class RestaurantController extends Controller
 {
+    protected function getRoutes()
+    {
+        return [
+            'show' => 'restaurant_show',
+            'new' => 'restaurant_new',
+            'update' => 'restaurant_update',
+            'delete' => 'restaurant_delete',
+            'create' => 'restaurant_create',
+            'edit' => 'restaurant_edit'
+        ];
+    }
+
+    protected function getRepository()
+    {
+        return $this->getDoctrine()->getRepository('Log210LivraisonBundle:Restaurant');
+    }
+
+    protected function getForm()
+    {
+        return new RestaurantType();
+    }
 
     /**
      * Lists all Restaurant entities.
@@ -25,15 +46,9 @@ class RestaurantController extends Controller
      * @Method("GET")
      * @Template("Log210LivraisonBundle:Restaurant:index.html.twig")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $restaurantService = $this->get("livraisonBundle.restaurantService");
-
-        $entities = $restaurantService->getAllRestaurants();
-
-        return [
-            'entities' => $entities,
-        ];
+        return parent::indexAction($request);
     }
 
     /**
@@ -47,40 +62,7 @@ class RestaurantController extends Controller
      */
     public function createAction(Request $request)
     {
-        $restaurant = new Restaurant();
-        $form = $this->createCreateForm($restaurant);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $restaurantService = $this->get("livraisonBundle.restaurantService");
-            $restaurantService->createRestaurant($restaurant);
-
-            return $this->redirect($this->generateUrl('restaurant_show', ['id' => $restaurant->getId()]));
-        }
-
-        return [
-            'entity' => $restaurant,
-            'form'   => $form->createView(),
-        ];
-    }
-
-    /**
-     * Creates a form to create a Restaurant entity.
-     *
-     * @param Restaurant $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateForm(Restaurant $entity)
-    {
-        $form = $this->createForm(new RestaurantType(), $entity, [
-            'action' => $this->generateUrl('restaurant_create'),
-            'method' => 'POST',
-        ]);
-
-        $form->add('submit', 'submit', ['label' => 'Create']);
-
-        return $form;
+        return parent::createAction($request);
     }
 
     /**
@@ -90,15 +72,9 @@ class RestaurantController extends Controller
      * @Method("GET")
      * @Template("Log210LivraisonBundle:Restaurant:new.html.twig")
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
-        $entity = new Restaurant();
-        $form   = $this->createCreateForm($entity);
-
-        return [
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ];
+        return parent::newAction($request);
     }
 
     /**
@@ -108,19 +84,9 @@ class RestaurantController extends Controller
      * @Method("GET")
      * @Template("Log210LivraisonBundle:Restaurant:show.html.twig")
      */
-    public function showAction($id)
+    public function showAction(Request $request, $id)
     {
-
-        $restaurantService = $this->get("livraisonBundle.restaurantService");
-        $entity = $restaurantService->getRestaurantById($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Restaurant entity.');
-        }
-
-        return [
-            'entity'      => $entity
-        ];
+        return parent::showAction($request, $id);
     }
 
     /**
@@ -130,42 +96,9 @@ class RestaurantController extends Controller
      * @Method("GET")
      * @Template("Log210LivraisonBundle:Restaurant:edit.html.twig")
      */
-    public function editAction($id)
+    public function editAction(Request $request, $id)
     {
-        $restaurantService = $this->get("livraisonBundle.restaurantService");
-        $entity = $restaurantService->getRestaurantById($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Restaurant entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return [
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ];
-    }
-
-    /**
-    * Creates a form to edit a Restaurant entity.
-    *
-    * @param Restaurant $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Restaurant $entity)
-    {
-        $form = $this->createForm(new RestaurantType(), $entity, [
-            'action' => $this->generateUrl('restaurant_update', ['id' => $entity->getId()]),
-            'method' => 'PUT',
-        ]);
-
-        $form->add('submit', 'submit', ['label' => 'Update']);
-
-        return $form;
+        return parent::editAction($request, $id);
     }
     /**
      * Edits an existing Restaurant entity.
@@ -176,28 +109,7 @@ class RestaurantController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $restaurantService = $this->get("livraisonBundle.restaurantService");
-        $entity = $restaurantService->getRestaurantById($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Restaurant entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            $restaurantService->updateRestaurant($id, $entity);
-
-            return $this->redirect($this->generateUrl('restaurant_show', ['id' => $id]));
-        }
-
-        return [
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ];
+        return parent::updateAction($request, $id);
     }
     
     /**
@@ -208,21 +120,7 @@ class RestaurantController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $restaurantService = $this->get("livraisonBundle.restaurantService");
-            $entity = $restaurantService->getRestaurantById($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Restaurant entity.');
-            }
-
-            $restaurantService->deleteRestaurant($entity);
-        }
-
-        return $this->redirect($this->generateUrl('restaurant'));
+        return parent::deleteAction($request, $id);
     }
     
     /**
@@ -243,22 +141,5 @@ class RestaurantController extends Controller
         $restaurantService->deleteRestaurant($entity);
 
         return $this->redirect($this->generateUrl('restaurant'));
-    }
-
-    /**
-     * Creates a form to delete a Restaurant entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('restaurant_delete', ['id' => $id]))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', ['label' => 'Supprimer'])
-            ->getForm()
-        ;
     }
 }

@@ -3,7 +3,7 @@
 namespace Log210\LivraisonBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Log210\CommonBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -17,6 +17,27 @@ use Log210\LivraisonBundle\Form\RestaurateurType;
  */
 class RestaurateurController extends Controller
 {
+    protected function getRoutes()
+    {
+        return [
+            'show' => 'restaurateur_show',
+            'new' => 'restaurateur_new',
+            'update' => 'restaurateur_update',
+            'delete' => 'restaurateur_delete',
+            'create' => 'restaurateur_create',
+            'edit' => 'restaurateur_edit'
+        ];
+    }
+
+    protected function getRepository()
+    {
+        return $this->getDoctrine()->getRepository('Log210LivraisonBundle:Restaurateur');
+    }
+
+    protected function getForm()
+    {
+        return new RestaurateurType();
+    }
 
     /**
      * Lists all Restaurateur entities.
@@ -25,16 +46,11 @@ class RestaurateurController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('Log210LivraisonBundle:Restaurateur')->findAll();
-
-        return [
-            'entities' => $entities,
-        ];
+        return parent::indexAction($request);
     }
+
     /**
      * Creates a new Restaurateur entity.
      *
@@ -44,41 +60,7 @@ class RestaurateurController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new Restaurateur();
-        $form = $this->createCreateForm($entity);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('restaurateur_show', ['id' => $entity->getId()]));
-        }
-
-        return [
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ];
-    }
-
-    /**
-     * Creates a form to create a Restaurateur entity.
-     *
-     * @param Restaurateur $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateForm(Restaurateur $entity)
-    {
-        $form = $this->createForm(new RestaurateurType(), $entity, [
-            'action' => $this->generateUrl('restaurateur_create'),
-            'method' => 'POST',
-        ]);
-
-        $form->add('submit', 'submit', ['label' => 'Create']);
-
-        return $form;
+        return parent::createAction($request);
     }
 
     /**
@@ -88,15 +70,9 @@ class RestaurateurController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
-        $entity = new Restaurateur();
-        $form   = $this->createCreateForm($entity);
-
-        return [
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ];
+        return parent::newAction($request);
     }
 
     /**
@@ -106,22 +82,9 @@ class RestaurateurController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
+    public function showAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Restaurateur entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return [
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        ];
+        return parent::showAction($request, $id);
     }
 
     /**
@@ -131,44 +94,11 @@ class RestaurateurController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
+    public function editAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Restaurateur entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return [
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ];
+        return parent::editAction($request, $id);
     }
 
-    /**
-    * Creates a form to edit a Restaurateur entity.
-    *
-    * @param Restaurateur $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Restaurateur $entity)
-    {
-        $form = $this->createForm(new RestaurateurType(), $entity, [
-            'action' => $this->generateUrl('restaurateur_update', ['id' => $entity->getId()]),
-            'method' => 'PUT',
-        ]);
-
-        $form->add('submit', 'submit', ['label' => 'Update']);
-
-        return $form;
-    }
     /**
      * Edits an existing Restaurateur entity.
      *
@@ -178,30 +108,9 @@ class RestaurateurController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Restaurateur entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('restaurateur_edit', ['id' => $id]));
-        }
-
-        return [
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ];
+        return parent::updateAction($request, $id);
     }
+
     /**
      * Deletes a Restaurateur entity.
      *
@@ -210,38 +119,6 @@ class RestaurateurController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Restaurateur entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('restaurateur'));
-    }
-
-    /**
-     * Creates a form to delete a Restaurateur entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('restaurateur_delete', ['id' => $id]))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', ['label' => 'Supprimer'])
-            ->getForm()
-        ;
+        return parent::deleteAction($request, $id);
     }
 }

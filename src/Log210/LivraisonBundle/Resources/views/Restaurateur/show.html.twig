@@ -1,4 +1,4 @@
-{% extends '::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block body -%}
     <h1>Restaurateur</h1>
@@ -20,12 +20,12 @@
 
     <div class="listeActions col-xs-12">
         <div class="actionShow col-xs-3 col-md-1">
-            <a href="{{ path('restaurant') }}">
+            <a href="{{ path('restaurateur') }}">
                 Retour
             </a>
         </div>
         <div class="actionShow col-xs-2 col-md-1">
-            <a href="{{ path('restaurant_edit', { 'id': entity.id }) }}">
+            <a href="{{ path('restaurateur_edit', { 'id': entity.id }) }}">
                 Edit
             </a>
         </div>

@@ -3,18 +3,9 @@
 {% block body -%}
     <h1>Restaurateur creation</h1>
 
-    {{ form_start(form) }}
-        {{ form_errors(form) }}
-
-        {{ form_row(form.name, { 'label': 'Nom' }) }}
-        {{ form_row(form.description) }}
-
-        {{ form_row(form.submit, { 'label': 'Enregistrer' }) }}
-    {{ form_end(form) }}
-
+    {{ form(form) }}
+    
     <div>
-        <a href="{{ path('restaurateur') }}">
-            Retour
-        </a>
+        <a href="{{ path('restaurateur') }}">{{ 'back'|trans|humanize }}</a>
     </div>
 {% endblock %}

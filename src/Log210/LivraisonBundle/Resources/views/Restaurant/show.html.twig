@@ -1,45 +1,46 @@
-{% extends '::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block body -%}
     <h1>Restaurant</h1>
 
     <div>
-        <div>
+        <div class="row">
             <div class="col-xs-3 col-md-1">Id</div>
             <div class="col-xs-9 col-md-11">{{ entity.id }}</div>
         </div>
-        <div>
+        <div class="row">
             <div class="col-xs-3 col-md-1">Nom:</div>
             <div class="col-xs-9 col-md-11">{{ entity.name }}</div>
         </div>
-        <div>
+        <div class="row">
             <div class="col-xs-3 col-md-1">Description:</div>
             <div class="col-xs-9 col-md-11">{{ entity.description }}</div>
         </div>
-        <div>
+        <div class="row">
             <div class="col-xs-3 col-md-1">Adresse:</div>
-            <div class="col-xs-9 col-md-11">{{ entity.adresse }}</div>
+            <div class="col-xs-9 col-md-11">{{ entity.address }}</div>
         </div>
-        <div>
+        <div class="row">
             <div class="col-xs-3 col-md-1">Telephone:</div>
             <div class="col-xs-9 col-md-11">{{ entity.phone }}</div>
         </div>
-        <div>
+        <div class="row">
             <div class="col-xs-3 col-md-1">Restaurateur:</div>
             <div class="col-xs-9 col-md-11">{{ entity.restaurateur }}</div>
         </div>
     </div>
-
-    <div class="listeActions col-xs-12">
-        <div class="actionShow col-xs-3 col-md-1">
-            <a href="{{ path('restaurant') }}">
-                Retour
-            </a>
-        </div>
-        <div class="actionShow col-xs-2 col-md-1">
-            <a href="{{ path('restaurant_edit', { 'id': entity.id }) }}">
-                Edit
-            </a>
+    <div class="row">
+        <div class="listeActions col-xs-12">
+            <div class="actionShow col-xs-3 col-md-1">
+                <a href="{{ path('restaurant') }}">
+                    Retour
+                </a>
+            </div>
+            <div class="actionShow col-xs-2 col-md-1">
+                <a href="{{ path('restaurant_edit', { 'id': entity.id }) }}">
+                    Edit
+                </a>
+            </div>
         </div>
     </div>
 {% endblock %}

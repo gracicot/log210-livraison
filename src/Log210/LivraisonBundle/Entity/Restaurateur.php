@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="restaurateur")
+ * @ORM\Entity(repositoryClass="Log210\LivraisonBundle\EntityRepository\RestaurateurRepository")
  */
 class Restaurateur
 {

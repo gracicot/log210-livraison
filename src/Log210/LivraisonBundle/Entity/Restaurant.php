@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="restaurant")
+ * @ORM\Entity(repositoryClass="Log210\LivraisonBundle\EntityRepository\RestaurantRepository")
  */
 class Restaurant
 {
@@ -28,12 +29,12 @@ class Restaurant
     protected $description;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255)
      */
-    protected $adresse;
+    protected $address;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255)
      */
     protected $phone;
 
@@ -100,26 +101,26 @@ class Restaurant
     }
 
     /**
-     * Set adresse
+     * Set address
      *
-     * @param string $adresse
+     * @param string $address
      * @return Restaurant
      */
-    public function setAdresse($adresse)
+    public function setAddress($address)
     {
-        $this->adresse = $adresse;
+        $this->address = $address;
 
         return $this;
     }
 
     /**
-     * Get adresse
+     * Get address
      *
      * @return string 
      */
-    public function getAdresse()
+    public function getAddress()
     {
-        return $this->adresse;
+        return $this->address;
     }
 
     /**

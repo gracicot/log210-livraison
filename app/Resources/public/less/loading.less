@@ -1,0 +1,76 @@
+// Ce code est emprunté de lukehaas/css-loaders
+// Le code original peut être retrouvé a cet adresse: https://github.com/lukehaas/css-loaders
+.loading {
+    margin: 6em auto;
+    font-size: 10px;
+    position: relative;
+    text-indent: -9999em;
+    border-top: 1.1em solid rgba(25, 150, 75, 0.2);
+    border-right: 1.1em solid rgba(25, 150, 75, 0.2);
+    border-bottom: 1.1em solid rgba(25, 150, 75, 0.2);
+    border-left: 1.1em solid rgba(25, 150, 75, 1);
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: load 1.1s infinite linear;
+    animation: load 1.1s infinite linear;
+
+    &, &:after {
+        border-radius: 50%;
+        width: 10em;
+        height: 10em;
+
+        &.loading-small {
+            width: 5em;
+            height: 5em;
+        }
+
+        &.loading-large {
+            width: 15em;
+            height: 15em;
+        }
+    }
+
+}
+
+@-webkit-keyframes load {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes load {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+// fin d'enprunt du code
+
+.loading-container {
+    position: relative;
+}
+
+.loading-box {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.4);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .loading-visible {
+        
+    }
+}
