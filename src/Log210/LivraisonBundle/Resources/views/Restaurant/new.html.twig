@@ -3,7 +3,7 @@
 {% block body -%}
     <h1>Ajouter restaurant</h1>
 
-    {{ form(form) }}
+    {{ form(form,{'attr': {'onsubmit':'verifRestaurateur();'} }) }}
 
         
     <div>

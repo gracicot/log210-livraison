@@ -2,7 +2,7 @@
 
 {% block body -%}
     <h1>Modifier Restaurant</h1>
-    {{ form(form) }}
+    {{ form(form,{'attr': {'onsubmit':'verifRestaurateur();'} }) }}
 
     <div>
         <a href="{{ path('restaurant') }}">
@@ -13,3 +13,4 @@
     </div>
 
 {% endblock %}
+ 
