@@ -37,11 +37,22 @@ abstract class Controller extends BaseController
             'entities' => $entities,
         ];
     }
+
+    public function listingAction(Request $request)
+    {
+        $entities = $this->getRepository()->findAll();
+
+        return [
+            'entities' => $this->getEncoder($entities),
+        ];
+    }
+
     /**
      * Creates a new entity.
      */
     public function createAction(Request $request)
     {
+        $service = $this->getRepository();
         $entity = $this->getRepository()->makeEntity();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
