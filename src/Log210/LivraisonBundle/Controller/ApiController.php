@@ -3,7 +3,7 @@
 namespace Log210\LivraisonBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Log210\CommonBundle\Controller\BaseController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,18 +28,7 @@ class ApiController extends Controller
      */
     public function getRestaurantsAction()
     {
-        $restaurantService = $this->get("livraisonBundle.restaurantService");
-        $encoders = array(new JsonEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
-
-        $restaurants = $restaurantService->getAllRestaurants();
-
-        $jsonContent = $serializer->serialize($restaurants, 'json');
-
-        $response = new Response($jsonContent);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        return $this->getRepository()->getAll();
     }
 
     /**
