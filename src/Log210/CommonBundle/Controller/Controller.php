@@ -180,8 +180,8 @@ abstract class Controller extends BaseController
         }
 
         return [
-            'entity'      => $entity,
-            'form'   => $editForm->createView(),
+            'entity' => $entity,
+            'form' => $editForm->createView(),
         ];
     }
     /**
@@ -215,7 +215,7 @@ abstract class Controller extends BaseController
         return $this->createFormBuilder()
             ->setAction($this->generateUrl($this->getRoute('delete'), ['id' => $id]))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', ['label' => 'Supprimer'])
+            ->add('submit', 'submit', ['label' => 'delete'])
             ->getForm()
         ;
     }

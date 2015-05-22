@@ -12,24 +12,11 @@ use Log210\LivraisonBundle\Entity\Restaurateur;
 class DashboardController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/", name="index")
      * @Template("Log210LivraisonBundle:Dashboard:index.html.twig")
      */
     public function indexAction(Request $request)
     {
-    	$restaurant = new Restaurant();
-    	$restaurateur = new Restaurateur();
-    	$theMessage = "patate";
-        return ['message' => $theMessage];
-    }
-
-    /**
-     * @Route("/courges")
-     * @Template("Log210LivraisonBundle:Dashboard:index.html.twig")
-     */
-    public function courgeAction(Request $request)
-    {
-    	$theMessage = "patate";
-        return ['message' => $theMessage];
+        return [];
     }
 }

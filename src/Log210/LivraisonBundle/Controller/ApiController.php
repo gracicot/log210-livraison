@@ -19,23 +19,27 @@ use Symfony\Component\Serializer\Serializer;
  */
 class ApiController extends Controller
 {
+    protected function getRepository() 
+    {
+        return $this->getDoctrine()->getRepository('Log210LivraisonBundle:Restaurant');
+    }
 
     /**
      * @return Response the restaurants in json format
      *
-     * @Route("/restaurants", name="get_restaurants")
+     * @Route("/restaurants", name="restaurant_api_get_restaurants")
      * @Method("GET")
      */
     public function getRestaurantsAction()
     {
-        return $this->getRepository()->getAll();
+        return $this->getRepository()->findAll();
     }
 
     /**
      * @param $id int the id of the restaurant
      * @return Response the restaurant in json format
      *
-     * @Route("/restaurants/{id}", name="get_restaurant")
+     * @Route("/restaurants/{id}", name="restaurant_api_get_restaurant")
      * @Method("GET")
      */
     public function getRestaurantAction($id)
@@ -62,7 +66,7 @@ class ApiController extends Controller
      * @param Request $request the request
      * @return Response the response
      *
-     * @Route("/restaurants", name="create_restaurant")
+     * @Route("/restaurants", name="restaurant_api_create_restaurant")
      * @Method("POST")
      */
     public function createRestaurantAction(Request $request) {
@@ -87,7 +91,7 @@ class ApiController extends Controller
      * @param Request $request the request object
      * @return Response response object
      *
-     * @Route("/restaurants/{id}", name="update_restaurant")
+     * @Route("/restaurants/{id}", name="restaurant_api_update_restaurant")
      * @Method("PUT")
      */
     public function updateRestaurantAction($id, Request $request)
@@ -114,7 +118,7 @@ class ApiController extends Controller
      * @param $id int the id of the restaurant
      * @return Response response object
      *
-     * @Route("/restaurants/{id}", name="delete_restaurant")
+     * @Route("/restaurants/{id}", name="restaurant_api_delete_restaurant")
      * @Method("DELETE")
      */
     public function deleteRestaurantAction($id)
