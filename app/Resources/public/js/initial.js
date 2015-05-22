@@ -6,5 +6,6 @@
     	};
 
     	element('[data-href]').linkify();
+    	element('[data-toggle="tooltip"]').tooltip();
     };
 }( jQuery ));
