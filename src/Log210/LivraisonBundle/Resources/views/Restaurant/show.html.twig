@@ -5,7 +5,11 @@
 {% use 'Log210CommonBundle:Generic:show.html.twig' %}
 
 {% block title parent() ~ ' - ' ~ entity %}
-{% block breadcrumbs parent() ~ '<li>' ~ entity ~ '</li>' %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li>{{ entity }}</li>
+{% endblock %}
 
 {% block fields %}
     {{ show.text(entity, 'name') }}
