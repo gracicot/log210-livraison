@@ -9,3 +9,4 @@ dashboard: dashboard
 edit: edit
 list: list
 new: new
+delete: delete
