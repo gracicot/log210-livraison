@@ -1,4 +1,12 @@
-{% extends 'layout.html.twig' %}
-{% block body %}
-	
+{% extends 'Log210LivraisonBundle:Dashboard:layout.html.twig' %}
+
+{% block content %}
+	<div class="dashboard">
+		<div class="row">
+			<div class="col-md-6">
+				<a href="{{ path('restaurant') }}">{{ 'retaurant'|trans|capitalize }}</a>
+				<a href="{{ path('restaurateur') }}">{{ 'restaurateur'|trans|capitalize }}</a>
+			</div>
+		</div>
+	</div>
 {% endblock %}

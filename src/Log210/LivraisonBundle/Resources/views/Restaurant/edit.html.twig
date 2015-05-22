@@ -1,15 +1,13 @@
-{% extends 'layout.html.twig' %}
+{% extends 'Log210LivraisonBundle:Restaurant:layout.html.twig' %}
 
-{% block body -%}
-    <h1>Modifier Restaurant</h1>
-    {{ form(form) }}
+{% use 'Log210CommonBundle:Generic:edit.html.twig' %}
 
-    <div>
-        <a href="{{ path('restaurant') }}">
-            Retour
-        </a>
+{% block title parent() ~ ' - ' ~ entity ~ ' - ' ~ 'edit'|trans|capitalize %}
 
-
-    </div>
-
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li><a href="{{ path('restaurant_show', {id: entity.id}) }}">{{ entity }}</a></li>
+    <li>{{ 'edit'|trans|capitalize }}</li>
 {% endblock %}
+
+{% block content block('edit') %}

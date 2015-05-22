@@ -1,1 +1,6 @@
 {% extends 'Log210CommonBundle::layout.html.twig' %}
+
+{% block breadcrumbs %}
+	{{ parent() }}
+	<li>{{ 'restaurateur'|trans }}</li>
+{% endblock %}

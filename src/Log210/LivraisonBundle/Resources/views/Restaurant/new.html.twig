@@ -1,14 +1,7 @@
-{% extends 'layout.html.twig' %}
+{% extends 'Log210LivraisonBundle:Restaurant:layout.html.twig' %}
 
-{% block body -%}
-    <h1>Ajouter restaurant</h1>
+{% use 'Log210CommonBundle:Generic:new.html.twig' %}
 
-    {{ form(form) }}
-
-        
-    <div>
-        <a href="{{ path('restaurant') }}">
-            Retour
-        </a>
-    </div>
-{% endblock %}
+{% block title parent() ~ ' - ' ~ 'new'|trans|capitalize %}
+{% block breadcrumbs parent() ~ '<li>' ~ 'new'|trans|capitalize ~ '</li>' %}
+{% block content block('new') %}

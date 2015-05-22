@@ -1,0 +1,41 @@
+{% macro row(label, data, link) %}
+    <div class="show-row" {% if link|default('') is not empty %}data-href="{{ link|raw }}"{% endif %}>
+        <div class="row">
+        	<div class="show-label col-md-4 col-lg-3">{{ label|raw }}</div>
+        	<div class="show-value col-md-8 col-lg-9">{{ data|raw }}</div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro text(entity, property) %}
+	{% import _self as show %}
+	{{ show.row(property|trans|capitalize, attribute(entity, property)) }}
+{% endmacro %}
+
+{% macro integer(entity, property) %}
+	{% import _self as show %}
+	{{ show.row(property|trans|capitalize, attribute(entity, property)) }}
+{% endmacro %}
+
+{% macro number(entity, property) %}
+	{% import _self as show %}
+	{{ show.row(property|trans|capitalize, attribute(entity, property)) }}
+{% endmacro %}
+
+{% macro percent(entity, property) %}
+	{% import _self as show %}
+	{{ show.row(property|trans|capitalize, attribute(entity, property)) }}
+{% endmacro %}
+
+{% macro html(entity, property) %}
+	{% import _self as show %}
+	{{ show.row(property|trans|capitalize, attribute(entity, property)|raw) }}
+{% endmacro %}
+
+{% macro relation(entity, property, route, parameters) %}
+	{% import _self as show %}
+	{{ 
+		show.row(property|trans|capitalize, attribute(entity, property),
+		path(route|default(class(attribute(entity, property))|lower ~ '_show'), parameters|default({'id': attribute(entity, property).id})))
+	}}
+{% endmacro %}

@@ -1,6 +1,6 @@
-{% extends '::layout.html.twig' %}
+{% extends 'Log210LivraisonBundle:Restaurant:layout.html.twig' %}
 
-{% block body -%}
+{% block content %}
     <h1>Liste des Restaurants</h1>
 
 
@@ -50,3 +50,8 @@
         </li>
     </ul>
     {% endblock %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li>{{ 'list'|trans|capitalize }}</li>
+{% endblock %}

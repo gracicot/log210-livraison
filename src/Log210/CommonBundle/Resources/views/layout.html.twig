@@ -1,1 +1,8 @@
 {% extends '::layout.html.twig' %}
+
+{% block body %}
+	<ol class="breadcrumb">
+		{% block breadcrumbs %}<li><a href="{{ path('index') }}">{{ 'dashboard'|trans|capitalize }}</a></li>{% endblock %}
+	</ol>
+	{% block content %}{% endblock %}
+{% endblock %}
