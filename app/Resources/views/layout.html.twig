@@ -20,17 +20,15 @@
     <body>
         <div id="document-wrapper">
             <div id="page-header">
-                <nav class="navbar navbar-default navbar-static-top">
+                <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
                     <div class="container">
-                      <button type="button"  class="btn btn-default navbar-btn navbar-toggle">Sign in
-                        <!-- <a href="{{ path('user')}}" class="navbar-brand">Sign in</a> -->
-                        </button>
-                      {% set tryUser = 'Restaurateur' %}
+                      {% set tryUser = 'Entrepreneur' %}
+                      <button type="button"  class="btn btn-default navbar-btn ">Sign in
+                      </button>
+                        <!-- <a href="#" class="navbar-brand">Sign in</a> -->
                       {% if tryUser == 'Restaurateur' %}
                       <a href="{{ path('restaurant')}}" class="navbar-brand">Mes Restaurant</a>
-
                       {% endif %}
-
                       {% if tryUser == 'Entrepreneur' %}
                         <a href="{{ path('restaurateur')}}" class="navbar-brand">Mes Restaurateur</a>
                         <a href="#" class="navbar-brand">Restaurants</a>
