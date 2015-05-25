@@ -5,7 +5,7 @@
         <title>Livraison log210 - {% block title %}{% endblock %}</title>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
         <script src="{{ asset('js/jquery.js') }}"></script>
-        
+
         {% javascripts '%kernel.root_dir%/Resources/public/js/*' %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
@@ -20,12 +20,31 @@
     <body>
         <div id="document-wrapper">
             <div id="page-header">
-                <nav class="navbar navbar-default navbar-static-top">
+                <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
                     <div class="container">
-                        
-                    </div>
+                      {% set tryUser = 'Entrepreneur' %}
+                      <button type="button"  class="btn btn-default navbar-btn ">Sign in
+                      </button>
+                        <!-- <a href="#" class="navbar-brand">Sign in</a> -->
+                      {% if tryUser == 'Restaurateur' %}
+                      <a href="{{ path('restaurant')}}" class="navbar-brand">Mes Restaurant</a>
+                      {% endif %}
+                      {% if tryUser == 'Entrepreneur' %}
+                        <a href="{{ path('restaurateur')}}" class="navbar-brand">Mes Restaurateur</a>
+                        <a href="#" class="navbar-brand">Restaurants</a>
+                      {% endif %}
+
+                      {% if tryUser == 'Livreur' %}
+                        <a href="#" class="navbar-brand">Mes Commandes</a>
+                      {% endif %}
+
+                      {% if tryUser == 'Client' %}
+                        <a href="#" class="navbar-brand">Liste de Restaurant</a>
+                      {% endif %}
+
+                      </div>
                 </nav>
-            </div>
+
             <div id="page-body">
                 <div class="container container-tall">
                     <div class="row">
@@ -38,7 +57,7 @@
             <div id="page-footer">
                 <div class="container">
                     <div class="row">
-                        
+
                     </div>
                 </div>
             </div>
