@@ -2,14 +2,14 @@
 
 namespace Log210\LivraisonBundle\Controller;
 
+use Log210\LivraisonBundle\Entity\Restaurant;
+use Log210\LivraisonBundle\ApiResponse\RestaurantResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Log210\CommonBundle\Controller\BaseController as Controller;
+use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * Class ApiController
@@ -19,9 +19,9 @@ use Symfony\Component\Serializer\Serializer;
  */
 class ApiController extends Controller
 {
-    protected function getRepository() 
+    protected function getRepositoryForClass($class)
     {
-        return $this->getDoctrine()->getRepository('Log210LivraisonBundle:Restaurant');
+        return $this->getDoctrine()->getRepository($class);
     }
 
     /**
@@ -32,7 +32,15 @@ class ApiController extends Controller
      */
     public function getRestaurantsAction()
     {
-        return $this->getRepository()->findAll();
+        $restaurantEntities = $this->getRepositoryForClass('Log210LivraisonBundle:Restaurant')->findAll();
+        $restaurantResponses = array();
+        foreach ($restaurantEntities as $restaurant) {
+            array_push($restaurantResponses, $this->toRestaurantResponse($restaurant));
+        }
+        $response = $this->jsonResponse(new Response($this->toJson($restaurantResponses)));
+        echo '<pre>';
+        var_dump($this->fromJson($restaurantResponses[0], 'Log210\LivraisonBundle\ApiResponse\RestaurantResponse'));
+        return $response;
     }
 
     /**
@@ -45,9 +53,6 @@ class ApiController extends Controller
     public function getRestaurantAction($id)
     {
         $restaurantService = $this->get("livraisonBundle.restaurantService");
-        $encoders = array(new JsonEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
 
         $restaurant = $restaurantService->getRestaurantById($id);
 
@@ -55,11 +60,10 @@ class ApiController extends Controller
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $jsonContent = $serializer->serialize($restaurant, 'json');
+        $jsonContent = $this->toJson($restaurant);
 
         $response = new Response($jsonContent);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        return $this->jsonResponse($response);
     }
 
     /**
@@ -69,14 +73,11 @@ class ApiController extends Controller
      * @Route("/restaurants", name="restaurant_api_create_restaurant")
      * @Method("POST")
      */
-    public function createRestaurantAction(Request $request) {
+    public function createRestaurantAction(Request $request)
+    {
         $restaurantService = $this->get("livraisonBundle.restaurantService");
-        $encoders = array(new JsonEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
 
-        $restaurant = $serializer->deserialize($request->getContent(), 'Log210\LivraisonBundle\Entity\Restaurant',
-            'json');
+        $restaurant = $this->fromJson($request->getContent(), 'Log210\LivraisonBundle\Entity\Restaurant');
 
         $restaurant = $restaurantService->createRestaurant($restaurant);
 
@@ -102,12 +103,7 @@ class ApiController extends Controller
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $encoders = array(new JsonEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
-
-        $restaurant = $serializer->deserialize($request->getContent(), 'Log210\LivraisonBundle\Entity\Restaurant',
-            'json');
+        $restaurant = $this->fromJson($request->getContent(), 'Log210\LivraisonBundle\Entity\Restaurant');
 
         $restaurantService = $this->get("livraisonBundle.restaurantService");
         $restaurantService->updateRestaurant($id, $restaurant);
@@ -132,6 +128,43 @@ class ApiController extends Controller
         $restaurantService = $this->get("livraisonBundle.restaurantService");
         $restaurantService->deleteRestaurant($id);
         return new Response('', Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @return Response the restaurateurs in json format
+     *
+     */
+    public function getRestaurateursAction()
+    {
+        return $this->getRepositoryForClass('Log210LivraisonBundle:Restaurateurs')->findAll();
+    }
+
+    /**
+     * @param $id int the id of the restaurateur
+     * @return Response the restaurateur in json format
+     *
+     * @Route("/restaurateurs/{id}", name="api_get_restaurateur")
+     * @Method("GET")
+     */
+    public function getRestaurateurAction($id) {
+        return $this->jsonResponse(new Response($this->toJson($this
+            ->getRepositoryForClass('Log210LivraisonBundle:Restaurateur')->findAll())));
+    }
+
+    /**
+     * @param Restaurant $restaurantEntity the entity to convert
+     * @return RestaurantResponse the restaurant response object
+     */
+    private function toRestaurantResponse(Restaurant $restaurantEntity) {
+        $restaurantResponse = new RestaurantResponse();
+        $restaurantResponse->setId($restaurantEntity->getId());
+        $restaurantResponse->setName($restaurantEntity->getName());
+        $restaurantResponse->setDescription($restaurantEntity->getDescription());
+        $restaurantResponse->setAddress($restaurantEntity->getAddress());
+        $restaurantResponse->setPhone($restaurantEntity->getPhone());
+        $restaurantResponse->setRestaurateur_href($this->get('router')->generate('api_get_restaurateur', array('id' =>
+            $restaurantEntity->getId())));
+        return $restaurantResponse;
     }
 
 }
