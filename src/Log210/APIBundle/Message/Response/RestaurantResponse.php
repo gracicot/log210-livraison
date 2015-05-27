@@ -1,13 +1,36 @@
 <?php
 
-namespace Log210\LivraisonBundle\ApiResponse;
+namespace Log210\APIBundle\Message\Response;
 
 class RestaurantResponse {
+    /**
+     * @var int $id
+     */
     private $id;
+
+    /**
+     * @var string $name
+     */
     private $name;
+
+    /**
+     * @var string $description
+     */
     private $description;
+
+    /**
+     * @var string $address
+     */
     private $address;
+
+    /**
+     * @var string $phone
+     */
     private $phone;
+
+    /**
+     * @var string $restaurateur_href
+     */
     private $restaurateur_href;
 
     /**
@@ -27,7 +50,7 @@ class RestaurantResponse {
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -35,7 +58,7 @@ class RestaurantResponse {
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -43,7 +66,7 @@ class RestaurantResponse {
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDescription()
     {
@@ -51,7 +74,7 @@ class RestaurantResponse {
     }
 
     /**
-     * @param mixed $description
+     * @param string $description
      */
     public function setDescription($description)
     {
@@ -59,7 +82,7 @@ class RestaurantResponse {
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getAddress()
     {
@@ -67,7 +90,7 @@ class RestaurantResponse {
     }
 
     /**
-     * @param mixed $address
+     * @param string $address
      */
     public function setAddress($address)
     {
@@ -75,7 +98,7 @@ class RestaurantResponse {
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPhone()
     {
@@ -83,7 +106,7 @@ class RestaurantResponse {
     }
 
     /**
-     * @param mixed $phone
+     * @param string $phone
      */
     public function setPhone($phone)
     {
@@ -91,17 +114,17 @@ class RestaurantResponse {
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getRestaurateur_href()
+    public function getRestaurateurHref()
     {
         return $this->restaurateur_href;
     }
 
     /**
-     * @param mixed $restaurateur_href
+     * @param string $restaurateur_href
      */
-    public function setRestaurateur_href($restaurateur_href)
+    public function setRestaurateurHref($restaurateur_href)
     {
         $this->restaurateur_href = $restaurateur_href;
     }

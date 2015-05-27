@@ -1,3 +1,8 @@
+log210_api:
+    resource: "@Log210APIBundle/Controller/"
+    type:     annotation
+    prefix:   /api
+
 livraison_livraison:
     resource: "@Log210LivraisonBundle/Controller/"
     type:     annotation
