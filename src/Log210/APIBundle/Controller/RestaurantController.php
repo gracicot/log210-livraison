@@ -2,11 +2,10 @@
 
 namespace Log210\APIBundle\Controller;
 
-use Log210\APIBundle\Message\Request\RestaurantRequest;
-use Log210\LivraisonBundle\Entity\Restaurant;
 use Log210\APIBundle\Message\Response\RestaurantResponse;
+use Log210\CommonBundle\Controller\BaseController;
+use Log210\LivraisonBundle\Entity\Restaurant;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Log210\CommonBundle\Controller\BaseController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @package Log210\LivraisonBundle\Controller
  * @Route("/restaurants")
  */
-class RestaurantController extends Controller
+class RestaurantController extends BaseController
 {
     protected function getRepository()
     {
@@ -49,17 +48,15 @@ class RestaurantController extends Controller
      */
     public function getRestaurantAction($id)
     {
-        $restaurant = $this->getRepository()->find($id);
+        $restaurantEntity = $this->getRepository()->find($id);
 
-        if (is_null($restaurant)) {
+        if (is_null($restaurantEntity)) {
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $restaurant = $this->toRestaurantResponse($restaurant);
+        $restaurantResponse = $this->toRestaurantResponse($restaurantEntity);
 
-        $jsonContent = $this->toJson($restaurant);
-
-        $response = new Response($jsonContent);
+        $response = new Response($this->toJson($restaurantResponse));
         return $this->jsonResponse($response);
     }
 
@@ -154,6 +151,22 @@ class RestaurantController extends Controller
     }
 
     /**
+     * @param $id the id of the restaurant
+     * @return Response the restaurateur associated to this restaurant
+     *
+     * @Route("/{id}/restaurateur", name="restaurant_api_get_restaurant_restaurateur")
+     * @Method("GET")
+     */
+    public function getRestaurantRestaurateurAction($id) {
+        $restaurant = $this->getRepository()->find($id);
+        if (is_null($restaurant) || is_null($restaurant->getRestaurateur())) {
+            return new Response('', Response::HTTP_NOT_FOUND);
+        }
+        return $this->forward('Log210APIBundle:Restaurateur:getRestaurateur', array('id' => $restaurant
+            ->getRestaurateur()->getId()));
+    }
+
+    /**
      * @param Restaurant $restaurantEntity the entity to convert
      * @return RestaurantResponse the restaurant response object
      */
@@ -165,10 +178,11 @@ class RestaurantController extends Controller
         $restaurantResponse->setAddress($restaurantEntity->getAddress());
         $restaurantResponse->setPhone($restaurantEntity->getPhone());
         if (!is_null($restaurantEntity->getRestaurateur())) {
-            $restaurantResponse->setRestaurateur_href($this->get('router')->generate('api_get_restaurateur',
-                array('id' => $restaurantEntity->getRestaurateur()->getId())));
+            $restaurantResponse->setRestaurateur_href($this->get('router')->generate(
+                'restaurant_api_get_restaurant_restaurateur', array('id' => $restaurantEntity->getId())));
         }
+        $restaurantResponse->setSelf_href($this->get('router')->generate(
+            'restaurant_api_get_restaurant', array('id' => $restaurantEntity->getId())));
         return $restaurantResponse;
     }
-
 }

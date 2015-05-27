@@ -2,33 +2,69 @@
 
 namespace Log210\APIBundle\Controller;
 
+use Log210\APIBundle\Message\Response\RestaurateurResponse;
+use Log210\CommonBundle\Controller\BaseController;
+use Log210\LivraisonBundle\Entity\Restaurateur;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class RestaurateurController
  * @package Log210\APIBundle\Controller
+ * @Route("/restaurateurs")
  */
-class RestaurateurController {
-
+class RestaurateurController extends BaseController {
     /**
-     * @return Response the restaurateurs in json format
-     *
+     * @Route("", name="restaurateur_api_create_restaurateur")
+     * @Method("POST")
      */
-    public function getRestaurateursAction()
-    {
-        return $this->getRepositoryForClass('Log210LivraisonBundle:Restaurateurs')->findAll();
+    public function createRestaurateurAction(Request $request) {
+        $restaurateurRequest = $this->fromJson($request->getContent(), 'Log210');
     }
 
     /**
-     * @param $id int the id of the restaurateur
-     * @return Response the restaurateur in json format
+     * @param $id the id of the restaurateur
+     * @return Response response
      *
-     * @Route("/restaurateurs/{id}", name="api_get_restaurateur")
+     * @Route("/{id}", name="restaurateur_api_get_restaurateur")
      * @Method("GET")
      */
     public function getRestaurateurAction($id) {
-        return $this->jsonResponse(new Response($this->toJson($this
-            ->getRepositoryForClass('Log210LivraisonBundle:Restaurateur')->findAll())));
+        $restaurateurEntity = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
+
+        if (is_null($restaurateurEntity)) {
+            return new Response('', Response::HTTP_NOT_FOUND);
+        }
+
+        $restaurateur = $this->toRestaurateurResponse($restaurateurEntity);
+        return $this->jsonResponse(new Response($this->toJson($restaurateur)));
+    }
+
+    /**
+     * @param $id the id of the restaurateur
+     * @return Response response
+     *
+     * @Route("/{id}/restaurants", name="restaurateur_api_get_restaurateur_restaurants")
+     * @Method("GET")
+     */
+    public function getRestaurateurRestaurantsAction($id) {
+
+    }
+
+    /**
+     * @param Restaurateur $restaurateurEntity
+     * @return RestaurateurResponse restaurateurResponse
+     */
+    private function toRestaurateurResponse(Restaurateur $restaurateurEntity) {
+        $restaurateurResponse = new RestaurateurResponse();
+        $restaurateurResponse->setId($restaurateurEntity->getId());
+        $restaurateurResponse->setName($restaurateurEntity->getName());
+        $restaurateurResponse->setDescription($restaurateurEntity->getDescription());
+        $restaurateurResponse->setRestaurants_href($this->get('router')->generate(
+            'restaurateur_api_get_restaurateur_restaurants', array('id' => $restaurateurEntity->getId())));
+        $restaurateurResponse->setSelf_href($this->get('router')->generate(
+            'restaurateur_api_get_restaurateur', array('id' => $restaurateurEntity->getId())));
+        return $restaurateurResponse;
     }
 }
