@@ -1,0 +1,13 @@
+{% block form %}
+	<div class="form-errors">{{ form_errors(form) }}</div>
+	{{ form_start(form) }}
+	    {% for field in form.children %}
+			{% if field.vars.name != 'submit' %}
+	    		{{ form_row(field) }}
+	    	{% endif %}
+	    {% endfor %}
+	    <div class="form-action">
+	    	{{ form_row(form.submit) }}
+	    </div>
+	{{ form_end(form) }}
+{% endblock %}

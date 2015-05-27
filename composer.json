@@ -22,7 +22,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "twbs/bootstrap": "^3.3",
         "braincrafted/bootstrap-bundle": "^2.1",
-        "components/jquery": "^2.1"
+        "components/jquery": "^2.1",
+        "friendsofsymfony/user-bundle": "^1.3"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
