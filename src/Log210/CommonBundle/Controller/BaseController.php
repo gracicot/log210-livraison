@@ -2,6 +2,7 @@
 
 namespace Log210\CommonBundle\Controller;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -10,6 +11,10 @@ use Symfony\Component\Serializer\Serializer;
 
 abstract class BaseController extends SymfonyController
 {
+
+    /**
+     * @return ObjectManager
+     */
 	protected function getEntityManager()
 	{
 		return $this->getDoctrine()->getManager();
