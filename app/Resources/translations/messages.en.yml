@@ -10,3 +10,12 @@ edit: edit
 list: list
 new: new
 delete: delete
+username: User
+password: Password
+signout: Sign out
+signin: Sign in
+signup: Sign up
+submit: Sign in
+username: Username
+password: Password
+remember_me: Remember me
