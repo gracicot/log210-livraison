@@ -1,0 +1,13 @@
+{% extends 'Log210LivraisonBundle:Plat:layout.html.twig' %}
+
+{% use 'Log210CommonBundle:Generic:edit.html.twig' %}
+
+{% block title parent() ~ ' - ' ~ entity ~ ' - ' ~ 'edit'|trans|capitalize %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li><a href="{{ path('plat_show', {id: entity.id}) }}">{{ entity }}</a></li>
+    <li>{{ 'edit'|trans|capitalize }}</li>
+{% endblock %}
+
+{% block content block('edit') %}

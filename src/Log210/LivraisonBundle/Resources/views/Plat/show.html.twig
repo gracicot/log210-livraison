@@ -1,0 +1,32 @@
+{% extends 'Log210LivraisonBundle:Plat:layout.html.twig' %}
+
+{% import 'Log210CommonBundle:Macro:show.html.twig' as show %}
+
+{% use 'Log210CommonBundle:Generic:show.html.twig' %}
+
+{% block title parent() ~ ' - ' ~ entity %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li>{{ entity }}</li>
+{% endblock %}
+
+{% block fields %}
+    {{ show.text(entity, 'name') }}
+    {{ show.text(entity, 'description') }}
+    {{ show.integer(entity, 'prix') }}
+    {{ show.relation(entity, 'menu') }}
+{% endblock %}
+
+{% block actions %}
+    <a class="btn btn-default glyphicon glyphicon-chevron-left" href="{{ path('play') }}">{{ 'back'|trans|capitalize }}</a>
+    <a
+            class="btn btn-warning glyphicon glyphicon-pencil"
+            data-toggle="tooltip"
+            data-placement="bottom"
+            title="{{ 'edit'|trans|capitalize }}"
+            href="{{ path('plat_edit', { 'id': entity.id }) }}">
+    </a>
+{% endblock %}
+
+{% block content block('show') %}

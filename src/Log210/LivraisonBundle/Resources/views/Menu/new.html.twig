@@ -1,0 +1,12 @@
+{% extends 'Log210LivraisonBundle:Menu:layout.html.twig' %}
+
+{% use 'Log210CommonBundle:Generic:new.html.twig' %}
+
+{% block title parent() ~ ' - ' ~ 'new'|trans|capitalize %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li>{{ 'new'|trans|capitalize }}</li>
+{% endblock %}
+
+{% block content block('new') %}
