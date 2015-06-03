@@ -2,19 +2,17 @@
 
 {% block content %}
     <h1>Liste des Restaurants</h1>
-
-
-
+    
     <div class="container">
   <table class="table table-hover">
     <thead>
       <tr>
 
-        <th>Name</th>
-        <th>Description</th>
-        <th>Adresse</th>
-        <th>Restaurateur</th>
-        <th>Actions</th>
+        <th>'name'|trans|capitalize</th>
+        <th>'description'|trans|capitalize</th>
+        <th>'adresse'|trans|capitalize</th>
+        <th>'restaurateur'|trans|capitalize</th>
+        <th>'action'|trans|capitalize</th>
       </tr>
     </thead>
     <tbody>
@@ -27,13 +25,12 @@
                 <td>{{ entity.address }}</td>
                 <td>{{ entity.restaurateur }}</td>
                 <td>
-                    <a class="glyphicon glyphicon-cd" href="{{ path('restaurant_show', { 'id': entity.id }) }}" rel="tooltip" title="Afficher"></a>
-                    <a class="glyphicon glyphicon-edit" href="{{ path('restaurant_edit', { 'id': entity.id }) }}" rel="tooltip" title="Edit"></a>
+                    <a class="glyphicon glyphicon-edit" href="{{ path('restaurant_edit', { 'id': entity.id }) }}" rel="tooltip" title="'edit'|trans|capitalize"></a>
                     <a class="glyphicon glyphicon-remove"
                         href="{{ path('restaurant_unsafe_delete', { 'id': entity.id }) }}"
                         onclick="return confirm('Voulez-vous vraiment supprimer ce restaurant?')"
                         rel="tooltip"
-                        title="Supprimer">
+                        title="'delete'|trans|capitalize">
                     </a>
                 </td>
           </tr>
@@ -44,7 +41,7 @@
         <ul>
         <li>
             <a href="{{ path('restaurant_new') }}">
-                Créer un nouveau restaurant
+                'newRestaurant'|trans
             </a>
         </li>
     </ul>
