@@ -16,5 +16,9 @@
         <service id="log210_common.form.type.fieldset" class="Log210\CommonBundle\Form\FieldsetType">
             <tag name="form.type" alias="fieldset" />
         </service>
+        <service id="log210_common.form.type.reference" class="Log210\CommonBundle\Form\ReferenceType">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <tag name="form.type" alias="reference" />
+        </service>
     </services>
 </container>
