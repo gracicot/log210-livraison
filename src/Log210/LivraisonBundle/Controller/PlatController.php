@@ -120,4 +120,23 @@ class PlatController extends Controller
         return parent::deleteAction($request, $id);
     }
 
+    /**
+     * Deletes a Plat entity.
+     *
+     * @Route("/unsafe/{id}", name="plat_unsafe_delete")
+     * @Method("GET")
+     */
+    public function unsafeDeleteAction(Request $request, $id)
+    {
+        $platService = $this->get("livraisonBundle.platService");
+        $entity = $platService->getPlatById($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Restaurant entity.');
+        }
+
+        $platService->deletePlat($entity);
+
+        return $this->redirect($this->generateUrl('plat'));
+    }
 }

@@ -16,7 +16,7 @@ class MenuType extends AbstractType
     {
         $builder
             ->add('name')
-            /*->add('restaurant')*/
+            ->add('restaurant')
         ;
     }
     
