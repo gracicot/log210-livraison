@@ -10,3 +10,14 @@ edit: modifier
 list: liste
 new: nouveau
 delete: supprimer
+username: Utilisateur
+password: Mot de passe
+signout: Déconnexion
+signin: Connexion
+signup: S'inscrire
+submit: Connexion
+security:
+    login:
+        password: Mot de passe
+        username: Utilisateur
+remember_me: se souvenir

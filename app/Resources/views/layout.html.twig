@@ -22,27 +22,33 @@
             <div id="page-header">
                 <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
                     <div class="container">
-                      {% set tryUser = 'Entrepreneur' %}
-                      <button type="button"  class="btn btn-default navbar-btn ">Sign in
-                      </button>
-                        <!-- <a href="#" class="navbar-brand">Sign in</a> -->
-                      {% if tryUser == 'Restaurateur' %}
-                      <a href="{{ path('restaurant')}}" class="navbar-brand">Mes Restaurant</a>
-                      {% endif %}
-                      {% if tryUser == 'Entrepreneur' %}
-                        <a href="{{ path('restaurateur')}}" class="navbar-brand">Mes Restaurateur</a>
-                        <a href="#" class="navbar-brand">Restaurants</a>
-                      {% endif %}
+                      {% set user = app.security.getToken().getUser() %}
+                        {% if user != 'anon.' %}
+                            {% if user == 'guillaume' %}
+                            <a href="{{ path('restaurant')}}" class="navbar-brand">Mes Restaurant</a>
+                            {% endif %}
+                            {% if user == 'Entrepreneur' %}
+                              <a href="{{ path('restaurateur')}}" class="navbar-brand">Mes Restaurateur</a>
+                              <a href="{{ path('restaurant')}}" class="navbar-brand">Restaurants</a>
+                            {% endif %}
 
-                      {% if tryUser == 'Livreur' %}
-                        <a href="#" class="navbar-brand">Mes Commandes</a>
-                      {% endif %}
+                            {% if user == 'Livreur' %}
+                              <a href="#" class="navbar-brand">Mes Commandes</a>
+                            {% endif %}
 
-                      {% if tryUser == 'Client' %}
-                        <a href="#" class="navbar-brand">Liste de Restaurant</a>
-                      {% endif %}
-
-                      </div>
+                            {% if user == 'Client' %}
+                              <a href="#" class="navbar-brand">Liste de Restaurant</a>
+                            {% endif %}
+                            <div class="navbar-right">
+                              <a href="{{path('fos_user_profile_show')}}" class="navbar-brand">{{user}}</a>"
+                              <a href="{{path('fos_user_security_logout')}}" class="btn btn-default navbar-btn"> {{'signout'|trans}}</a>
+                            </div>
+                        {% else %}
+                            <div class="navbar-right">
+                              {{ render(controller('FOSUserBundle:Security:login'))}}
+                            </div>
+                        {% endif %}
+                    </div>
                 </nav>
             </div>
             <div id="page-body">
