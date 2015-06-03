@@ -111,7 +111,7 @@ class RestaurantController extends Controller
     {
         return parent::updateAction($request, $id);
     }
-    
+
     /**
      * Deletes a Restaurant entity.
      *
@@ -122,7 +122,7 @@ class RestaurantController extends Controller
     {
         return parent::deleteAction($request, $id);
     }
-    
+
     /**
      * Deletes a Restaurant entity.
      *

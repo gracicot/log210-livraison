@@ -121,4 +121,24 @@ class RestaurateurController extends Controller
     {
         return parent::deleteAction($request, $id);
     }
+
+    /**
+     * Deletes a Restaurant entity.
+     *
+     * @Route("/unsafe/{id}", name="restaurateur_unsafe_delete")
+     * @Method("GET")
+     */
+    public function unsafeDeleteAction(Request $request, $id)
+    {
+        $restaurateurService = $this->get("livraisonBundle.restaurateurService");
+        $entity = $restaurantateurService->getRestaurateurById($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Restaurateur entity.');
+        }
+
+        $restaurantateurService->deleteRestaurant($entity);
+
+        return $this->redirect($this->generateUrl('restauranteur'));
+    }
 }
