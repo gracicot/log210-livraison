@@ -23,34 +23,32 @@
                 <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
                     <div class="container">
                       {% set user = app.security.getToken().getUser() %}
-                      <div class="align-flexible">
-                      {% if user != 'anon.' %}
-                          {% if user == 'guillaume' %}
-                          <a href="{{ path('restaurant')}}" class="navbar-brand">Mes Restaurant</a>
-                          {% endif %}
-                          {% if user == 'Entrepreneur' %}
-                            <a href="{{ path('restaurateur')}}" class="navbar-brand">Mes Restaurateur</a>
-                            <a href="{{ path('restaurant')}}" class="navbar-brand">Restaurants</a>
-                          {% endif %}
+                        {% if user != 'anon.' %}
+                            {% if user == 'guillaume' %}
+                            <a href="{{ path('restaurant')}}" class="navbar-brand">Mes Restaurant</a>
+                            {% endif %}
+                            {% if user == 'Entrepreneur' %}
+                              <a href="{{ path('restaurateur')}}" class="navbar-brand">Mes Restaurateur</a>
+                              <a href="{{ path('restaurant')}}" class="navbar-brand">Restaurants</a>
+                            {% endif %}
 
-                          {% if user == 'Livreur' %}
-                            <a href="#" class="navbar-brand">Mes Commandes</a>
-                          {% endif %}
+                            {% if user == 'Livreur' %}
+                              <a href="#" class="navbar-brand">Mes Commandes</a>
+                            {% endif %}
 
-                          {% if user == 'Client' %}
-                            <a href="#" class="navbar-brand">Liste de Restaurant</a>
-                          {% endif %}
-                          <a href="{{path('fos_user_profile_show')}}" class="navbar-brand align-right">{{user}}</a>"
-                          <a href="{{path('fos_user_security_logout')}}" class="btn btn-default navbar-btn align-right"> {{'signout'|trans}}</a>
-                          {% else %}
-                          {{ render(controller('FOSUserBundle:Security:login'))}}
-                          <a href="{{path('fos_user_registration_register')}}" class="btn btn-default navbar-btn align-right"> {{'signup'|trans}}</a>
-                      {% endif %}
+                            {% if user == 'Client' %}
+                              <a href="#" class="navbar-brand">Liste de Restaurant</a>
+                            {% endif %}
+                            <div class="navbar-right">
+                              <a href="{{path('fos_user_profile_show')}}" class="navbar-brand">{{user}}</a>"
+                              <a href="{{path('fos_user_security_logout')}}" class="btn btn-default navbar-btn"> {{'signout'|trans}}</a>
+                            </div>
+                        {% else %}
+                            <div class="navbar-right">
+                              {{ render(controller('FOSUserBundle:Security:login'))}}
+                            </div>
+                        {% endif %}
                     </div>
-
-
-
-                      </div>
                 </nav>
             </div>
             <div id="page-body">

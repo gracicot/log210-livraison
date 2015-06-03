@@ -1,0 +1,45 @@
+{% extends 'Log210LivraisonBundle:Plat:layout.html.twig' %}
+
+{% block body -%}
+    <h1>Plat list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('plat_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.description }}</td>
+                <td>{{ entity.prix }}</td>
+                <td>
+                    <a class="glyphicon glyphicon-cd" href="{{ path('plat_show', { 'id': entity.id }) }}" rel="tooltip" title="Afficher"></a>
+                    <a class="glyphicon glyphicon-edit" href="{{ path('plat_edit', { 'id': entity.id }) }}" rel="tooltip" title="Edit"></a>
+                    <a class="glyphicon glyphicon-remove"
+                       href="{{ path('plat_unsafe_delete', { 'id': entity.id }) }}"
+                       onclick="return confirm('Voulez-vous vraiment supprimer ce plat?')"
+                       rel="tooltip"
+                       title="Supprimer">
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('plat_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

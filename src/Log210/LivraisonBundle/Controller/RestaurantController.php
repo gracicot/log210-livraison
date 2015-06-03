@@ -100,6 +100,19 @@ class RestaurantController extends Controller
     {
         return parent::editAction($request, $id);
     }
+
+    /**
+     * Displays a form to edit an existing Restaurant entity.
+     *
+     * @Route("/{id}/edit_partial", name="restaurant_edit_partial")
+     * @Method("GET")
+     * @Template("Log210LivraisonBundle:Restaurant:edit_partial.html.twig")
+     */
+    public function editPartialAction(Request $request, $id)
+    {
+        return parent::editAction($request, $id);
+    }
+
     /**
      * Edits an existing Restaurant entity.
      *
@@ -131,14 +144,15 @@ class RestaurantController extends Controller
      */
     public function unsafeDeleteAction(Request $request, $id)
     {
-        $restaurantService = $this->get("livraisonBundle.restaurantService");
-        $entity = $restaurantService->getRestaurantById($id);
+        $entity = $this->getRepository()->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Restaurant entity.');
         }
 
-        $restaurantService->deleteRestaurant($entity);
+        $em = $this->getEntityManager();
+        $em->remove($entity);
+        $em->flush();
 
         return $this->redirect($this->generateUrl('restaurant'));
     }
