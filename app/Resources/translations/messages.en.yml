@@ -16,6 +16,9 @@ signout: Sign out
 signin: Sign in
 signup: Sign up
 submit: Sign in
-username: Username
 password: Password
+security:
+    login:
+        password: Password
+        username: Username
 remember_me: Remember me
