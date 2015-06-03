@@ -2,73 +2,62 @@
 
 namespace Log210\APIBundle\Controller;
 
-use Log210\APIBundle\Message\Request\RestaurantRequest;
+use Log210\APIBundle\Mapper\RestaurantMapper;
+use Log210\CommonBundle\Controller\BaseController;
 use Log210\LivraisonBundle\Entity\Restaurant;
-use Log210\APIBundle\Message\Response\RestaurantResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Log210\CommonBundle\Controller\BaseController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class RestaurantController
  * @package Log210\LivraisonBundle\Controller
- * @Route("/restaurants")
+ * @Symfony\Component\Routing\Annotation\Route("/restaurants")
  */
-class RestaurantController extends Controller
-{
-    protected function getRepository()
-    {
-        return $this->getDoctrine()->getRepository('Log210LivraisonBundle:Restaurant');
-    }
+class RestaurantController extends BaseController {
 
     /**
-     * @return Response the restaurants in json format
+     * @return Response
      *
-     * @Route("", name="restaurant_api_get_restaurants")
-     * @Method("GET")
+     * @Symfony\Component\Routing\Annotation\Route("", name="restaurant_api_get_restaurants")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
      */
     public function getRestaurantsAction()
     {
-        $restaurantEntities = $this->getRepository()->findAll();
+        $restaurantEntities = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurant')->findAll();
         $restaurantResponses = array();
         foreach ($restaurantEntities as $restaurant) {
-            array_push($restaurantResponses, $this->toRestaurantResponse($restaurant));
+            array_push($restaurantResponses, RestaurantMapper::toRestaurantResponse($restaurant));
         }
-        $response = $this->jsonResponse(new Response($this->toJson($restaurantResponses)));
-        return $response;
+        return $this->jsonResponse(new Response($this->toJson($restaurantResponses)));
     }
 
     /**
-     * @param $id int the id of the restaurant
-     * @return Response the restaurant in json format
+     * @param $id int
+     * @return Response
      *
-     * @Route("/{id}", name="restaurant_api_get_restaurant")
-     * @Method("GET")
+     * @Symfony\Component\Routing\Annotation\Route("/{id}", name="restaurant_api_get_restaurant")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
      */
     public function getRestaurantAction($id)
     {
-        $restaurant = $this->getRepository()->find($id);
+        $restaurantEntity = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurant')->find($id);
 
-        if (is_null($restaurant)) {
+        if (is_null($restaurantEntity)) {
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $restaurant = $this->toRestaurantResponse($restaurant);
+        $restaurantResponse = RestaurantMapper::toRestaurantResponse($restaurantEntity);
 
-        $jsonContent = $this->toJson($restaurant);
-
-        $response = new Response($jsonContent);
+        $response = new Response($this->toJson($restaurantResponse));
         return $this->jsonResponse($response);
     }
 
     /**
-     * @param Request $request the request
-     * @return Response the response
+     * @param $request Request
+     * @return Response
      *
-     * @Route("", name="restaurant_api_create_restaurant")
-     * @Method("POST")
+     * @Symfony\Component\Routing\Annotation\Route("", name="restaurant_api_create_restaurant")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("POST")
      */
     public function createRestaurantAction(Request $request)
     {
@@ -98,18 +87,18 @@ class RestaurantController extends Controller
     }
 
     /**
-     * @param int $id the id of the restaurant
-     * @param Request $request the request object
-     * @return Response response object
+     * @param $id int
+     * @param $request Request
+     * @return Response
      *
-     * @Route("/{id}", name="restaurant_api_update_restaurant")
-     * @Method("PUT")
+     * @Symfony\Component\Routing\Annotation\Route("/{id}", name="restaurant_api_update_restaurant")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("PUT")
      */
     public function updateRestaurantAction($id, Request $request)
     {
-        $restaurant = $this->getRepository()->find($id);
+        $restaurantEntity = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurant')->find($id);
 
-        if (is_null($restaurant)) {
+        if (is_null($restaurantEntity)) {
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
@@ -121,12 +110,12 @@ class RestaurantController extends Controller
             if (is_null($restaurateur)) {
                 return new Response('{"error":"Restaurateur not found"}', Response::HTTP_BAD_REQUEST);
             }
-            $restaurant->setRestaurateur($restaurateur);
+            $restaurantEntity->setRestaurateur($restaurateur);
         }
-        $restaurant->setName($restaurantRequest->getName());
-        $restaurant->setDescription($restaurantRequest->getDescription());
-        $restaurant->setAddress($restaurantRequest->getAddress());
-        $restaurant->setPhone($restaurantRequest->getPhone());
+        $restaurantEntity->setName($restaurantRequest->getName());
+        $restaurantEntity->setDescription($restaurantRequest->getDescription());
+        $restaurantEntity->setAddress($restaurantRequest->getAddress());
+        $restaurantEntity->setPhone($restaurantRequest->getPhone());
 
         $this->getEntityManager()->flush();
 
@@ -134,15 +123,15 @@ class RestaurantController extends Controller
     }
 
     /**
-     * @param $id int the id of the restaurant
-     * @return Response response object
+     * @param $id int
+     * @return Response
      *
-     * @Route("/{id}", name="restaurant_api_delete_restaurant")
-     * @Method("DELETE")
+     * @Symfony\Component\Routing\Annotation\Route("/{id}", name="restaurant_api_delete_restaurant")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("DELETE")
      */
     public function deleteRestaurantAction($id)
     {
-        $restaurant = $this->getRepository()->find($id);
+        $restaurant = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurant')->find($id);
 
         if (is_null($restaurant)) {
             return new Response('', Response::HTTP_NOT_FOUND);
@@ -154,21 +143,35 @@ class RestaurantController extends Controller
     }
 
     /**
-     * @param Restaurant $restaurantEntity the entity to convert
-     * @return RestaurantResponse the restaurant response object
+     * @param $id int
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("/{id}/restaurateur", name="restaurant_api_get_restaurant_restaurateur")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
      */
-    private function toRestaurantResponse(Restaurant $restaurantEntity) {
-        $restaurantResponse = new RestaurantResponse();
-        $restaurantResponse->setId($restaurantEntity->getId());
-        $restaurantResponse->setName($restaurantEntity->getName());
-        $restaurantResponse->setDescription($restaurantEntity->getDescription());
-        $restaurantResponse->setAddress($restaurantEntity->getAddress());
-        $restaurantResponse->setPhone($restaurantEntity->getPhone());
-        if (!is_null($restaurantEntity->getRestaurateur())) {
-            $restaurantResponse->setRestaurateur_href($this->get('router')->generate('api_get_restaurateur',
-                array('id' => $restaurantEntity->getRestaurateur()->getId())));
+    public function getRestaurantRestaurateurAction($id) {
+        $restaurant = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurant')->find($id);
+        if (is_null($restaurant) || is_null($restaurant->getRestaurateur())) {
+            return new Response('', Response::HTTP_NOT_FOUND);
         }
-        return $restaurantResponse;
+        return $this->forward('Log210APIBundle:Restaurateur:getRestaurateur', array('id' => $restaurant
+            ->getRestaurateur()->getId()));
     }
 
+    /**
+     * @param $id int
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("/{id}/restaurateur", name="restaurant_api_delete_restaurant_restaurateur_link")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("DELETE")
+     */
+    public function deleteRestaurantRestaurateurLinkAction($id) {
+        $restaurantEntity = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurant')->find($id);
+        if (is_null($restaurantEntity)) {
+            return new Response('', Response::HTTP_NOT_FOUND);
+        }
+        $restaurantEntity->setRestaurateur(null);
+        $this->getEntityManager()->flush();
+        return new Response('', Response::HTTP_NO_CONTENT);
+    }
 }

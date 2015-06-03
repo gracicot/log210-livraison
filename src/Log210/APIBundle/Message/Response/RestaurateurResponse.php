@@ -1,8 +1,15 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: tomasz
+ * Date: 15-05-27
+ * Time: 4:21 PM
+ */
 
 namespace Log210\APIBundle\Message\Response;
 
-class RestaurantResponse {
+
+class RestaurateurResponse {
     /**
      * @var int $id
      */
@@ -19,19 +26,9 @@ class RestaurantResponse {
     private $description;
 
     /**
-     * @var string $address
+     * @var string $restaurants_href
      */
-    private $address;
-
-    /**
-     * @var string $phone
-     */
-    private $phone;
-
-    /**
-     * @var string $restaurateur_href
-     */
-    private $restaurateur_href;
+    private $restaurants_href;
 
     /**
      * @var string $self_href
@@ -89,49 +86,17 @@ class RestaurantResponse {
     /**
      * @return string
      */
-    public function getAddress()
+    public function getRestaurants_href()
     {
-        return $this->address;
+        return $this->restaurants_href;
     }
 
     /**
-     * @param string $address
+     * @param string $restaurants_href
      */
-    public function setAddress($address)
+    public function setRestaurants_href($restaurants_href)
     {
-        $this->address = $address;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-
-    /**
-     * @param string $phone
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRestaurateur_href()
-    {
-        return $this->restaurateur_href;
-    }
-
-    /**
-     * @param string $restaurateur_href
-     */
-    public function setRestaurateur_href($restaurateur_href)
-    {
-        $this->restaurateur_href = $restaurateur_href;
+        $this->restaurants_href = $restaurants_href;
     }
 
     /**
@@ -149,4 +114,6 @@ class RestaurantResponse {
     {
         $this->self_href = $self_href;
     }
+
+
 }
