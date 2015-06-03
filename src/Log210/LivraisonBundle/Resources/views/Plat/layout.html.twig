@@ -1,0 +1,8 @@
+{% extends 'Log210CommonBundle::layout.html.twig' %}
+
+{% block title 'plat'|trans|capitalize %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li><a href="{{ path('plat') }}">{{ 'plat'|trans|capitalize }}</a></li>
+{% endblock %}

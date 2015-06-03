@@ -3,6 +3,7 @@
 namespace Log210\LivraisonBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -43,6 +44,16 @@ class Restaurant
      * @ORM\JoinColumn(name="restaurateur_id", referencedColumnName="id")
      **/
     protected $restaurateur;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Menu", mappedBy="restaurant")
+     **/
+    protected $menus;
+
+    public function __construct()
+    {
+        $this->menus = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -172,5 +183,38 @@ class Restaurant
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * Add menus
+     *
+     * @param \Log210\LivraisonBundle\Entity\menu $menus
+     * @return Restaurant
+     */
+    public function addMenu(\Log210\LivraisonBundle\Entity\menu $menus)
+    {
+        $this->menus[] = $menus;
+
+        return $this;
+    }
+
+    /**
+     * Remove menus
+     *
+     * @param \Log210\LivraisonBundle\Entity\menu $menus
+     */
+    public function removeMenu(\Log210\LivraisonBundle\Entity\menu $menus)
+    {
+        $this->menus->removeElement($menus);
+    }
+
+    /**
+     * Get menus
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMenus()
+    {
+        return $this->menus;
     }
 }
