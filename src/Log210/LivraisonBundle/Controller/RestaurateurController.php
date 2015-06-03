@@ -130,15 +130,16 @@ class RestaurateurController extends Controller
      */
     public function unsafeDeleteAction(Request $request, $id)
     {
-        $restaurateurService = $this->get("livraisonBundle.restaurateurService");
-        $entity = $restaurantateurService->getRestaurateurById($id);
+      $entity = $this->getRepository()->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Restaurateur entity.');
-        }
+      if (!$entity) {
+          throw $this->createNotFoundException('Unable to find Restaurateur entity.');
+      }
 
-        $restaurantateurService->deleteRestaurant($entity);
+      $em = $this->getEntityManager();
+      $em->remove($entity);
+      $em->flush();
 
-        return $this->redirect($this->generateUrl('restauranteur'));
+      return $this->redirect($this->generateUrl('restaurateur'));
     }
 }

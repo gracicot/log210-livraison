@@ -6,7 +6,7 @@
   <table class="table table-hover">
         <thead>
             <tr>
-                <th>Id</th>
+              
                 <th>Name</th>
                 <th>Description</th>
                 <th>Actions</th>
@@ -19,7 +19,7 @@
             <td>{{ entity.name }}</td>
             <td>{{ entity.description }}</td>
                   <td>
-                    
+
                       <a class="glyphicon glyphicon-edit" href="{{ path('restaurateur_edit', { 'id': entity.id }) }}" rel="tooltip" title="Edit"></a>
                       <a class="glyphicon glyphicon-remove"
                           href="{{ path('restaurateur_unsafe_delete', { 'id': entity.id }) }}"

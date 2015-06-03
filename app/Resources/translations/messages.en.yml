@@ -1,24 +1,65 @@
+#a
+address: adress
+#b
+action: actions
+back: back
+#c
+createrestaurateur: Create a new restaurateur
+#d
+dashboard: dashboard
+delete: delete
+description: description
+#e
+edit: edit
+#f
+
+#g
+
+#h
+
+#j
+
+#k
+
+#l
+list: list
+#m
+
+#n
 name: name
-address: address
+new: new
+newRestaurant: Create new restaurant
+#o
+
+#p
 phone: phone
+#q
+
+#r
 restaurateur: restaurateur
 restaurant: restaurant
+remember_me: remember_me
+#s
 save: save
-back: back
-dashboard: dashboard
-edit: edit
-list: list
-new: new
-delete: delete
-username: User
-password: Password
-signout: Sign out
-signin: Sign in
-signup: Sign up
-submit: Sign in
-password: Password
+signout: déconnexion
+signin: connexion
+signup: signup
+submit: submit
+delete: supprimer
 security:
     login:
-        password: Password
-        username: Username
-remember_me: Remember me
+        password: password
+        username: username
+#t
+
+#u
+
+#v
+
+#w
+
+#x
+
+#y
+
+#z

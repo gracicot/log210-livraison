@@ -1,6 +1,8 @@
 {% extends 'Log210CommonBundle::layout.html.twig' %}
 
+{% block title 'restaurateur'|trans|capitalize %}
+
 {% block breadcrumbs %}
 	{{ parent() }}
-	<li>{{ 'restaurateur'|trans }}</li>
+	<li><a href="{{ path('restaurateur') }}">{{ 'restaurateur'|trans|capitalize }}</a></li>
 {% endblock %}
