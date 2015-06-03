@@ -29,7 +29,7 @@ class Plat
     protected $description;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="decimal", scale=2)
      */
     protected $prix;
 
