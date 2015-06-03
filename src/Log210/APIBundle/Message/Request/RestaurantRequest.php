@@ -26,11 +26,6 @@ class RestaurantRequest {
     private $phone;
 
     /**
-     * @var string $restaurateur
-     */
-    private $restaurateur;
-
-    /**
      * @return string
      */
     public function getName()
@@ -93,22 +88,4 @@ class RestaurantRequest {
     {
         $this->phone = $phone;
     }
-
-    /**
-     * @return string
-     */
-    public function getRestaurateur()
-    {
-        return $this->restaurateur;
-    }
-
-    /**
-     * @param string $restaurateur
-     */
-    public function setRestaurateur($restaurateur)
-    {
-        $this->restaurateur = $restaurateur;
-    }
-
-
 }

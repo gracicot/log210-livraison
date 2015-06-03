@@ -132,6 +132,7 @@ class RestaurateurController extends BaseController {
         foreach ($restaurateurEntity->getRestaurants() as $restaurantEntity)
             array_push($restaurantResponses, RestaurantMapper::toRestaurantResponse($restaurantEntity));
 
-        return new Response($this->toJson($restaurantResponses));
+        return new Response($this->toJson($restaurantResponses), Response::HTTP_OK, array(
+            "Content-Type" => "application/json"));
     }
 }
