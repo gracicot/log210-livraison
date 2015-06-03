@@ -22,6 +22,10 @@ class ReflectionExtension extends Twig_Extension
 
     public function classShortName($object)
     {
-        return (new ReflectionClass($object))->getShortName();
+        if (is_object($object)) {
+            return (new ReflectionClass($object))->getShortName();
+        }
+
+        return null;
     }
 }

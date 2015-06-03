@@ -34,8 +34,10 @@
 
 {% macro relation(entity, property, route, parameters) %}
 	{% import _self as show %}
-	{{ 
-		show.row(property|trans|capitalize, attribute(entity, property),
-		path(route|default(class(attribute(entity, property))|lower ~ '_show'), parameters|default({'id': attribute(entity, property).id})))
-	}}
+	{% if attribute(entity, property) is not null %}
+		{{ 
+			show.row(property|trans|capitalize, attribute(entity, property),
+			path(route|default(class(attribute(entity, property))|lower ~ '_show'), parameters|default({'id': attribute(entity, property).id})))
+		}}
+	{% endif %}
 {% endmacro %}
