@@ -25,6 +25,7 @@
                 <td>{{ entity.address }}</td>
                 <td>{{ entity.restaurateur }}</td>
                 <td>
+                    <a class="glyphicon glyphicon-cd" href="{{ path('restaurant_show', { 'id': entity.id }) }}" rel="tooltip" title="Afficher"></a>
                     <a class="glyphicon glyphicon-edit" href="{{ path('restaurant_edit', { 'id': entity.id }) }}" rel="tooltip" title="'edit'|trans|capitalize"></a>
                     <a class="glyphicon glyphicon-remove"
                         href="{{ path('restaurant_unsafe_delete', { 'id': entity.id }) }}"

@@ -121,4 +121,24 @@ class MenuController extends Controller
         return parent::deleteAction($request, $id);
     }
 
+    /**
+     * Deletes a Restaurant entity.
+     *
+     * @Route("/unsafe/{id}", name="menu_unsafe_delete")
+     * @Method("GET")
+     */
+    public function unsafeDeleteAction(Request $request, $id)
+    {
+        $entity = $this->getRepository()->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Menu entity.');
+        }
+
+        $em = $this->getEntityManager();
+        $em->remove($entity);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('menu'));
+    }
 }
