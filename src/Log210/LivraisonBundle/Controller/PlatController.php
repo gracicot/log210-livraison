@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Log210\LivraisonBundle\Entity\Plat;
+use Log210\LivraisonBundle\Entity\Menu;
 use Log210\LivraisonBundle\Form\PlatType;
 
 /**
@@ -65,13 +66,38 @@ class PlatController extends Controller
     /**
      * Displays a form to create a new Plat entity.
      *
-     * @Route("/new", name="plat_new")
+     * @Route("new/{menu}", name="plat_new")
      * @Method("GET")
-     * @Template()
+     * @Template("Log210LivraisonBundle:Plat:new.html.twig")
      */
-    public function newAction(Request $request)
+    public function newLierAction(Request $request,Menu $menu)
     {
-        return parent::newAction($request);
+        $entity = $this->getRepository()->makeEntity();
+        $form   = $this->createCreateForm($entity);
+        $entity->setMenu($menu);
+        return [
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ];
+    }
+
+    /**
+     * Creates a form to create a  entity.
+     *
+     * @param $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCreateForm($entity)
+    {
+        $form = $this->createForm($this->getForm(), $entity, [
+            'action' => $this->generateUrl($this->getRoute('create')),
+            'method' => 'POST',
+        ]);
+
+        $form->add('submit', 'submit', ['label' => 'Create']);
+
+        return $form;
     }
 
     /**

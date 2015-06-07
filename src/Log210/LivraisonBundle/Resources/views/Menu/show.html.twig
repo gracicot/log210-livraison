@@ -30,7 +30,7 @@
             data-toggle="tooltip"
             data-placement="bottom"
             title="{{ 'Ajouter plat'|trans|capitalize }}"
-            href="{{ path('plat_new') }}">
+            href="{{ path('plat_new', { 'menu': entity.id }) }}">
     </a>
 {% endblock %}
 
