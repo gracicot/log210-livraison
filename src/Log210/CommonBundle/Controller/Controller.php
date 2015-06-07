@@ -26,6 +26,30 @@ abstract class Controller extends BaseController
         }
     }
 
+    protected function makeUpdateResponse($form, $entity)
+    {
+        if ($form->isValid()) {
+            return $this->redirect($this->generateUrl($this->getRoute('show'), ['id' => $entity->getId()]));
+        } else {
+            return [
+                'entity' => $entity,
+                'form' => $entity->createView(),
+            ];
+        }
+    }
+
+    protected function makeCreateResponse($form, $entity)
+    {
+        if ($form->isValid()) {
+            return $this->redirect($this->generateUrl($this->getRoute('show'), ['id' => $entity->getId()]));
+        } else {
+            return [
+                'entity' => $entity,
+                'form'   => $form->createView(),
+            ];
+        }
+    }
+
     /**
      * Lists all entities.
      */
@@ -52,7 +76,6 @@ abstract class Controller extends BaseController
      */
     public function createAction(Request $request)
     {
-        $service = $this->getRepository();
         $entity = $this->getRepository()->makeEntity();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -61,14 +84,9 @@ abstract class Controller extends BaseController
             $em = $this->getEntityManager();
             $em->persist($entity);
             $em->flush();
-
-            return $this->redirect($this->generateUrl($this->getRoute('show'), ['id' => $entity->getId()]));
         }
 
-        return [
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ];
+        return $this->makeCreateResponse($form, $entity);
     }
 
     /**
@@ -168,21 +186,15 @@ abstract class Controller extends BaseController
             throw $this->createNotFoundException('Unable to find entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
+        $form = $this->createEditForm($entity);
+        $form->handleRequest($request);
 
-        if ($editForm->isValid()) {
+        if ($form->isValid()) {
             $em = $this->getEntityManager();
             $em->flush();
-
-            return $this->redirect($this->generateUrl($this->getRoute('show'), ['id' => $id]));
         }
 
-        return [
-            'entity' => $entity,
-            'form' => $editForm->createView(),
-        ];
+        return $this->makeUpdateResponse($form, $entity);
     }
     /**
      * Deletes a entity.
