@@ -1,8 +1,13 @@
 (function ( $ ) {
     $.fn.initial = function() {
     	var self = this;
+
     	var element = function (selector) {
-    		return self.find(selector);
+            if (self.is('[ng-controller] [ng-controller] *')) {
+    		    return self.find(selector + ':not([ng-controller]):not([ng-controller] *)').addBack(selector);
+            } else {
+                return self.find(selector).addBack(selector);
+            }
     	};
 
     	element('[data-href]').linkify();
