@@ -10,9 +10,9 @@ class GravatarExtension extends Twig_Extension
 {
     public function getFunctions()
     {
-        return array(
-            new Twig_SimpleFunction('gravatar', array($this, 'gravatarHash'))
-        );
+        return [
+            new Twig_SimpleFunction('gravatar', [$this, 'gravatarHash'])
+        ];
     }
 
     public function getName()

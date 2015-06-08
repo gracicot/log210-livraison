@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Log210\LivraisonBundle\Entity\Plat;
+use Log210\LivraisonBundle\Entity\Menu;
 use Log210\LivraisonBundle\Form\PlatType;
 
 /**
@@ -65,13 +66,20 @@ class PlatController extends Controller
     /**
      * Displays a form to create a new Plat entity.
      *
-     * @Route("/new", name="plat_new")
+     * @Route("new/{menu}", name="plat_new")
      * @Method("GET")
-     * @Template()
+     * @Template("Log210LivraisonBundle:Plat:new.html.twig")
      */
-    public function newAction(Request $request)
+    public function newLierAction(Request $request, Menu $menu)
     {
-        return parent::newAction($request);
+        $entity = $this->getRepository()->makeEntity();
+        $entity->setMenu($menu);
+        $form   = $this->createCreateForm($entity);
+
+        return [
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ];
     }
 
     /**

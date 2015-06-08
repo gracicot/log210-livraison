@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new Log210\CommonBundle\Log210CommonBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Log210\APIBundle\Log210APIBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

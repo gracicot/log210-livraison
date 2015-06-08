@@ -1,3 +1,5 @@
+@import "variables.less";
+
 .transition-add(...) {
 	-webkit-transition+: @arguments;
 	-moz-transition+: @arguments;
@@ -17,12 +19,6 @@
 	-o-transition: @arguments;
 	transition: @arguments;
 }
-
-@frame: 1s / 30;
-
-@transition-duration-fast: @frame * 2;
-@transition-duration-default: @frame * 4;
-@transition-duration-slow: @frame * 6;
 
 .animate-fast(@property1: all, @property2: X, @properties...) {
 	@value: ~`"@{arguments}".replace(/[\[]|\,\sX/g, '')`;

@@ -10,9 +10,9 @@ class ReflectionExtension extends Twig_Extension
 {
     public function getFunctions()
     {
-        return array(
-            new Twig_SimpleFunction('class', array($this, 'classShortName'))
-        );
+        return [
+            new Twig_SimpleFunction('class', [$this, 'classShortName'])
+        ];
     }
 
     public function getName()

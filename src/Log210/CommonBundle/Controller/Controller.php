@@ -3,6 +3,7 @@
 namespace Log210\CommonBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use InvalidArgumentException;
 
@@ -78,7 +79,7 @@ abstract class Controller extends BaseController
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm($entity)
+    protected function createCreateForm($entity)
     {
         $form = $this->createForm($this->getForm(), $entity, [
             'action' => $this->generateUrl($this->getRoute('create')),
@@ -146,7 +147,7 @@ abstract class Controller extends BaseController
     /**
     * Creates a form to edit a entity.
     */
-    private function createEditForm($entity)
+    protected function createEditForm($entity)
     {
         $form = $this->createForm($this->getForm(), $entity, [
             'action' => $this->generateUrl($this->getRoute('update'), ['id' => $entity->getId()]),
@@ -184,6 +185,20 @@ abstract class Controller extends BaseController
             'form' => $editForm->createView(),
         ];
     }
+    
+    /**
+     * Deletes a entity.
+     */
+    public function deleteFormAction(Request $request, $id)
+    {
+        $form = $this->createDeleteForm($id);
+
+        return [
+            'title' => 'delete',
+            'form' => $form->createView()
+        ];
+    }
+
     /**
      * Deletes a entity.
      */
@@ -210,7 +225,7 @@ abstract class Controller extends BaseController
     /**
      * Creates a form to delete a entity by id.
      */
-    private function createDeleteForm($id)
+    protected function createDeleteForm($id)
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl($this->getRoute('delete'), ['id' => $id]))

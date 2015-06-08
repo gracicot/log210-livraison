@@ -1,6 +1,5 @@
 {% block show %}
 	<div class="show">
-		<div class="show-action">{% block actions %}{% endblock %}</div>
 		<h1 class="show-title">{{ entity }}</h1>
 		<div class="row">
 			<div class="col-md-6">
@@ -10,5 +9,6 @@
 				{{ block('side') }}
 			</div>
 		</div>
+        <div class="show-action">{% block actions %}{% endblock %}</div>
 	</div>
 {% endblock %}

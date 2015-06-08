@@ -16,6 +16,8 @@
         {% stylesheets '%kernel.root_dir%/Resources/public/less/*' %}
             <link href="{{ asset_url }}" rel="stylesheet" media="screen">
         {% endstylesheets %}
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
     </head>
     <body>
         <div id="document-wrapper">
@@ -53,10 +55,13 @@
             </div>
             <div id="page-body">
                 <div class="container container-tall">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {% block body %}{% endblock %}
+                    <div class="loading-container">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                {% block body %}{% endblock %}
+                            </div>
                         </div>
+                        <div id="loading-page" class="loading-box"><div class="loading loading-large"></div></div>
                     </div>
                 </div>
             </div>
@@ -67,6 +72,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="off-page">
+            
+        </div>
         <script src="{{ asset('js/bootstrap.js') }}"></script>
     </body>
 </html>

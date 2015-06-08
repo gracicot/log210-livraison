@@ -23,7 +23,8 @@
         "twbs/bootstrap": "^3.3",
         "braincrafted/bootstrap-bundle": "^2.1",
         "components/jquery": "^2.1",
-        "friendsofsymfony/user-bundle": "^1.3"
+        "friendsofsymfony/user-bundle": "^1.3",
+        "friendsofsymfony/jsrouting-bundle": "^1.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

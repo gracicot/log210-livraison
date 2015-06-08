@@ -20,6 +20,7 @@ class RestaurantController extends Controller
     protected function getRoutes()
     {
         return [
+            'index' => 'restaurant',
             'show' => 'restaurant_show',
             'new' => 'restaurant_new',
             'update' => 'restaurant_update',
@@ -80,7 +81,7 @@ class RestaurantController extends Controller
     /**
      * Finds and displays a Restaurant entity.
      *
-     * @Route("/{id}", name="restaurant_show")
+     * @Route("/{id}", name="restaurant_show", options={"expose"=true})
      * @Method("GET")
      * @Template("Log210LivraisonBundle:Restaurant:show.html.twig")
      */
@@ -92,7 +93,7 @@ class RestaurantController extends Controller
     /**
      * Displays a form to edit an existing Restaurant entity.
      *
-     * @Route("/{id}/edit", name="restaurant_edit")
+     * @Route("/{id}/edit", name="restaurant_edit", options={"expose"=true})
      * @Method("GET")
      * @Template("Log210LivraisonBundle:Restaurant:edit.html.twig")
      */
@@ -136,24 +137,16 @@ class RestaurantController extends Controller
         return parent::deleteAction($request, $id);
     }
 
+
     /**
      * Deletes a Restaurant entity.
      *
-     * @Route("/unsafe/{id}", name="restaurant_unsafe_delete")
+     * @Route("/delete/{id}", name="restaurant_delete_form", options={"expose"=true})
      * @Method("GET")
+     * @Template("Log210CommonBundle::modalForm.html.twig")
      */
-    public function unsafeDeleteAction(Request $request, $id)
+    public function deleteFormAction(Request $request, $id)
     {
-        $entity = $this->getRepository()->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Restaurant entity.');
-        }
-
-        $em = $this->getEntityManager();
-        $em->remove($entity);
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('restaurant'));
+        return parent::deleteFormAction($request, $id);
     }
 }
