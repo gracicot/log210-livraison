@@ -17,8 +17,8 @@ class PlatType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('prix')
-            ->add('menu')
+            ->add('prix','money',array('precision'=>2,))
+            ->add('menu','reference',array('type'=>'Log210LivraisonBundle:menu'))
         ;
     }
     

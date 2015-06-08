@@ -28,6 +28,13 @@
         title="{{ 'edit'|trans|capitalize }}"
         href="{{ path('restaurant_edit', { 'id': entity.id }) }}">
     </a>
+    <a
+            class="btn btn-warning glyphicon glyphicon-plus"
+            data-toggle="tooltip"
+            data-placement="bottom"
+            title="{{ 'Ajouter menu'|trans|capitalize }}"
+            href="{{ path('menu_new') }}">
+    </a>
 {% endblock %}
 
 {% block content block('show') %}

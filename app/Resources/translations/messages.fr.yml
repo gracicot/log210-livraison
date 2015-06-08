@@ -1,23 +1,65 @@
-name: nom
+#a
 address: adresse
+action: actions
+#b
+back: retour
+#c
+createrestaurateur: Créer un nouveau restaurateur
+#d
+dashboard: tableau de bord
+delete: supprimer
+description: description
+#e
+edit: modifier
+#f
+
+#g
+
+#h
+
+#j
+
+#k
+
+#l
+list: liste
+#m
+
+#n
+name: nom
+new: nouveau
+newRestaurant: Créer un nouveau restaurant
+#o
+
+#p
 phone: téléphone
+#q
+
+#r
 restaurateur: restaurateur
 restaurant: restaurant
+remember_me: se souvenir
+#s
 save: enregistrer
-back: retour
-dashboard: tableau de bord
-edit: modifier
-list: liste
-new: nouveau
-delete: supprimer
-username: Utilisateur
-password: Mot de passe
 signout: Déconnexion
 signin: Connexion
 signup: S'inscrire
 submit: Connexion
+delete: supprimer
 security:
     login:
         password: Mot de passe
         username: Utilisateur
-remember_me: se souvenir
+#t
+
+#u
+
+#v
+
+#w
+
+#x
+
+#y
+
+#z

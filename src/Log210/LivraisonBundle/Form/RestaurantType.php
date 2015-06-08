@@ -19,8 +19,7 @@ class RestaurantType extends AbstractType
             ->add('description')
             ->add('address')
             ->add('phone')
-            ->add('restaurateur')
-        ;
+            ->add('restaurateur',null,array('attr' => array('class'=>'selectRestaurateur')));
     }
     
     /**

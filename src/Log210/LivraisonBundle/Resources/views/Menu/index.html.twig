@@ -17,14 +17,15 @@
                 <td><a href="{{ path('menu_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.name }}</td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('menu_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('menu_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+                <td>
+                    <a class="glyphicon glyphicon-cd" href="{{ path('menu_show', { 'id': entity.id }) }}" rel="tooltip" title="Afficher"></a>
+                    <a class="glyphicon glyphicon-edit" href="{{ path('menu_edit', { 'id': entity.id }) }}" rel="tooltip" title="'edit'|trans|capitalize"></a>
+                    <a class="glyphicon glyphicon-remove"
+                       href="{{ path('menu_unsafe_delete', { 'id': entity.id }) }}"
+                       onclick="return confirm('Voulez-vous vraiment supprimer ce restaurant?')"
+                       rel="tooltip"
+                       title="'delete'|trans|capitalize">
+                    </a>
                 </td>
             </tr>
         {% endfor %}
