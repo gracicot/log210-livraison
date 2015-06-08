@@ -2,14 +2,15 @@
 /**
  * Created by PhpStorm.
  * User: tomasz
- * Date: 15-05-27
- * Time: 4:21 PM
+ * Date: 15-06-08
+ * Time: 7:13 PM
  */
 
 namespace Log210\APIBundle\Message\Response;
 
 
-class RestaurateurResponse {
+class PlatResponse {
+
     /**
      * @var int $id
      */
@@ -24,6 +25,13 @@ class RestaurateurResponse {
      * @var string $description
      */
     private $description;
+
+
+    /**
+     * @var float $prix
+     */
+    private $prix;
+
 
     /**
      * @var array $links
@@ -76,6 +84,22 @@ class RestaurateurResponse {
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrix()
+    {
+        return $this->prix;
+    }
+
+    /**
+     * @param float $prix
+     */
+    public function setPrix($prix)
+    {
+        $this->prix = $prix;
     }
 
     /**

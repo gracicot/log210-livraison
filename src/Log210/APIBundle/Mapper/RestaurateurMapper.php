@@ -10,6 +10,7 @@ namespace Log210\APIBundle\Mapper;
 
 
 use Log210\APIBundle\Message\Request\RestaurateurRequest;
+use Log210\APIBundle\Message\Response\Link;
 use Log210\APIBundle\Message\Response\RestaurateurResponse;
 use Log210\LivraisonBundle\Entity\Restaurateur;
 
@@ -24,9 +25,11 @@ class RestaurateurMapper {
         $restaurateurResponse->setId($restaurateurEntity->getId());
         $restaurateurResponse->setName($restaurateurEntity->getName());
         $restaurateurResponse->setDescription($restaurateurEntity->getDescription());
-        $restaurateurResponse->setRestaurants_href('/api/restaurateurs/' . $restaurateurEntity->getId() .
-            '/restaurants');
-        $restaurateurResponse->setSelf_href('/api/restaurateurs/' . $restaurateurEntity->getId());
+        $links = array();
+        array_push($links, new Link('restaurants', '/api/restaurateurs/' . $restaurateurEntity->getId() .
+            '/restaurants'));
+        array_push($links, new Link('self', '/api/restaurateurs/' . $restaurateurEntity->getId()));
+        $restaurateurResponse->setLinks($links);
         return $restaurateurResponse;
     }
 
@@ -34,7 +37,7 @@ class RestaurateurMapper {
      * @param $restaurateurRequest RestaurateurRequest
      * @return Restaurateur
      */
-    public static function fromRestaurateurRequest(RestaurateurRequest $restaurateurRequest) {
+    public static function toRestaurateur(RestaurateurRequest $restaurateurRequest) {
         $restaurateurEntity = new Restaurateur();
         $restaurateurEntity->setName($restaurateurRequest->getName());
         $restaurateurEntity->setDescription($restaurateurRequest->getDescription());

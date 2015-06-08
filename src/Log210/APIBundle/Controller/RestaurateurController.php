@@ -14,13 +14,35 @@ use Symfony\Component\HttpFoundation\Response;
  * @Symfony\Component\Routing\Annotation\Route("/restaurateurs")
  */
 class RestaurateurController extends BaseController {
+
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("", name="restaurateur_api_create")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("POST")
+     */
+    public function createAction(Request $request) {
+        $restaurateurRequest = $this->fromJson($request->getContent(),
+            'Log210\APIBundle\Message\Request\RestaurateurRequest');
+
+        $restaurateurEntity = RestaurateurMapper::toRestaurateur($restaurateurRequest);
+        $this->getEntityManager()->persist($restaurateurEntity);
+        $this->getEntityManager()->flush();
+
+        $response = new Response('', Response::HTTP_CREATED);
+        $response->headers->set('Location', $this->generateUrl('restaurateur_api_get', array('id' => $restaurateurEntity
+            ->getId()), true));
+        return $response;
+    }
+
     /**
      * @return Response
      *
-     * @Symfony\Component\Routing\Annotation\Route("", name="restaurateur_api_get_restaurateurs")
+     * @Symfony\Component\Routing\Annotation\Route("", name="restaurateur_api_get_all")
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
      */
-    public function getRestaurateursAction() {
+    public function getAllAction() {
         $restaurateursEntities = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurateur')
             ->findAll();
 
@@ -32,13 +54,13 @@ class RestaurateurController extends BaseController {
     }
 
     /**
-     * @param $id int
+     * @param int $id
      * @return Response
      *
-     * @Symfony\Component\Routing\Annotation\Route("/{id}", name="restaurateur_api_get_restaurateur")
+     * @Symfony\Component\Routing\Annotation\Route("/{id}", name="restaurateur_api_get")
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
      */
-    public function getRestaurateurAction($id) {
+    public function getAction($id) {
         $restaurateurEntity = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
 
         if (is_null($restaurateurEntity))
@@ -49,40 +71,21 @@ class RestaurateurController extends BaseController {
     }
 
     /**
-     * @param $request Request
+     * @param int $id
+     * @param Request $request
      * @return Response
      *
-     * @Symfony\Component\Routing\Annotation\Route("", name="restaurateur_api_create_restaurateur")
-     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("POST")
-     */
-    public function createRestaurateurAction(Request $request) {
-        $restaurateurRequest = $this->fromJson($request->getContent(), 'Log210\APIBundle\Message\Request\RestaurateurRequest');
-
-        $restaurateurEntity = RestaurateurMapper::fromRestaurateurRequest($restaurateurRequest);
-        $this->getEntityManager()->persist($restaurateurEntity);
-        $this->getEntityManager()->flush();
-
-        $response = new Response('', Response::HTTP_CREATED);
-        $response->headers->set('Location', $this->generateUrl('restaurateur_api_get_restaurateur', array(
-            'id' => $restaurateurEntity->getId()), true));
-        return $response;
-    }
-
-    /**
-     * @param $id int
-     * @param $request Request
-     * @return Response
-     *
-     * @Symfony\Component\Routing\Annotation\Route("/{id}", name="restaurateur_api_update_restaurateur")
+     * @Symfony\Component\Routing\Annotation\Route("/{id}", name="restaurateur_api_update")
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("PUT")
      */
-    public function updateRestaurateurAction($id, Request $request) {
+    public function updateAction($id, Request $request) {
         $restaurateurEntity = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
 
         if (is_null($restaurateurEntity))
             return new Response('', Response::HTTP_NOT_FOUND);
 
-        $restaurateurRequest = $this->fromJson($request->getContent(), 'Log210\APIBundle\Message\Request\RestaurateurRequest');
+        $restaurateurRequest = $this->fromJson($request->getContent(),
+            'Log210\APIBundle\Message\Request\RestaurateurRequest');
 
         $restaurateurEntity->setName($restaurateurRequest->getName());
         $restaurateurEntity->setDescription($restaurateurRequest->getDescription());
@@ -93,13 +96,13 @@ class RestaurateurController extends BaseController {
     }
 
     /**
-     * @param $id int
+     * @param int $id
      * @return Response
      *
-     * @Symfony\Component\Routing\Annotation\Route("/{id}", name="restaurateur_api_delete_restaurateur")
+     * @Symfony\Component\Routing\Annotation\Route("/{id}", name="restaurateur_api_delete")
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("DELETE")
      */
-    public function deleteRestaurateurAction($id) {
+    public function deleteAction($id) {
         $restaurateurEntity = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
 
         if (is_null($restaurateurEntity))
@@ -119,10 +122,10 @@ class RestaurateurController extends BaseController {
      * @param $id int
      * @return Response
      *
-     * @Symfony\Component\Routing\Annotation\Route("/{id}/restaurants", name="restaurateur_api_get_restaurateur_restaurants")
+     * @Symfony\Component\Routing\Annotation\Route("/{id}/restaurants", name="restaurateur_api_get_all_restaurants")
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
      */
-    public function getRestaurateurRestaurantsAction($id) {
+    public function getAllRestaurantsAction($id) {
         $restaurateurEntity = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
 
         if (is_null($restaurateurEntity))

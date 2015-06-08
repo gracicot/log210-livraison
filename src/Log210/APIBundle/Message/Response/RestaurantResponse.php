@@ -29,14 +29,9 @@ class RestaurantResponse {
     private $phone;
 
     /**
-     * @var string $restaurateur_href
+     * @var array $links
      */
-    private $restaurateur_href;
-
-    /**
-     * @var string $self_href
-     */
-    private $self_href;
+    private $links;
 
     /**
      * @return int
@@ -119,34 +114,18 @@ class RestaurantResponse {
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getRestaurateur_href()
+    public function getLinks()
     {
-        return $this->restaurateur_href;
+        return $this->links;
     }
 
     /**
-     * @param string $restaurateur_href
+     * @param array $links
      */
-    public function setRestaurateur_href($restaurateur_href)
+    public function setLinks($links)
     {
-        $this->restaurateur_href = $restaurateur_href;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSelf_href()
-    {
-        return $this->self_href;
-    }
-
-    /**
-     * @param string $self_href
-     */
-    public function setSelf_href($self_href)
-    {
-        $this->self_href = $self_href;
+        $this->links = $links;
     }
 }

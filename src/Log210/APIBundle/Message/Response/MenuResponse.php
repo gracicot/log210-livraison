@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tomasz
- * Date: 15-05-27
- * Time: 4:21 PM
- */
 
 namespace Log210\APIBundle\Message\Response;
 
+class MenuResponse {
 
-class RestaurateurResponse {
     /**
      * @var int $id
      */
@@ -19,11 +13,6 @@ class RestaurateurResponse {
      * @var string $name
      */
     private $name;
-
-    /**
-     * @var string $description
-     */
-    private $description;
 
     /**
      * @var array $links
@@ -60,22 +49,6 @@ class RestaurateurResponse {
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
     }
 
     /**
