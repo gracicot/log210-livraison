@@ -70,34 +70,16 @@ class PlatController extends Controller
      * @Method("GET")
      * @Template("Log210LivraisonBundle:Plat:new.html.twig")
      */
-    public function newLierAction(Request $request,Menu $menu)
+    public function newLierAction(Request $request, Menu $menu)
     {
         $entity = $this->getRepository()->makeEntity();
-        $form   = $this->createCreateForm($entity);
         $entity->setMenu($menu);
+        $form   = $this->createCreateForm($entity);
+
         return [
             'entity' => $entity,
             'form'   => $form->createView(),
         ];
-    }
-
-    /**
-     * Creates a form to create a  entity.
-     *
-     * @param $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateForm($entity)
-    {
-        $form = $this->createForm($this->getForm(), $entity, [
-            'action' => $this->generateUrl($this->getRoute('create')),
-            'method' => 'POST',
-        ]);
-
-        $form->add('submit', 'submit', ['label' => 'Create']);
-
-        return $form;
     }
 
     /**
