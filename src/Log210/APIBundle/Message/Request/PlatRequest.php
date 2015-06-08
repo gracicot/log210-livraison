@@ -2,18 +2,14 @@
 /**
  * Created by PhpStorm.
  * User: tomasz
- * Date: 15-05-27
- * Time: 4:21 PM
+ * Date: 15-06-08
+ * Time: 6:59 PM
  */
 
-namespace Log210\APIBundle\Message\Response;
+namespace Log210\APIBundle\Message\Request;
 
 
-class RestaurateurResponse {
-    /**
-     * @var int $id
-     */
-    private $id;
+class PlatRequest {
 
     /**
      * @var string $name
@@ -26,25 +22,9 @@ class RestaurateurResponse {
     private $description;
 
     /**
-     * @var array $links
+     * @var float $prix
      */
-    private $links;
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
+    private $prix;
 
     /**
      * @return string
@@ -79,18 +59,18 @@ class RestaurateurResponse {
     }
 
     /**
-     * @return array
+     * @return float
      */
-    public function getLinks()
+    public function getPrix()
     {
-        return $this->links;
+        return $this->prix;
     }
 
     /**
-     * @param array $links
+     * @param float $prix
      */
-    public function setLinks($links)
+    public function setPrix($prix)
     {
-        $this->links = $links;
+        $this->prix = $prix;
     }
 }
