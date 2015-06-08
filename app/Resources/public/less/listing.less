@@ -1,0 +1,70 @@
+@import "utility.less";
+
+.card {
+	overflow: hidden;
+	position: relative;
+	background-color: @card-color;
+	padding: 1em;
+	border: thin solid darken(@card-color, 4%);
+
+	.card-action {
+		z-index: 2;
+		display: flex;
+		flex-direction: column;
+		position: absolute;
+		visibility: hidden;
+		opacity: 0;
+		background-color: rgba(255, 255, 255, 0.7);
+
+		&.card-action-right {
+	    	.transition(
+	    		visibility 0s @transition-duration-fast,
+	    		opacity @transition-duration-fast ease-out,
+	    		right @transition-duration-fast ease-out;
+	    	);
+
+			top: -1px;
+			bottom: -1px;
+			right: -1em;
+			border-left: thin solid #fff;
+		}
+	}
+
+
+
+	&:hover .card-action {
+		&.card-action-right {
+			visibility: visible;
+			opacity: 1;
+			right: -1px;
+			.transition(all @transition-duration-slow ease-out;);
+		}
+	}
+
+	&.card-restaurant {
+		height: 200px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+}
+
+.card-restaurant-button {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	align-content: space-around;
+	.card-icon {
+		display: block;
+		font-size: 4em;
+	}
+	.card-label {
+		font-size: 1.5em;
+	}
+	height: 200px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	color: lighten(#5BC0DE, 15%);
+	&:hover, &.hover {
+		color: lighten(#5BC0DE, 20%);
+	}
+}

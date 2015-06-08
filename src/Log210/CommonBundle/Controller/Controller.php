@@ -3,6 +3,7 @@
 namespace Log210\CommonBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use InvalidArgumentException;
 
@@ -23,30 +24,6 @@ abstract class Controller extends BaseController
             return $routes[$route];
         } else {
             throw new InvalidArgumentException('Error: No route named ' . $route . ' is provided by getRoute().');
-        }
-    }
-
-    protected function makeUpdateResponse($form, $entity)
-    {
-        if ($form->isValid()) {
-            return $this->redirect($this->generateUrl($this->getRoute('show'), ['id' => $entity->getId()]));
-        } else {
-            return [
-                'entity' => $entity,
-                'form' => $entity->createView(),
-            ];
-        }
-    }
-
-    protected function makeCreateResponse($form, $entity)
-    {
-        if ($form->isValid()) {
-            return $this->redirect($this->generateUrl($this->getRoute('show'), ['id' => $entity->getId()]));
-        } else {
-            return [
-                'entity' => $entity,
-                'form'   => $form->createView(),
-            ];
         }
     }
 
@@ -76,6 +53,7 @@ abstract class Controller extends BaseController
      */
     public function createAction(Request $request)
     {
+        $service = $this->getRepository();
         $entity = $this->getRepository()->makeEntity();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -84,9 +62,14 @@ abstract class Controller extends BaseController
             $em = $this->getEntityManager();
             $em->persist($entity);
             $em->flush();
+
+            return $this->redirect($this->generateUrl($this->getRoute('show'), ['id' => $entity->getId()]));
         }
 
-        return $this->makeCreateResponse($form, $entity);
+        return [
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ];
     }
 
     /**
@@ -96,7 +79,7 @@ abstract class Controller extends BaseController
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm($entity)
+    protected function createCreateForm($entity)
     {
         $form = $this->createForm($this->getForm(), $entity, [
             'action' => $this->generateUrl($this->getRoute('create')),
@@ -164,7 +147,7 @@ abstract class Controller extends BaseController
     /**
     * Creates a form to edit a entity.
     */
-    private function createEditForm($entity)
+    protected function createEditForm($entity)
     {
         $form = $this->createForm($this->getForm(), $entity, [
             'action' => $this->generateUrl($this->getRoute('update'), ['id' => $entity->getId()]),
@@ -186,16 +169,36 @@ abstract class Controller extends BaseController
             throw $this->createNotFoundException('Unable to find entity.');
         }
 
-        $form = $this->createEditForm($entity);
-        $form->handleRequest($request);
+        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm($entity);
+        $editForm->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($editForm->isValid()) {
             $em = $this->getEntityManager();
             $em->flush();
+
+            return $this->redirect($this->generateUrl($this->getRoute('show'), ['id' => $id]));
         }
 
-        return $this->makeUpdateResponse($form, $entity);
+        return [
+            'entity' => $entity,
+            'form' => $editForm->createView(),
+        ];
     }
+    
+    /**
+     * Deletes a entity.
+     */
+    public function deleteFormAction(Request $request, $id)
+    {
+        $form = $this->createDeleteForm($id);
+
+        return [
+            'title' => 'delete',
+            'form' => $form->createView()
+        ];
+    }
+
     /**
      * Deletes a entity.
      */
@@ -222,7 +225,7 @@ abstract class Controller extends BaseController
     /**
      * Creates a form to delete a entity by id.
      */
-    private function createDeleteForm($id)
+    protected function createDeleteForm($id)
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl($this->getRoute('delete'), ['id' => $id]))

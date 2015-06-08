@@ -12,4 +12,9 @@ a.linkify-link {
 	* {
 		cursor: pointer;
 	}
+
+	a:not([data-href] a.linkify-link) {
+		position: relative;
+		z-index: 2;
+	}
 }

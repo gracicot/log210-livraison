@@ -1,51 +1,153 @@
 {% extends 'Log210LivraisonBundle:Restaurant:layout.html.twig' %}
 
 {% block content %}
-    <h1>Liste des Restaurants</h1>
-    
-    <div class="container">
-  <table class="table table-hover">
-    <thead>
-      <tr>
 
-        <th>'name'|trans|capitalize</th>
-        <th>'description'|trans|capitalize</th>
-        <th>'adresse'|trans|capitalize</th>
-        <th>'restaurateur'|trans|capitalize</th>
-        <th>'action'|trans|capitalize</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for entity in entities %}
-          <tr>
-                <td>
-                    <a href="{{ path('restaurant_show', { 'id': entity.id }) }}">{{ entity.name }}</a>
-                </td>
-                <td>{{ entity.description }}</td>
-                <td>{{ entity.address }}</td>
-                <td>{{ entity.restaurateur }}</td>
-                <td>
-                    <a class="glyphicon glyphicon-cd" href="{{ path('restaurant_show', { 'id': entity.id }) }}" rel="tooltip" title="Afficher"></a>
-                    <a class="glyphicon glyphicon-edit" href="{{ path('restaurant_edit', { 'id': entity.id }) }}" rel="tooltip" title="'edit'|trans|capitalize"></a>
-                    <a class="glyphicon glyphicon-remove"
-                        href="{{ path('restaurant_unsafe_delete', { 'id': entity.id }) }}"
-                        onclick="return confirm('Voulez-vous vraiment supprimer ce restaurant?')"
-                        rel="tooltip"
-                        title="'delete'|trans|capitalize">
+<!--
+    <th>{{ 'name'|trans|capitalize }}</th>
+    <th>{{ 'description'|trans|capitalize }}</th>
+    <th>{{ 'adresse'|trans|capitalize }}</th>
+    <th>{{ 'restaurateur'|trans|capitalize }}</th>
+    <th>{{ 'action'|trans|capitalize }}</th>
+-->
+    <h1>Liste des Restaurants</h1>
+    <div id="listingApp">
+        <div ng-controller="listingController">
+            <div class="row">
+                <div ng-repeat="entity in data">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                        <div class="card card-restaurant" data-href="{{ ngPath('restaurant_show', { 'id': 'entity.id' }) }}" initial>
+                            <h4>{{ 'entity.name'|ngExpr }}</h4>
+                            <h5>{{ 'description'|trans|capitalize }}:</h5>
+                            {{ 'entity.description'|ngExpr }}
+                            <h5>{{ 'address'|trans|capitalize }}:</h5>
+                            {{ 'entity.address'|ngExpr }}
+                            <div class="card-action card-action-right">
+                                <a 
+                                    class="btn btn-info glyphicon glyphicon-search"
+                                    data-toggle="tooltip"
+                                    data-placement="left"
+                                    title="{{ 'show'|trans|capitalize }}"
+                                    href="{{ ngPath('restaurant_show', { 'id': 'entity.id' }) }}">
+                                </a>
+                                <a 
+                                    class="btn btn-warning glyphicon glyphicon-pencil"
+                                    data-toggle="tooltip"
+                                    data-placement="left"
+                                    title="{{ 'edit'|trans|capitalize }}"
+                                    href="{{ ngPath('restaurant_edit', { 'id': 'entity.id' }) }}">
+                                </a>
+                                <a 
+                                    class="btn btn-danger glyphicon glyphicon-trash"
+                                    data-toggle="tooltip"
+                                    data-placement="left"
+                                    title="{{ 'delete'|trans|capitalize }}"
+                                    ng-click="delete(entity.id)">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                    <a class="btn btn-info card-restaurant-button" href="{{ path('restaurant_new') }}">
+                        <span class="card-icon glyphicon glyphicon-plus"></span>
+                        <span class="card-label">{{ 'newRestaurant'|trans }}</span>
                     </a>
-                </td>
-          </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-        <ul>
-        <li>
-            <a href="{{ path('restaurant_new') }}">
-                'newRestaurant'|trans
-            </a>
-        </li>
-    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        angular.module('listingApp', [function ($httpProvider) {
+            $httpProvider.defaults.transformRequest = function(data) {
+                $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+                return angular.isObject(data) && String(data) !== '[object File]' ? $.param(data) : data;
+            };
+        }])
+        .directive('initial', function($timeout) {
+            return {
+                restrict: 'A',
+                link: function link(scope, element, attrs) {
+                    $timeout(function () {
+                        $(element).initial();
+                    });
+                }
+            };
+        })
+        .controller('listingController', function($scope, $http, $compile) {
+            $scope.data = [];
+            $scope.Routing = Routing;
+
+            $scope.makeFetch  = function (url, success, error) {
+                return function () {
+                    $scope.loading++;
+                    $http.get(url).success(function (data) {
+                        $scope.loading--;
+                        if (success != null) {
+                            success(data);
+                        }
+                    }).error(function (data) {
+                        $scope.loading--;
+                        if (error != null) {
+                            error(data);
+                        }
+                    });
+                }
+            };
+
+            $scope.makePostModal = function (success, error) {
+                return function () {
+                    $('#listingApp-modal .modal').modal('hide');
+                    var form = $('#listingApp-modal form');
+                    $scope.loading++;
+
+                    $http.post(form.attr('action'), form.serializeObject()).success(function (data) {
+                        $scope.loading--;
+                        if (success != null) {
+                            success(data);
+                        }
+                    }).error(function (data) {
+                        $scope.loading--;
+                        if (error != null) {
+                            error(data);
+                        }
+                    });
+                };
+            };
+
+            $scope.makeModal = function (url, postModal) {
+                return function () {
+                    $http.get(url).success(function (data) {
+                        $('#listingApp-modal').html(data);
+                        $compile($('#listingApp-modal').get(0))($scope);
+                        $('#listingApp-modal form').submit(function (event) {
+                            event.preventDefault();
+                            postModal($(this));
+                        });
+                        $('#listingApp-modal .modal').modal('show');
+                    });
+                }
+            };
+
+            $scope.fetchSuccess = function (data) {
+                $scope.data = data;
+            };
+
+            $scope.delete = function (id) {
+                $scope.makeModal(Routing.generate('restaurant_delete_form', { 'id': id }), $scope.postModal)();
+            };
+
+            $scope.init = function () {
+                $(document).ready(function () {
+                    $('#off-page').append('<div id="listingApp-modal"></div>');
+                });
+                $scope.fetch = $scope.makeFetch('{{ path('restaurant_api_get_restaurants') }}', $scope.fetchSuccess);
+                $scope.postModal = $scope.makePostModal($scope.fetch);
+                $scope.fetch();
+            };
+            $scope.init();
+        });
+            angular.bootstrap($('#listingApp').get(0), ['listingApp']);
+    </script>
     {% endblock %}
 
 {% block breadcrumbs %}
