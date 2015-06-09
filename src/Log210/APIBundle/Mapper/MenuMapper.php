@@ -30,11 +30,9 @@ class MenuMapper {
         $menuResponse->setId($menuEntity->getId());
         $menuResponse->setName($menuEntity->getName());
         $links = array();
-        array_push($links, new Link('restaurant', '/api/restaurants/' . $menuEntity->getRestaurant()->getId()));
-        array_push($links, new Link('plats', '/api/restaurants/' . $menuEntity->getRestaurant()->getId() . '/menus/' .
-            $menuEntity->getId() . '/plats'));
-        array_push($links, new Link('self', 'api/restaurants/' . $menuEntity->getRestaurant()->getId() . "/menus/" .
-            $menuEntity->getId()));
+        array_push($links, new Link('plats', '/api/menus/' . $menuEntity->getId() . '/plats'));
+        array_push($links, new Link('restaurant', '/api/menus/' . $menuEntity->getId() . '/restaurant'));
+        array_push($links, new Link('self', '/api/menus/' . $menuEntity->getId()));
         $menuResponse->setLinks($links);
         return $menuResponse;
     }
