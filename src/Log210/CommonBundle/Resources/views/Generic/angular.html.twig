@@ -1,0 +1,90 @@
+module = function () {
+	var module = angular.module('{{ module }}App', [function ($httpProvider) {
+	    $httpProvider.defaults.transformRequest = function(data) {
+	        $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+	        return angular.isObject(data) && String(data) !== '[object File]' ? $.param(data) : data;
+	    };
+	}]).directive('initial', function($timeout) {
+	    return {
+	        restrict: 'A',
+	        link: function link(scope, element, attrs) {
+	            $timeout(function () {
+	                $(element).initial();
+	            });
+	        }
+	    };
+	})
+	.controller('{{ module }}Controller', function($scope, $http, $compile) {
+	    $scope.Routing = Routing;
+ 		$scope.loading = 0;
+ 		
+	    $scope.makeFetch  = function (url, success, error) {
+	        return function () {
+	            $scope.loading++;
+	            $http.get(url).success(function (data) {
+	                $scope.loading--;
+	                if (success != null) {
+	                    success(data);
+	                }
+	            }).error(function (data) {
+	                $scope.loading--;
+	                if (error != null) {
+	                    error(data);
+	                }
+	            });
+	        }
+	    };
+
+	    $scope.makePostModal = function (success, error) {
+	        return function () {
+	            $('#{{ module }}App-modal .modal').modal('hide');
+	            var form = $('#{{ module }}App-modal form');
+	            $scope.loading++;
+
+	            $http.post(form.attr('action'), form.serializeObject()).success(function (data) {
+	                $scope.loading--;
+	                if (success != null) {
+	                    success(data);
+	                }
+	            }).error(function (data) {
+	                $scope.loading--;
+	                if (error != null) {
+	                    error(data);
+	                }
+	            });
+	        };
+	    };
+
+	    $scope.makeModal = function (url, postModal) {
+	        return function () {
+	            $http.get(url).success(function (data) {
+	                $('#{{ module }}App-modal').html(data);
+	                $compile($('#{{ module }}App-modal').get(0))($scope);
+	                $('#{{ module }}App-modal form').submit(function (event) {
+	                    event.preventDefault();
+	                    postModal($(this));
+	                });
+	                $('#{{ module }}App-modal .modal').modal('show');
+	            });
+	        }
+	    };
+
+	    $scope.init = function () {
+	        $(document).ready(function () {
+	            $('#off-page').append('<div id="{{ module }}App-modal"></div>');
+	        });
+	        $scope.fetch = $scope.makeFetch('{{ fetch }}', $scope.fetchSuccess);
+	        $scope.postModal = $scope.makePostModal($scope.fetch);
+	        $scope.fetch();
+	    };
+
+	    {% block controller %}
+	    	
+	    {% endblock %}
+
+	    $scope.init();
+	});
+    angular.bootstrap($('#{{ module }}App').get(0), ['{{ module }}App']);
+
+    return module;
+}();

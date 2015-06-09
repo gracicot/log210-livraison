@@ -11,6 +11,13 @@
     <li>{{ entity }}</li>
 {% endblock %}
 
+{% block side %}
+    plat_new_modal
+
+    {#{% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'listing', fetch: path('restaurant_api_get_all') } only %}#}
+    
+{% endblock %}
+
 {% block fields %}
     {{ show.text(entity, 'name') }}
     {{ show.relation(entity, 'restaurant') }}

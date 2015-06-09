@@ -66,20 +66,46 @@ class PlatController extends Controller
     /**
      * Displays a form to create a new Plat entity.
      *
-     * @Route("new/{menu}", name="plat_new")
+     * @Route("/new", name="plat_new")
      * @Method("GET")
      * @Template("Log210LivraisonBundle:Plat:new.html.twig")
      */
-    public function newLierAction(Request $request, Menu $menu)
+    public function newAction(Request $request)
+    {
+        return parent::newAction($request);
+    }
+
+    /**
+     * Displays a form to create a new Plat entity.
+     *
+     * @Route("/new_modal/{menu}", name="plat_new_modal")
+     * @Method("GET")
+     * @Template("Log210CommonBundle::modalForm.html.twig")
+     */
+    public function newModalAction(Request $request, Menu $menu)
     {
         $entity = $this->getRepository()->makeEntity();
         $entity->setMenu($menu);
-        $form   = $this->createCreateForm($entity);
+
+        $form = $this->createCreateForm($entity);
 
         return [
-            'entity' => $entity,
+            'title' => 'create',
             'form'   => $form->createView(),
         ];
+    }
+
+
+    /**
+     * Displays a form to create a new Plat entity.
+     *
+     * @Route("/new_modal", name="plat_new_modal")
+     * @Method("GET")
+     * @Template("Log210CommonBundle::modalForm.html.twig")
+     */
+    public function fetchPlat(Request $request, Menu $menu)
+    {
+
     }
 
     /**
