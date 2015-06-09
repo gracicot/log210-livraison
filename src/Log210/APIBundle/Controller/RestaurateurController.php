@@ -4,7 +4,9 @@ namespace Log210\APIBundle\Controller;
 
 use Log210\APIBundle\Mapper\RestaurantMapper;
 use Log210\APIBundle\Mapper\RestaurateurMapper;
+use Log210\APIBundle\Message\Request\RestaurateurRequest;
 use Log210\CommonBundle\Controller\BaseController;
+use Log210\LivraisonBundle\Entity\Restaurateur;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,17 +25,14 @@ class RestaurateurController extends BaseController {
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("POST")
      */
     public function createAction(Request $request) {
-        $restaurateurRequest = $this->fromJson($request->getContent(),
-            'Log210\APIBundle\Message\Request\RestaurateurRequest');
+        $restaurateurRequest = $this->convertRestaurateurRequest($request->getContent());
 
         $restaurateurEntity = RestaurateurMapper::toRestaurateur($restaurateurRequest);
-        $this->getEntityManager()->persist($restaurateurEntity);
-        $this->getEntityManager()->flush();
 
-        $response = new Response('', Response::HTTP_CREATED);
-        $response->headers->set('Location', $this->generateUrl('restaurateur_api_get', array('id' => $restaurateurEntity
+        $this->persistEntity($restaurateurEntity);
+
+        return $this->createCreatedResponse($this->generateUrl('restaurateur_api_get', array('id' => $restaurateurEntity
             ->getId()), true));
-        return $response;
     }
 
     /**
@@ -61,12 +60,13 @@ class RestaurateurController extends BaseController {
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
      */
     public function getAction($id) {
-        $restaurateurEntity = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
+        $restaurateurEntity = $this->getRestaurateurById($id);
 
         if (is_null($restaurateurEntity))
-            return new Response('', Response::HTTP_NOT_FOUND);
+            return $this->createNotFoundResponse();
 
         $restaurateur = RestaurateurMapper::toRestaurateurResponse($restaurateurEntity);
+
         return $this->jsonResponse(new Response($this->toJson($restaurateur)));
     }
 
@@ -79,20 +79,18 @@ class RestaurateurController extends BaseController {
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("PUT")
      */
     public function updateAction($id, Request $request) {
-        $restaurateurEntity = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
+        $restaurateurEntity = $this->getRestaurateurById($id);
 
         if (is_null($restaurateurEntity))
-            return new Response('', Response::HTTP_NOT_FOUND);
+            return $this->createNotFoundResponse();
 
-        $restaurateurRequest = $this->fromJson($request->getContent(),
-            'Log210\APIBundle\Message\Request\RestaurateurRequest');
+        $restaurateurRequest = $this->convertRestaurateurRequest($request->getContent());
 
-        $restaurateurEntity->setName($restaurateurRequest->getName());
-        $restaurateurEntity->setDescription($restaurateurRequest->getDescription());
+        RestaurateurMapper::toRestaurateur($restaurateurRequest, $restaurateurEntity);
 
         $this->getEntityManager()->flush();
 
-        return new Response('', Response::HTTP_NO_CONTENT);
+        return $this->createNoContentResponse();
     }
 
     /**
@@ -103,19 +101,17 @@ class RestaurateurController extends BaseController {
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("DELETE")
      */
     public function deleteAction($id) {
-        $restaurateurEntity = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
+        $restaurateurEntity = $this->getRestaurateurById($id);
 
         if (is_null($restaurateurEntity))
-            return new Response('', Response::HTTP_NOT_FOUND);
+            return $this->createNotFoundResponse();
 
-        foreach ($restaurateurEntity->getRestaurants() as $restaurantEntity) {
+        foreach ($restaurateurEntity->getRestaurants() as $restaurantEntity)
             $restaurantEntity->setRestaurateur(null);
-        }
 
-        $this->getEntityManager()->remove($restaurateurEntity);
-        $this->getEntityManager()->flush();
+        $this->removeEntity($restaurateurEntity);
 
-        return new Response('', Response::HTTP_NO_CONTENT);
+        return $this->createNoContentResponse();
     }
 
     /**
@@ -126,16 +122,77 @@ class RestaurateurController extends BaseController {
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
      */
     public function getAllRestaurantsAction($id) {
-        $restaurateurEntity = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
+        $restaurateurEntity = $this->getRestaurateurById($id);
 
         if (is_null($restaurateurEntity))
-            return new Response('', Response::HTTP_NOT_FOUND);
+            return $this->createNotFoundResponse();
 
         $restaurantResponses = array();
         foreach ($restaurateurEntity->getRestaurants() as $restaurantEntity)
             array_push($restaurantResponses, RestaurantMapper::toRestaurantResponse($restaurantEntity));
 
-        return new Response($this->toJson($restaurantResponses), Response::HTTP_OK, array(
-            "Content-Type" => "application/json"));
+        return $this->jsonResponse(new Response($this->toJson($restaurantResponses)));
+    }
+
+    /**
+     * @param int $id
+     * @return Restaurateur
+     */
+    private function getRestaurateurById($id)
+    {
+        return $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurateur')->find($id);
+    }
+
+    /**
+     * @param object $entity
+     */
+    private function persistEntity($entity)
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @param object $entity
+     */
+    private function removeEntity($entity)
+    {
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @param string $newResourceLocation
+     * @return Response
+     */
+    private function createCreatedResponse($newResourceLocation)
+    {
+        return new Response('', Response::HTTP_CREATED, array('Location' => $newResourceLocation));
+    }
+
+    /**
+     * @return Response
+     */
+    private function createNoContentResponse()
+    {
+        return new Response('', Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @return Response
+     */
+    private function createNotFoundResponse()
+    {
+        return new Response('', Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * @param $json
+     * @return RestaurateurRequest
+     */
+    private function convertRestaurateurRequest($json)
+    {
+        return $this->fromJson($json,
+            'Log210\APIBundle\Message\Request\RestaurateurRequest');
     }
 }
