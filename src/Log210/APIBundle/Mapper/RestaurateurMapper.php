@@ -17,7 +17,7 @@ use Log210\LivraisonBundle\Entity\Restaurateur;
 class RestaurateurMapper {
 
     /**
-     * @param $restaurateurEntity Restaurateur
+     * @param Restaurateur $restaurateurEntity
      * @return RestaurateurResponse
      */
     public static function toRestaurateurResponse(Restaurateur $restaurateurEntity) {
@@ -34,11 +34,13 @@ class RestaurateurMapper {
     }
 
     /**
-     * @param $restaurateurRequest RestaurateurRequest
+     * @param RestaurateurRequest $restaurateurRequest
+     * @param Restaurateur $restaurateurEntity
      * @return Restaurateur
      */
-    public static function toRestaurateur(RestaurateurRequest $restaurateurRequest) {
-        $restaurateurEntity = new Restaurateur();
+    public static function toRestaurateur(RestaurateurRequest $restaurateurRequest, Restaurateur $restaurateurEntity = null) {
+        if (is_null($restaurateurEntity))
+            $restaurateurEntity = new Restaurateur();
         $restaurateurEntity->setName($restaurateurRequest->getName());
         $restaurateurEntity->setDescription($restaurateurRequest->getDescription());
         return $restaurateurEntity;
