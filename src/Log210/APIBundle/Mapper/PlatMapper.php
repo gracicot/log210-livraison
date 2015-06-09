@@ -41,10 +41,9 @@ class PlatMapper {
         $platResponse->setDescription($platEntity->getDescription());
         $platResponse->setPrix($platEntity->getPrix());
         $links = array();
-        array_push($links, new Link('menu', '/api/restaurants/' . $platEntity->getMenu()->getRestaurant()->getId() .
-            '/menus/' . $platEntity->getMenu()->getId()));
-        array_push($links, new Link('self', '/api/restaurants/' . $platEntity->getMenu()->getRestaurant()->getId() .
-            '/menus/' . $platEntity->getMenu()->getId() . '/plats/' . $platEntity->getId()));
+        array_push($links, new Link('menu', '/api/menus/' . $platEntity->getMenu()->getId()));
+        array_push($links, new Link('self', '/api/menus/' . $platEntity->getMenu()->getId() . '/plats/' .
+            $platEntity->getId()));
         $platResponse->setLinks($links);
         return $platResponse;
     }
