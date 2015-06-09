@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class RestaurantController
- * @package Log210\LivraisonBundle\Controller
+ * @package Log210\APIBundle\Controller
  * @Symfony\Component\Routing\Annotation\Route("/restaurants")
  */
 class RestaurantController extends BaseController {
