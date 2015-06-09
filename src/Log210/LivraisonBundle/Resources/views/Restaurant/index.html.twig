@@ -22,21 +22,21 @@
                             <h5>{{ 'address'|trans|capitalize }}:</h5>
                             {{ 'entity.address'|ngExpr }}
                             <div class="card-action card-action-right">
-                                <a 
+                                <a
                                     class="btn btn-info glyphicon glyphicon-search"
                                     data-toggle="tooltip"
                                     data-placement="left"
                                     title="{{ 'show'|trans|capitalize }}"
                                     href="{{ ngPath('restaurant_show', { 'id': 'entity.id' }) }}">
                                 </a>
-                                <a 
+                                <a
                                     class="btn btn-warning glyphicon glyphicon-pencil"
                                     data-toggle="tooltip"
                                     data-placement="left"
                                     title="{{ 'edit'|trans|capitalize }}"
                                     href="{{ ngPath('restaurant_edit', { 'id': 'entity.id' }) }}">
                                 </a>
-                                <a 
+                                <a
                                     class="btn btn-danger glyphicon glyphicon-trash"
                                     data-toggle="tooltip"
                                     data-placement="left"
@@ -140,7 +140,7 @@
                 $(document).ready(function () {
                     $('#off-page').append('<div id="listingApp-modal"></div>');
                 });
-                $scope.fetch = $scope.makeFetch('{{ path('restaurant_api_get_restaurants') }}', $scope.fetchSuccess);
+                $scope.fetch = $scope.makeFetch('{{ path('restaurant_api_get_all') }}', $scope.fetchSuccess);
                 $scope.postModal = $scope.makePostModal($scope.fetch);
                 $scope.fetch();
             };
