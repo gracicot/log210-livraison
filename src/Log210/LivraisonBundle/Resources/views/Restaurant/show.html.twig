@@ -33,7 +33,7 @@
             data-toggle="tooltip"
             data-placement="bottom"
             title="{{ 'Ajouter menu'|trans|capitalize }}"
-            href="{{ path('menu_new') }}">
+            href="{{ path('menu_new', { 'restaurant': entity.id }) }}">
     </a>
 {% endblock %}
 
