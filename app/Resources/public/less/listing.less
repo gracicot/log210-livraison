@@ -17,11 +17,8 @@
 		background-color: rgba(255, 255, 255, 0.7);
 
 		&.card-action-right {
-	    	.transition(
-	    		visibility 0s @transition-duration-fast,
-	    		opacity @transition-duration-fast ease-out,
-	    		right @transition-duration-fast ease-out;
-	    	);
+	    	.animate-fast(opacity, right);
+	    	.transition-add(visibility 0s @transition-duration-fast;);
 
 			top: -1px;
 			bottom: -1px;
@@ -37,7 +34,7 @@
 			visibility: visible;
 			opacity: 1;
 			right: -1px;
-			.transition(all @transition-duration-slow ease-out;);
+			.animate-slow();
 		}
 	}
 
@@ -48,23 +45,54 @@
 	}
 }
 
-.card-restaurant-button {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	align-content: space-around;
-	.card-icon {
-		display: block;
-		font-size: 4em;
+
+.btn-card {
+	.animate-fast();
+	background-color: desaturate(lighten(@light-add, 4%), 7%);
+	border: 2px dashed;
+
+	&.card-restaurant {
+		.button-card-content {
+			flex-grow: 1;
+			text-align: center;
+
+			.card-icon {
+				font-size: 4em;
+			}
+			.card-label {
+				opacity: 0;
+				.animate-fast();
+				margin-top: -18%;
+				font-size: 1.5em;
+			}
+		}
+		
+		display: flex;
+		align-items: center;
+		height: 200px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		color: desaturate(darken(@light-add, 6%), 7%);
+
+
+		&:hover, &.hover {
+			color: desaturate(darken(@light-add, 12%), 7%);
+		}
 	}
-	.card-label {
-		font-size: 1.5em;
-	}
-	height: 200px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	color: lighten(#5BC0DE, 15%);
-	&:hover, &.hover {
-		color: lighten(#5BC0DE, 20%);
+
+	&:hover {
+		.animate-slow();
+		background-color: @light-add;
+		text-decoration: none;
+
+		&.card-restaurant {
+			.button-card-content {
+				.card-label {
+					opacity: 1;
+					margin-top: 0;
+					.animate-slow();
+				}
+			}
+		}
 	}
 }

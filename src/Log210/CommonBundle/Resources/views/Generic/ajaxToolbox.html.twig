@@ -1,0 +1,20 @@
+<div id="{{ module }}App">
+    <div ng-controller="{{ module }}Controller">
+        <div class="loading-container">
+            <div ng-class="{'loading-box': true, 'loading-visible': loading > 0}">
+                <div class="loading"></div>
+            </div>
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+<script>
+	{% set controller %}
+		{% block controller %}{% endblock %}
+	{% endset %}
+    {% embed 'Log210CommonBundle:Generic:angular.html.twig' with { module: module, fetch: fetch, controller: controller } only %}
+        {% block controller %}
+            {{ controller }}
+        {% endblock %}
+    {% endembed %}
+</script>
