@@ -3,9 +3,12 @@
 namespace Log210\APIBundle\Controller;
 
 use Log210\APIBundle\Mapper\MenuMapper;
+use Log210\APIBundle\Mapper\PlatMapper;
 use Log210\APIBundle\Message\Request\MenuRequest;
+use Log210\APIBundle\Message\Request\PlatRequest;
 use Log210\CommonBundle\Controller\BaseController;
 use Log210\LivraisonBundle\Entity\Menu;
+use Log210\LivraisonBundle\Entity\Plat;
 use Log210\LivraisonBundle\Entity\Restaurant;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -101,6 +104,8 @@ class MenuController extends BaseController {
         if (is_null($menuEntity))
             return $this->createNotFoundResponse();
 
+        foreach ($menuEntity->getPlats() as $platEntity)
+            $this->removeEntity($platEntity);
         $this->removeEntity($menuEntity);
 
         return $this->createNoContentResponse();
@@ -168,6 +173,108 @@ class MenuController extends BaseController {
     }
 
     /**
+     * @param int $id
+     * @param Request $request
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("/{id}/plats", name="menu_api_create_plat")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("POST")
+     */
+    public function createPlatAction($id, Request $request) {
+        $menuEntity = $this->getMenuById($id);
+        if (is_null($menuEntity))
+            return $this->createNotFoundResponse();
+
+        $platRequest = $this->convertPlatRequest($request->getContent());
+
+        $platEntity = PlatMapper::toPlat($platRequest);
+        $platEntity->setMenu($menuEntity);
+
+        $this->persistEntity($platEntity);
+
+        return $this->createCreatedResponse($this->generateUrl("menu_api_get_plat", array('menu_id' => $id,
+            'plat_id' => $platEntity->getId())));
+    }
+
+    /**
+     * @param int $id
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("/{id}/plats", name="menu_api_get_all_plats")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
+     */
+    public function getAllPlatsAction($id) {
+        $menuEntity = $this->getMenuById($id);
+        if (is_null($menuEntity))
+            return $this->createNotFoundResponse();
+
+        $platResponses = array();
+        foreach ($menuEntity->getPlats() as $platEntity)
+            array_push($platResponses, PlatMapper::toPlatResponse($platEntity));
+
+        return $this->jsonResponse(new Response($this->toJson($platResponses)));
+    }
+
+    /**
+     * @param int $menu_id
+     * @param int $plat_id
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("/{menu_id}/plats/{plat_id}", name="menu_api_get_plat")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
+     */
+    public function getPlatAction($menu_id, $plat_id) {
+        $platEntity = $this->getPlatById($plat_id);
+        if (is_null($platEntity) || $platEntity->getMenu()->getId() != $menu_id)
+            return $this->createNotFoundResponse();
+
+        $platResponse = PlatMapper::toPlatResponse($platEntity);
+
+        return $this->jsonResponse(new Response($this->toJson($platResponse)));
+    }
+
+    /**
+     * @param int $menu_id
+     * @param int $plat_id
+     * @param Request $request
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("/{menu_id}/plats/{plat_id}", name="menu_api_update_plat")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("PUT")
+     */
+    public function updatePlatAction($menu_id, $plat_id, Request $request) {
+        $platEntity = $this->getPlatById($plat_id);
+        if (is_null($platEntity) || $platEntity->getMenu()->getId() != $menu_id)
+            return $this->createNotFoundResponse();
+
+        $platRequest = $this->convertPlatRequest($request->getContent());
+
+        PlatMapper::toPlat($platRequest, $platEntity);
+
+        $this->getEntityManager()->flush();
+
+        return $this->createNoContentResponse();
+    }
+
+    /**
+     * @param int $menu_id
+     * @param int $plat_id
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("/{menu_id}/plats/{plat_id}", name="menu_api_delete_plat")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("DELETE")
+     */
+    public function deletePlatAction($menu_id, $plat_id) {
+        $platEntity = $this->getPlatById($plat_id);
+        if (is_null($platEntity) || $platEntity->getMenu()->getId() != $menu_id)
+            return $this->createNotFoundResponse();
+
+        $this->removeEntity($platEntity);
+
+        return $this->createNoContentResponse();
+    }
+
+    /**
      * @param string $json
      * @return MenuRequest
      */
@@ -177,12 +284,30 @@ class MenuController extends BaseController {
     }
 
     /**
+     * @param string $json
+     * @return PlatRequest
+     */
+    private function convertPlatRequest($json)
+    {
+        return $this->fromJson($json, 'Log210\APIBundle\Message\Request\PlatRequest');
+    }
+
+    /**
      * @param int $id
      * @return Menu
      */
     private function getMenuById($id)
     {
         return $this->getEntityManager()->getRepository('Log210LivraisonBundle:Menu')->find($id);
+    }
+
+    /**
+     * @param int $id
+     * @return Plat
+     */
+    private function getPlatById($id)
+    {
+        return $this->getEntityManager()->getRepository('Log210LivraisonBundle:Plat')->find($id);
     }
 
     /**

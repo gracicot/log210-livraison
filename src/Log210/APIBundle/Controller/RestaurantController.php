@@ -3,14 +3,11 @@
 namespace Log210\APIBundle\Controller;
 
 use Log210\APIBundle\Mapper\MenuMapper;
-use Log210\APIBundle\Mapper\PlatMapper;
 use Log210\APIBundle\Mapper\RestaurantMapper;
 use Log210\APIBundle\Message\Request\MenuRequest;
-use Log210\APIBundle\Message\Request\PlatRequest;
 use Log210\APIBundle\Message\Request\RestaurantRequest;
 use Log210\CommonBundle\Controller\BaseController;
 use Log210\LivraisonBundle\Entity\Menu;
-use Log210\LivraisonBundle\Entity\Plat;
 use Log210\LivraisonBundle\Entity\Restaurant;
 use Log210\LivraisonBundle\Entity\Restaurateur;
 use Symfony\Component\HttpFoundation\Request;
@@ -113,6 +110,8 @@ class RestaurantController extends BaseController {
         if (is_null($restaurantEntity))
             return $this->createNotFoundResponse();
 
+        foreach ($restaurantEntity->getMenus() as $menuEntity)
+            $menuEntity->setRestaurant(null);
         $this->removeEntity($restaurantEntity);
 
         return $this->createNoContentResponse();
@@ -242,157 +241,6 @@ class RestaurantController extends BaseController {
     }
 
     /**
-     * @param int $restaurant_id
-     * @param int $menu_id
-     * @param Request $request
-     * @return Response
-     *
-     * @Symfony\Component\Routing\Annotation\Route("/{restaurant_id}/menus/{menu_id}", name="restaurant_api_update_menu")
-     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("PUT")
-     */
-    public function updateMenuAction($restaurant_id, $menu_id, Request $request) {
-        $menuEntity = $this->getMenuById($menu_id);
-        if (is_null($menuEntity) || $menuEntity->getRestaurant()->getId() != $restaurant_id)
-            return $this->createNotFoundResponse();
-
-        $menuRequest = $this->convertMenuRequest($request->getContent());
-
-        MenuMapper::toMenu($menuRequest, $menuEntity);
-
-        $this->getEntityManager()->flush();
-
-        return $this->createNoContentResponse();
-    }
-
-    /**
-     * @param int $restaurant_id
-     * @param int $menu_id
-     * @return Response
-     *
-     * @Symfony\Component\Routing\Annotation\Route("/{restaurant_id}/menus/{menu_id}", name="restaurant_api_delete_menu")
-     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("DELETE")
-     */
-    public function deleteMenuAction($restaurant_id, $menu_id) {
-        $menuEntity = $this->getMenuById($menu_id);
-        if (is_null($menuEntity) || $menuEntity->getRestaurant()->getId() != $restaurant_id)
-            return $this->createNotFoundResponse();
-
-        $this->removeEntity($menuEntity);
-
-        return $this->createNoContentResponse();
-    }
-
-    /**
-     * @param int $restaurant_id
-     * @param int $menu_id
-     * @param Request $request
-     * @return Response
-     *
-     * @Symfony\Component\Routing\Annotation\Route("/{restaurant_id}/menus/{menu_id}/plats", name="restaurant_api_create_plat")
-     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("POST")
-     */
-    public function createPlatAction($restaurant_id, $menu_id, Request $request) {
-        $menuEntity = $this->getMenuById($menu_id);
-        if (is_null($menuEntity) || $menuEntity->getRestaurant()->getId() != $restaurant_id)
-            return $this->createNotFoundResponse();
-
-        $platRequest = $this->convertPlatRequest($request->getContent());
-
-        $platEntity = PlatMapper::toPlat($platRequest);
-        $platEntity->setMenu($menuEntity);
-
-        $this->persistEntity($platEntity);
-
-        return $this->createCreatedResponse($this->generateUrl("restaurant_api_get_plat", array('restaurant_id' =>
-            $restaurant_id, 'menu_id' => $menu_id, 'plat_id' => $platEntity->getId())));
-    }
-
-    /**
-     * @param int $restaurant_id
-     * @param int $menu_id
-     * @return Response
-     *
-     * @Symfony\Component\Routing\Annotation\Route("/{restaurant_id}/menus/{menu_id}/plats", name="restaurant_api_get_all_plats")
-     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
-     */
-    public function getAllPlatsAction($restaurant_id, $menu_id) {
-        $menuEntity = $this->getMenuById($menu_id);
-        if (is_null($menuEntity) || $menuEntity->getRestaurant()->getId() != $restaurant_id)
-            return $this->createNotFoundResponse();
-
-        $platResponses = array();
-        foreach ($menuEntity->getPlats() as $platEntity)
-            array_push($platResponses, PlatMapper::toPlatResponse($platEntity));
-
-        return $this->jsonResponse(new Response($this->toJson($platResponses)));
-    }
-
-    /**
-     * @param int $restaurant_id
-     * @param int $menu_id
-     * @param int $plat_id
-     * @return Response
-     *
-     * @Symfony\Component\Routing\Annotation\Route("/{restaurant_id}/menus/{menu_id}/plats/{plat_id}", name="restaurant_api_get_plat")
-     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
-     */
-    public function getPlatAction($restaurant_id, $menu_id, $plat_id) {
-        $platEntity = $this->getPlatById($plat_id);
-        if (is_null($platEntity) || $platEntity->getMenu()->getId() != $menu_id || $platEntity->getMenu()
-                ->getRestaurant()->getId() != $restaurant_id)
-            return $this->createNotFoundResponse();
-
-        $platResponse = PlatMapper::toPlatResponse($platEntity);
-
-        return $this->jsonResponse(new Response($this->toJson($platResponse)));
-    }
-
-    /**
-     * @param int $restaurant_id
-     * @param int $menu_id
-     * @param int $plat_id
-     * @param Request $request
-     * @return Response
-     *
-     * @Symfony\Component\Routing\Annotation\Route("/{restaurant_id}/menus/{menu_id}/plats/{plat_id}", name="restaurant_api_update_plat")
-     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("PUT")
-     */
-    public function updatePlatAction($restaurant_id, $menu_id, $plat_id, Request $request) {
-        $platEntity = $this->getPlatById($plat_id);
-        if (is_null($platEntity) || $platEntity->getMenu()->getId() != $menu_id || $platEntity->getMenu()
-                ->getRestaurant()->getId() != $restaurant_id)
-            return $this->createNotFoundResponse();
-
-        $platRequest = $this->convertPlatRequest($request->getContent());
-
-        PlatMapper::toPlat($platRequest, $platEntity);
-
-        $this->getEntityManager()->flush();
-
-        return $this->createNoContentResponse();
-    }
-
-    /**
-     * @param int $restaurant_id
-     * @param int $menu_id
-     * @param int $plat_id
-     * @return Response
-     *
-     * @Symfony\Component\Routing\Annotation\Route("/{restaurant_id}/menus/{menu_id}/plats/{plat_id}", name="restaurant_api_delete_plat")
-     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("DELETE")
-     */
-    public function deletePlatAction($restaurant_id, $menu_id, $plat_id) {
-        $platEntity = $this->getPlatById($plat_id);
-        if (is_null($platEntity) || $platEntity->getMenu()->getId() != $menu_id || $platEntity->getMenu()
-                ->getRestaurant()->getId() != $restaurant_id)
-            return $this->createNotFoundResponse();
-
-        $this->removeEntity($platEntity);
-
-        return $this->createNoContentResponse();
-    }
-
-    /**
      * @param $json
      * @return RestaurantRequest
      */
@@ -408,15 +256,6 @@ class RestaurantController extends BaseController {
     private function convertMenuRequest($json)
     {
         return $this->fromJson($json, 'Log210\APIBundle\Message\Request\MenuRequest');
-    }
-
-    /**
-     * @param string $json
-     * @return PlatRequest
-     */
-    private function convertPlatRequest($json)
-    {
-        return $this->fromJson($json, 'Log210\APIBundle\Message\Request\PlatRequest');
     }
 
     /**
@@ -444,15 +283,6 @@ class RestaurantController extends BaseController {
     private function getMenuById($id)
     {
         return $this->getEntityManager()->getRepository('Log210LivraisonBundle:Menu')->find($id);
-    }
-
-    /**
-     * @param int $id
-     * @return Plat
-     */
-    private function getPlatById($id)
-    {
-        return $this->getEntityManager()->getRepository('Log210LivraisonBundle:Plat')->find($id);
     }
 
     /**
