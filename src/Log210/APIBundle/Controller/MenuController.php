@@ -6,6 +6,7 @@ use Log210\APIBundle\Mapper\MenuMapper;
 use Log210\APIBundle\Message\Request\MenuRequest;
 use Log210\CommonBundle\Controller\BaseController;
 use Log210\LivraisonBundle\Entity\Menu;
+use Log210\LivraisonBundle\Entity\Restaurant;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -104,6 +105,67 @@ class MenuController extends BaseController {
 
         return $this->createNoContentResponse();
     }
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("/{id}/restaurant", name="menu_api_link_restaurant")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("POST")
+     */
+    public function linkRestaurantAction($id, Request $request) {
+        $requestBody = json_decode($request->getContent(), true);
+
+        $menuEntity = $this->getMenuById($id);
+        if (is_null($menuEntity))
+            return $this->createNotFoundResponse();
+
+        $restaurantEntity = $this->getRestaurantById($requestBody["restaurant-id"]);
+        if (is_null($restaurantEntity)) {
+            return new Response('{"error": "Restaurant not found"}', Response::HTTP_BAD_REQUEST, array(
+                "Content-Type" => "application/json"));
+        }
+
+        $menuEntity->setRestaurant($restaurantEntity);
+
+        $this->getEntityManager()->flush();
+
+        return $this->createNoContentResponse();
+    }
+
+    /**
+     * @param int $id
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("/{id}/restaurant", name="menu_api_get_restaurant")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
+     */
+    public function getRestaurantAction($id) {
+        $menuEntity = $this->getMenuById($id);
+        if (is_null($menuEntity) || is_null($menuEntity->getRestaurant()))
+            return $this->createNotFoundResponse();
+
+        return $this->forward('Log210APIBundle:Restaurant:get', array('id' => $menuEntity->getRestaurant()->getId()));
+    }
+
+    /**
+     * @param int $id
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("/{id}/restaurant", name="menu_api_unlink_restaurant")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("DELETE")
+     */
+    public function unlinkRestaurantAction($id) {
+        $menuEntity = $this->getMenuById($id);
+        if (is_null($menuEntity))
+            $this->createNotFoundResponse();
+
+        $menuEntity->setRestaurant(null);
+
+        $this->getEntityManager()->flush();
+
+        return $this->createNoContentResponse();
+    }
 
     /**
      * @param string $json
@@ -121,6 +183,15 @@ class MenuController extends BaseController {
     private function getMenuById($id)
     {
         return $this->getEntityManager()->getRepository('Log210LivraisonBundle:Menu')->find($id);
+    }
+
+    /**
+     * @param int $id
+     * @return Restaurant
+     */
+    private function getRestaurantById($id)
+    {
+        return $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurant')->find($id);
     }
 
     /**
