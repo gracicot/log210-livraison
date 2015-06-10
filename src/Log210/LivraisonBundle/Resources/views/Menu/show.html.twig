@@ -12,10 +12,79 @@
 {% endblock %}
 
 {% block side %}
-    plat_new_modal
+    {% embed 'Log210CommonBundle:Generic:sidePanel.html.twig' with { title: 'plats', entity: entity } only %}
+        {% block content %}
+            {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'listing', fetch: path('menu_api_get_all_plats', {id: entity.id}), entity: entity } only %}
+                {% block content %}
+                    <div class="row">
+                        <div ng-repeat="plat in plats">
+                            <div class="col-lg-12">
+                                <div class="card card-plat" data-href="{{ ngPath('plat_show', {id: 'plat.id'}) }}" initial>
+                                    <div class="pull-right">
+                                        {{ 'plat.prix'|ngExpr }}
+                                    </div>
+                                    {{ 'plat.name'|ngExpr }}
+                                    <div class="card-action card-action-right card-action-h">
+                                        <a
+                                            class="btn btn-info glyphicon glyphicon-search"
+                                            data-toggle="tooltip"
+                                            data-placement="bottom"
+                                            data-container="body"
+                                            title="{{ 'show'|trans|capitalize }}"
+                                            href="{{ ngPath('plat_show', { 'id': 'plat.id' }) }}">
+                                        </a>
+                                        <a
+                                            class="btn btn-warning glyphicon glyphicon-pencil"
+                                            data-toggle="tooltip"
+                                            data-placement="bottom"
+                                            data-container="body"
+                                            title="{{ 'edit'|trans|capitalize }}"
+                                            ng-click="edit(plat.id)">
+                                        </a>
+                                        <a
+                                            class="btn btn-danger glyphicon glyphicon-trash"
+                                            data-toggle="tooltip"
+                                            data-placement="bottom"
+                                            data-container="body"
+                                            title="{{ 'delete'|trans|capitalize }}"
+                                            ng-click="delete(plat.id)">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <a class="btn-card card-plat" ng-click="add()">
+                                <div class="button-card-content">
+                                    <div class="card-icon glyphicon glyphicon-plus"></div>
+                                    <div class="card-label">{{ 'newPlat'|trans }}</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                {% endblock %}
+                {% block controller %}
+                    $scope.plats = [];
 
-    {#{% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'listing', fetch: path('restaurant_api_get_all') } only %}#}
-    
+                    $scope.fetchSuccess = function (data) {
+                        $scope.plats = data;
+                    };
+
+                    $scope.delete = function (id) {
+                        $scope.makeModal(Routing.generate('plat_delete_form', {'id': id}), $scope.postModal)();
+                    };
+
+                    $scope.edit = function (id) {
+                        $scope.makeModal(Routing.generate('plat_edit_modal', {'id': id}), $scope.postModal)();
+                    };
+
+                    $scope.add = function () {
+                        $scope.makeModal('{{ path('plat_new_modal', {menu: entity.id}) }}', $scope.postModal)();
+                    };
+                {% endblock %}
+            {% endembed %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
 
 {% block fields %}
@@ -31,13 +100,6 @@
             data-placement="bottom"
             title="{{ 'edit'|trans|capitalize }}"
             href="{{ path('menu_edit', { 'id': entity.id }) }}">
-    </a>
-    <a
-            class="btn btn-warning glyphicon glyphicon-plus"
-            data-toggle="tooltip"
-            data-placement="bottom"
-            title="{{ 'Ajouter plat'|trans|capitalize }}"
-            href="{{ path('plat_new', { 'menu': entity.id }) }}">
     </a>
 {% endblock %}
 

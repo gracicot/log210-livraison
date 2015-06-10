@@ -4,7 +4,6 @@
 	overflow: hidden;
 	position: relative;
 	background-color: @card-color;
-	padding: 1em;
 	border: thin solid darken(@card-color, 4%);
 
 	.card-action {
@@ -16,18 +15,20 @@
 		opacity: 0;
 		background-color: rgba(255, 255, 255, 0.7);
 
+		&.card-action-h {
+			flex-direction: row;
+		}
+
 		&.card-action-right {
 	    	.animate-fast(opacity, right);
 	    	.transition-add(visibility 0s @transition-duration-fast;);
 
-			top: -1px;
-			bottom: -1px;
+			top: 0;
+			bottom: 0;
 			right: -1em;
 			border-left: thin solid #fff;
 		}
 	}
-
-
 
 	&:hover .card-action {
 		&.card-action-right {
@@ -39,9 +40,16 @@
 	}
 
 	&.card-restaurant {
+		padding: 1em;
 		height: 200px;
 		margin-top: 10px;
 		margin-bottom: 10px;
+	}
+
+	&.card-plat {
+		height: 40px;
+		padding: 0.5em;
+		margin-bottom: 2px;
 	}
 }
 
@@ -50,34 +58,58 @@
 	.animate-fast();
 	background-color: desaturate(lighten(@light-add, 4%), 7%);
 	border: 2px dashed;
+	display: flex;
+	align-items: center;
+	color: desaturate(darken(@light-add, 6%), 7%);
+
+	&.card-plat {
+		height: 40px;
+
+		.button-card-content {
+			vertical-align: middle;
+			.card-icon {
+				vertical-align: middle;
+				display: inline-block;
+				font-size: 2em;
+			}
+
+			.card-label {
+				vertical-align: middle;
+				display: inline-block;
+				margin-left: -10%;
+			}
+		}
+	}
 
 	&.card-restaurant {
 		.button-card-content {
-			flex-grow: 1;
-			text-align: center;
-
 			.card-icon {
 				font-size: 4em;
 			}
+
 			.card-label {
-				opacity: 0;
-				.animate-fast();
 				margin-top: -18%;
 				font-size: 1.5em;
 			}
 		}
-		
-		display: flex;
-		align-items: center;
+
 		height: 200px;
 		margin-top: 10px;
 		margin-bottom: 10px;
-		color: desaturate(darken(@light-add, 6%), 7%);
+	}
 
+	.button-card-content {
+		flex-grow: 1;
+		text-align: center;
+	}
 
-		&:hover, &.hover {
-			color: desaturate(darken(@light-add, 12%), 7%);
-		}
+	.card-label {
+		opacity: 0;
+		.animate-fast();
+	}
+
+	&:hover, &.hover {
+		color: desaturate(darken(@light-add, 12%), 7%);
 	}
 
 	&:hover {
@@ -88,11 +120,22 @@
 		&.card-restaurant {
 			.button-card-content {
 				.card-label {
-					opacity: 1;
 					margin-top: 0;
-					.animate-slow();
 				}
 			}
+		}
+
+		&.card-plat {
+			.button-card-content {
+				.card-label {
+					margin-left: 0;
+				}
+			}
+		}
+
+		.card-label {
+			opacity: 1;
+			.animate-slow();
 		}
 	}
 }
