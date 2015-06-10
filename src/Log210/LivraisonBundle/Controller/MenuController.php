@@ -79,7 +79,7 @@ class MenuController extends Controller
     /**
      * Finds and displays a Menu entity.
      *
-     * @Route("/{id}", name="menu_show")
+     * @Route("/{id}", name="menu_show", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
