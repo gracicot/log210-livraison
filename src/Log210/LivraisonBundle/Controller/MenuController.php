@@ -21,6 +21,7 @@ class MenuController extends Controller
     protected function getRoutes()
     {
         return [
+            'index' => 'menu',
             'show' => 'menu_show',
             'new' => 'menu_new',
             'update' => 'menu_update',
@@ -66,20 +67,13 @@ class MenuController extends Controller
     /**
      * Displays a form to create a new Menu entity.
      *
-     * @Route("new/{restaurant}", name="menu_new")
+     * @Route("/new", name="menu_new")
      * @Method("GET")
      * @Template("Log210LivraisonBundle:Menu:new.html.twig")
      */
-    public function newLierAction(Request $request, Restaurant $restaurant)
+    public function newAction(Request $request)
     {
-        $entity = $this->getRepository()->makeEntity();
-        $entity->setRestaurant($restaurant);
-        $form   = $this->createCreateForm($entity);
-
-        return [
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ];
+        return parent::newAction($request);
     }
 
     /**
@@ -139,5 +133,37 @@ class MenuController extends Controller
     public function deleteFormAction(Request $request, $id)
     {
         return parent::deleteFormAction($request, $id);
+    }
+
+    /**
+     * Displays a form to create a new Plat entity.
+     *
+     * @Route("/new_modal/{restaurant}", name="menu_new_modal")
+     * @Method("GET")
+     * @Template("Log210CommonBundle::modalForm.html.twig")
+     */
+    public function newModalAction(Request $request, Restaurant $restaurant)
+    {
+        $entity = $this->getRepository()->makeEntity();
+        $entity->setRestaurant($restaurant);
+
+        $form = $this->createCreateForm($entity);
+
+        return [
+            'title' => 'create',
+            'form'   => $form->createView(),
+        ];
+    }
+
+    /**
+     * Displays a form to edit an existing Plat entity.
+     *
+     * @Route("/{id}/edit_modal", name="menu_edit_modal", options={"expose"=true})
+     * @Method("GET")
+     * @Template("Log210CommonBundle::modalForm.html.twig")
+     */
+    public function editModalAction(Request $request, $id)
+    {
+        return array_merge(['title' => 'menu'], $this->editAction($request, $id));
     }
 }
