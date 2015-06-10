@@ -16,7 +16,7 @@ class MenuType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('restaurant', 'reference', ['type' => 'Log210LivraisonBundle:Menu'])
+            ->add('restaurant', 'reference', array('type'=>'Log210LivraisonBundle:restaurant'))
         ;
     }
     

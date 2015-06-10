@@ -3,6 +3,7 @@
 namespace Log210\LivraisonBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Log210\CommonBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,6 +23,7 @@ class PlatController extends Controller
     protected function getRoutes()
     {
         return [
+            'index' => 'plat',
             'show' => 'plat_show',
             'new' => 'plat_new',
             'update' => 'plat_update',
@@ -66,18 +68,31 @@ class PlatController extends Controller
     /**
      * Displays a form to create a new Plat entity.
      *
-     * @Route("new/{menu}", name="plat_new")
+     * @Route("/new", name="plat_new")
      * @Method("GET")
      * @Template("Log210LivraisonBundle:Plat:new.html.twig")
      */
-    public function newLierAction(Request $request, Menu $menu)
+    public function newAction(Request $request)
+    {
+        return parent::newAction($request);
+    }
+
+    /**
+     * Displays a form to create a new Plat entity.
+     *
+     * @Route("/new_modal/{menu}", name="plat_new_modal")
+     * @Method("GET")
+     * @Template("Log210CommonBundle::modalForm.html.twig")
+     */
+    public function newModalAction(Request $request, Menu $menu)
     {
         $entity = $this->getRepository()->makeEntity();
         $entity->setMenu($menu);
-        $form   = $this->createCreateForm($entity);
+
+        $form = $this->createCreateForm($entity);
 
         return [
-            'entity' => $entity,
+            'title' => 'create',
             'form'   => $form->createView(),
         ];
     }
@@ -85,7 +100,7 @@ class PlatController extends Controller
     /**
      * Finds and displays a Plat entity.
      *
-     * @Route("/{id}", name="plat_show")
+     * @Route("/{id}", name="plat_show", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -104,6 +119,18 @@ class PlatController extends Controller
     public function editAction(Request $request, $id)
     {
         return parent::editAction($request, $id);
+    }
+
+    /**
+     * Displays a form to edit an existing Plat entity.
+     *
+     * @Route("/{id}/edit_modal", name="plat_edit_modal", options={"expose"=true})
+     * @Method("GET")
+     * @Template("Log210CommonBundle::modalForm.html.twig")
+     */
+    public function editModalAction(Request $request, $id)
+    {
+        return array_merge(['title' => 'plat'], $this->editAction($request, $id));
     }
 
     /**
@@ -129,22 +156,14 @@ class PlatController extends Controller
     }
 
     /**
-     * Deletes a Plat entity.
+     * Deletes a Restaurant entity.
      *
-     * @Route("/unsafe/{id}", name="plat_unsafe_delete")
+     * @Route("/delete/{id}", name="plat_delete_form", options={"expose"=true})
      * @Method("GET")
+     * @Template("Log210CommonBundle::modalForm.html.twig")
      */
-    public function unsafeDeleteAction(Request $request, $id)
+    public function deleteFormAction(Request $request, $id)
     {
-        $platService = $this->get("livraisonBundle.platService");
-        $entity = $platService->getPlatById($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Restaurant entity.');
-        }
-
-        $platService->deletePlat($entity);
-
-        return $this->redirect($this->generateUrl('plat'));
+        return parent::deleteFormAction($request, $id);
     }
 }

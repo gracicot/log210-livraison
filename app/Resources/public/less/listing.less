@@ -4,7 +4,6 @@
 	overflow: hidden;
 	position: relative;
 	background-color: @card-color;
-	padding: 1em;
 	border: thin solid darken(@card-color, 4%);
 
 	.card-action {
@@ -16,55 +15,127 @@
 		opacity: 0;
 		background-color: rgba(255, 255, 255, 0.7);
 
-		&.card-action-right {
-	    	.transition(
-	    		visibility 0s @transition-duration-fast,
-	    		opacity @transition-duration-fast ease-out,
-	    		right @transition-duration-fast ease-out;
-	    	);
+		&.card-action-h {
+			flex-direction: row;
+		}
 
-			top: -1px;
-			bottom: -1px;
+		&.card-action-right {
+	    	.animate-fast(opacity, right);
+	    	.transition-add(visibility 0s @transition-duration-fast;);
+
+			top: 0;
+			bottom: 0;
 			right: -1em;
 			border-left: thin solid #fff;
 		}
 	}
-
-
 
 	&:hover .card-action {
 		&.card-action-right {
 			visibility: visible;
 			opacity: 1;
 			right: -1px;
-			.transition(all @transition-duration-slow ease-out;);
+			.animate-slow();
 		}
 	}
 
 	&.card-restaurant {
+		padding: 1em;
 		height: 200px;
 		margin-top: 10px;
 		margin-bottom: 10px;
 	}
+
+	&.card-plat {
+		height: 40px;
+		padding: 0.5em;
+		margin-bottom: 2px;
+	}
 }
 
-.card-restaurant-button {
+
+.btn-card {
+	.animate-fast();
+	background-color: desaturate(lighten(@light-add, 4%), 7%);
+	border: 2px dashed;
 	display: flex;
-	flex-direction: column;
 	align-items: center;
-	align-content: space-around;
-	.card-icon {
-		display: block;
-		font-size: 4em;
+	color: desaturate(darken(@light-add, 6%), 7%);
+
+	&.card-plat {
+		height: 40px;
+
+		.button-card-content {
+			vertical-align: middle;
+			.card-icon {
+				vertical-align: middle;
+				display: inline-block;
+				font-size: 2em;
+			}
+
+			.card-label {
+				vertical-align: middle;
+				display: inline-block;
+				margin-left: -10%;
+			}
+		}
 	}
+
+	&.card-restaurant {
+		.button-card-content {
+			.card-icon {
+				font-size: 4em;
+			}
+
+			.card-label {
+				margin-top: -18%;
+				font-size: 1.5em;
+			}
+		}
+
+		height: 200px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+
+	.button-card-content {
+		flex-grow: 1;
+		text-align: center;
+	}
+
 	.card-label {
-		font-size: 1.5em;
+		opacity: 0;
+		.animate-fast();
 	}
-	height: 200px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	color: lighten(#5BC0DE, 15%);
+
 	&:hover, &.hover {
-		color: lighten(#5BC0DE, 20%);
+		color: desaturate(darken(@light-add, 12%), 7%);
+	}
+
+	&:hover {
+		.animate-slow();
+		background-color: @light-add;
+		text-decoration: none;
+
+		&.card-restaurant {
+			.button-card-content {
+				.card-label {
+					margin-top: 0;
+				}
+			}
+		}
+
+		&.card-plat {
+			.button-card-content {
+				.card-label {
+					margin-left: 0;
+				}
+			}
+		}
+
+		.card-label {
+			opacity: 1;
+			.animate-slow();
+		}
 	}
 }

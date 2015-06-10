@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Log210\LivraisonBundle\Entity\Menu;
+use Log210\LivraisonBundle\Entity\Restaurant;
 use Log210\LivraisonBundle\Form\MenuType;
 
 /**
@@ -65,13 +66,20 @@ class MenuController extends Controller
     /**
      * Displays a form to create a new Menu entity.
      *
-     * @Route("/new", name="menu_new")
+     * @Route("new/{restaurant}", name="menu_new")
      * @Method("GET")
-     * @Template()
+     * @Template("Log210LivraisonBundle:Menu:new.html.twig")
      */
-    public function newAction(Request $request)
+    public function newLierAction(Request $request, Restaurant $restaurant)
     {
-        return parent::newAction($request);
+        $entity = $this->getRepository()->makeEntity();
+        $entity->setRestaurant($restaurant);
+        $form   = $this->createCreateForm($entity);
+
+        return [
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ];
     }
 
     /**
@@ -124,21 +132,12 @@ class MenuController extends Controller
     /**
      * Deletes a Restaurant entity.
      *
-     * @Route("/unsafe/{id}", name="menu_unsafe_delete")
+     * @Route("/delete/{id}", name="menu_delete_form", options={"expose"=true})
      * @Method("GET")
+     * @Template("Log210CommonBundle::modalForm.html.twig")
      */
-    public function unsafeDeleteAction(Request $request, $id)
+    public function deleteFormAction(Request $request, $id)
     {
-        $entity = $this->getRepository()->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Menu entity.');
-        }
-
-        $em = $this->getEntityManager();
-        $em->remove($entity);
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('menu'));
+        return parent::deleteFormAction($request, $id);
     }
 }

@@ -36,6 +36,7 @@ abstract class Controller extends BaseController
 
         return [
             'entities' => $entities,
+            'routes' => $this->getRoutes()
         ];
     }
 

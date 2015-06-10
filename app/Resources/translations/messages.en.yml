@@ -29,6 +29,7 @@ list: list
 name: name
 new: new
 newRestaurant: Create new restaurant
+newPlat: Create new plat
 #o
 
 #p
@@ -39,6 +40,7 @@ phone: phone
 restaurateur: restaurateur
 restaurant: restaurant
 remember_me: remember_me
+restaurantList: Restaurant list
 #s
 save: save
 signout: déconnexion
