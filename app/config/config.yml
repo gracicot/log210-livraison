@@ -37,7 +37,12 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: Log210\UserBundle\Entity\User
-
+    registration:
+      form:
+          type: log210_user_registration
+    profile:
+      form:
+        type: log210_user_profile      
 braincrafted_bootstrap:
     output_dir:
     assets_dir: %kernel.root_dir%/../vendor/twbs/bootstrap

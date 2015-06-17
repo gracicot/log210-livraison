@@ -1,0 +1,6 @@
+<div class="fos_user_user_show">
+    <p>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}: {{ user.username }}</p>
+    <p>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}: {{ user.email }}</p>
+    <a href="{{path('fos_user_profile_edit')}}" class="btn btn-default navbar-btn"> {{'editProfile'|trans|capitalize}}</a>
+    <a href="{{path('fos_user_change_password')}}" class="btn btn-default navbar-btn"> {{'editPassword'|trans|capitalize}}</a>
+</div>
