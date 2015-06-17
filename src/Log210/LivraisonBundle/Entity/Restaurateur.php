@@ -31,8 +31,16 @@ class Restaurateur
 
     /**
      * @ORM\OneToMany(targetEntity="Restaurant", mappedBy="restaurateur")
+     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
      **/
     protected $restaurants;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Restaurant", mappedBy="restaurateur")
+     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
+     **/
+    protected $restaurant;
+
 
     public function __construct()
     {
@@ -117,11 +125,33 @@ class Restaurateur
     {
         $this->restaurants->removeElement($restaurants);
     }
+    /**
+     * Set restaurants
+     *
+     * @param \Log210\LivraisonBundle\Entity\Restaurant $restaurants
+     * @return Restaurateur
+     */
+    public function setRestaurant(Restaurant $restaurants = null)
+    {
+        $this->restaurants = $restaurants;
+
+        return $this;
+    }
+
+    /**
+     * Get restaurant
+     *
+     * @return \Log210\LivraisonBundle\Entity\Restaurant
+     */
+    public function getRestaurant()
+    {
+        return $this->restaurant;
+    }
 
     /**
      * Get restaurants
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getRestaurants()
     {
