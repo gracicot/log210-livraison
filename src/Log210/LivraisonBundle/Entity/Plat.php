@@ -24,7 +24,7 @@ class Plat
     protected $name;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text",nullable=true)
      */
     protected $description;
 
@@ -83,7 +83,7 @@ class Plat
      * @param string $description
      * @return Plat
      */
-    public function setDescription($description)
+    public function setDescription($description = null)
     {
         $this->description = $description;
 
