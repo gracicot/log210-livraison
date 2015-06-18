@@ -4,13 +4,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
     <services>
-        <service id="livraison_user.example" class="Livraison\UserBundle\Example">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="log210_user.registration.form.type" class="Log210\UserBundle\Form\Type\RegistrationFormType">
+          <tag name="form.type" alias="log210_user_registration" />
+        </service>
+
+        <service id="log210_user.profile.form.type" class="Log210\UserBundle\Form\Type\ProfileFormType">
+          <tag name="form.type" alias="log210_user_profile" />
         </service>
     </services>
-    -->
 </container>

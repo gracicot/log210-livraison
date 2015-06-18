@@ -1,6 +1,6 @@
 <?php
 
-namespace Livraison\UserBundle\DependencyInjection;
+namespace Log210\UserBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

@@ -29,21 +29,21 @@
                             {% if user == 'guillaume' %}
                             <a href="{{ path('restaurant')}}" class="navbar-brand">Mes Restaurant</a>
                             {% endif %}
-                            {% if user == 'Entrepreneur' %}
+                            {% if user == 'entrepreneur' %}
                               <a href="{{ path('restaurateur')}}" class="navbar-brand">Mes Restaurateur</a>
                               <a href="{{ path('restaurant')}}" class="navbar-brand">Restaurants</a>
                             {% endif %}
 
-                            {% if user == 'Livreur' %}
+                            {% if user == 'livreur' %}
                               <a href="#" class="navbar-brand">Mes Commandes</a>
                             {% endif %}
 
-                            {% if user == 'Client' %}
+                            {% if user == 'client' %}
                               <a href="#" class="navbar-brand">Liste de Restaurant</a>
                             {% endif %}
                             <div class="navbar-right">
                               <a href="{{path('fos_user_profile_show')}}" class="navbar-brand">{{user}}</a>"
-                              <a href="{{path('fos_user_security_logout')}}" class="btn btn-default navbar-btn"> {{'signout'|trans}}</a>
+                              <a href="{{path('fos_user_security_logout')}}" class="btn btn-default navbar-btn"> {{'signout'|trans|capitalize}}</a>
                             </div>
                         {% else %}
                             <div class="navbar-right">
@@ -74,7 +74,7 @@
             </div>
         </div>
         <div id="off-page">
-            
+
         </div>
         <script src="{{ asset('js/bootstrap.js') }}"></script>
     </body>

@@ -17,6 +17,7 @@ class RestaurateurType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
+            ->add('restaurants',null,array('attr' => array('class'=>'selectRestaurant')));
         ;
     }
     
