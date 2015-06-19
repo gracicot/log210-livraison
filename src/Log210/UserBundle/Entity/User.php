@@ -23,6 +23,10 @@ class User extends BaseUser
      */
     protected $adress;
 
+    public function __construct() {
+    	$this->roles = ['ROLE_USER'];
+    }
+
     public function setAdress($adress)
     {
         $this->adress = $adress;
