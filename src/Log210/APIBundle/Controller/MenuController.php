@@ -12,11 +12,18 @@ use Log210\LivraisonBundle\Entity\Plat;
 use Log210\LivraisonBundle\Entity\Restaurant;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Class MenuController
  * @package Log210\LivraisonBundle\Controller
  * @Symfony\Component\Routing\Annotation\Route("/menus")
+ * @Security("has_role('ROLE_RESTAURATEUR')")
  */
 class MenuController extends BaseController {
 
@@ -24,7 +31,7 @@ class MenuController extends BaseController {
      * @param Request $request
      * @return Response
      *
-     * @Secrity("roles('ROLE_CLIENT,ROLE_ENTREPRENEUR,ROLE_RESTAURATEUR,ROLE_ADMIN')")
+     *
      * @Symfony\Component\Routing\Annotation\Route("", name="menu_api_create")
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("POST")
      */

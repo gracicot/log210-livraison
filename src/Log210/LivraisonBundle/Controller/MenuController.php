@@ -4,9 +4,12 @@ namespace Log210\LivraisonBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Log210\CommonBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Log210\LivraisonBundle\Entity\Menu;
 use Log210\LivraisonBundle\Entity\Restaurant;
 use Log210\LivraisonBundle\Form\MenuType;
@@ -15,7 +18,7 @@ use Log210\LivraisonBundle\Form\MenuType;
  * Menu controller.
  *
  * @Route("/menu")
- * @Secrity("has_role('ROLE_RESTAURATEUR')")
+ * @Security("has_role('ROLE_RESTAURATEUR')")
  */
 class MenuController extends Controller
 {
