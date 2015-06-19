@@ -9,6 +9,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Log210\LivraisonBundle\Entity\Restaurant;
 use Log210\LivraisonBundle\Entity\Restaurateur;
 
+/**
+ *
+ *
+ * @Secrity("has_role('ROLE_CLIENT')")
+ */
 class DashboardController extends Controller
 {
     /**

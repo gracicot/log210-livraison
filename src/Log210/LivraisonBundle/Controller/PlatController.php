@@ -16,6 +16,7 @@ use Log210\LivraisonBundle\Form\PlatType;
  * Plat controller.
  *
  * @Route("/plat")
+ * @Secrity("has_role('ROLE_RESTAURATEUR')")
  */
 class PlatController extends Controller
 {

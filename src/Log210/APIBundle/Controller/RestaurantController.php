@@ -24,6 +24,7 @@ class RestaurantController extends BaseController {
      * @param Request $request
      * @return Response
      *
+     * @Secrity("roles('ROLE_CLIENT,ROLE_ENTREPRENEUR,ROLE_RESTAURATEUR,ROLE_ADMIN')")
      * @Symfony\Component\Routing\Annotation\Route("", name="restaurant_api_create")
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("POST")
      */

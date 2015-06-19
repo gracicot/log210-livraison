@@ -14,6 +14,7 @@ use Log210\LivraisonBundle\Form\RestaurateurType;
  * Restaurateur controller.
  *
  * @Route("/restaurateur")
+ * @Secrity("has_role('ROLE_ENTREPRENEUR')")
  */
 class RestaurateurController extends Controller
 {

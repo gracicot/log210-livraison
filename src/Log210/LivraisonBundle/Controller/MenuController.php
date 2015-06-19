@@ -15,6 +15,7 @@ use Log210\LivraisonBundle\Form\MenuType;
  * Menu controller.
  *
  * @Route("/menu")
+ * @Secrity("has_role('ROLE_RESTAURATEUR')")
  */
 class MenuController extends Controller
 {
