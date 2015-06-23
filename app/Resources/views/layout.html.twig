@@ -26,12 +26,15 @@
                     <div class="container">
                       {% set user = app.security.getToken().getUser() %}
                         {% if user != 'anon.' %}
-                            {% if user == 'guillaume' %}
-                            <a href="{{ path('restaurant')}}" class="navbar-brand">Mes Restaurant</a>
-                            {% endif %}
-                            {% if user == 'entrepreneur' %}
+                            {% if is_granted('ROLE_USER') %}
+                              <a href="{{ path('restaurant_order')}}" class="navbar-brand">Restaurant</a>
+                            {% elseif is_granted('ROLE_RESTAURATEUR') %}
+                              <a href="{{ path('restaurant')}}" class="navbar-brand">Mes Restaurants</a>
+                            {% elseif is_granted('ROLE_ENTREPRENEUR') %}
                               <a href="{{ path('restaurateur')}}" class="navbar-brand">Mes Restaurateur</a>
-                              <a href="{{ path('restaurant')}}" class="navbar-brand">Restaurants</a>
+                            {% elseif is_granted('ROLE_RESTAURATEUR') %}
+
+
                             {% endif %}
 
                             {% if user == 'livreur' %}
