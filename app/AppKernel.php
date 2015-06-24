@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new Log210\UserBundle\Log210UserBundle(),
             new Log210\LivraisonBundle\Log210LivraisonBundle(),
+            new Log210\OrderBundle\Log210OrderBundle(),
             new Log210\CommonBundle\Log210CommonBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Log210\APIBundle\Log210APIBundle(),

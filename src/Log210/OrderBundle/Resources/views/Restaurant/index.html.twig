@@ -1,0 +1,48 @@
+{% extends 'Log210OrderBundle:Restaurant:layout.html.twig' %}
+
+{% block content %}
+    {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'listing', fetch: path('restaurant_api_get_all') } only %}
+        {% block content %}
+            <div class="row">
+                <div ng-repeat="entity in data">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                        <div class="card card-restaurant" data-href="{{ ngPath('restaurant_order_show', { 'id': 'entity.id' }) }}" initial>
+                            <h4>{{ 'entity.name'|ngExpr }}</h4>
+                            <h5>{{ 'description'|trans|capitalize }}:</h5>
+                            {{ 'entity.description'|ngExpr }}
+                            <h5>{{ 'address'|trans|capitalize }}:</h5>
+                            {{ 'entity.address'|ngExpr }}
+                            <div class="card-action card-action-right">
+                                <a
+                                    class="btn btn-info glyphicon glyphicon-search"
+                                    data-toggle="tooltip"
+                                    data-placement="left"
+                                    title="{{ 'show'|trans|capitalize }}"
+                                    href="{{ ngPath('restaurant_order_show', { 'id': 'entity.id' }) }}">
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        {% endblock %}
+        {% block controller %}
+            $scope.data = [];
+
+            $scope.fetchSuccess = function (data) {
+                $scope.data = data;
+            };
+
+            $scope.delete = function (id) {
+                $scope.makeModal(Routing.generate('restaurant_delete_form', {'id': id}), $scope.postModal)();
+            };
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li>{{ 'list'|trans|capitalize }}</li>
+{% endblock %}

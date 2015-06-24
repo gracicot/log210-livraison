@@ -4,9 +4,12 @@ namespace Log210\LivraisonBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Log210\CommonBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Log210\LivraisonBundle\Entity\Restaurateur;
 use Log210\LivraisonBundle\Form\RestaurateurType;
 
@@ -14,6 +17,7 @@ use Log210\LivraisonBundle\Form\RestaurateurType;
  * Restaurateur controller.
  *
  * @Route("/restaurateur")
+ * @Security("has_role('ROLE_ENTREPRENEUR')")
  */
 class RestaurateurController extends Controller
 {

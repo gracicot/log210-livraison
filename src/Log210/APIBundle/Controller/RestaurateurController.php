@@ -9,11 +9,18 @@ use Log210\CommonBundle\Controller\BaseController;
 use Log210\LivraisonBundle\Entity\Restaurateur;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Class RestaurateurController
  * @package Log210\APIBundle\Controller
  * @Symfony\Component\Routing\Annotation\Route("/restaurateurs")
+ * @Security("has_role('ROLE_ENTREPRENEUR')")
  */
 class RestaurateurController extends BaseController {
 

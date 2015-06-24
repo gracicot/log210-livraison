@@ -8,6 +8,11 @@ livraison_livraison:
     type:     annotation
     prefix:   /
 
+log210_order:
+    resource: "@Log210OrderBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 livraison_user:
     resource: "@Log210UserBundle/Controller/"
     type:     annotation
