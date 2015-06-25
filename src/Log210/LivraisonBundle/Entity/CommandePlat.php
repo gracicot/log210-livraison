@@ -32,7 +32,7 @@ class CommandePlat {
     /**
      * @var Plat $plat
      *
-     * @ORM\ManyToOne(targetEntity="Client")
+     * @ORM\ManyToOne(targetEntity="Plat")
      * @ORM\JoinColumn(name="plat_id", referencedColumnName="id")
      * @ORM\Id
      */
