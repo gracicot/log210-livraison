@@ -15,7 +15,8 @@ class FieldsetType extends AbstractType
             'compound' => true,
             'mapped' => false,
             'label' => false,
-            'required' => false
+            'required' => false,
+            'inherit_data' => true
         ]);
     }
 

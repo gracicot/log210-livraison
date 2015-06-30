@@ -25,13 +25,9 @@ class MenuController extends Controller
     protected function getRoutes()
     {
         return [
-            'index' => 'menu',
-            'show' => 'menu_show',
-            'new' => 'menu_new',
             'update' => 'menu_update',
             'delete' => 'menu_delete',
             'create' => 'menu_create',
-            'edit' => 'menu_edit'
         ];
     }
 
@@ -44,17 +40,6 @@ class MenuController extends Controller
     {
         return new MenuType();
     }
-    /**
-     * Lists all Menu entities.
-     *
-     * @Route("/", name="menu")
-     * @Method("GET")
-     * @Template()
-     */
-    public function indexAction(Request $request)
-    {
-        return parent::indexAction($request);
-    }
 
     /**
      * Creates a new Menu entity.
@@ -66,42 +51,6 @@ class MenuController extends Controller
     public function createAction(Request $request)
     {
         return parent::createAction($request);
-    }
-
-    /**
-     * Displays a form to create a new Menu entity.
-     *
-     * @Route("/new", name="menu_new")
-     * @Method("GET")
-     * @Template("Log210LivraisonBundle:Menu:new.html.twig")
-     */
-    public function newAction(Request $request)
-    {
-        return parent::newAction($request);
-    }
-
-    /**
-     * Finds and displays a Menu entity.
-     *
-     * @Route("/{id}", name="menu_show", options={"expose"=true})
-     * @Method("GET")
-     * @Template()
-     */
-    public function showAction(Request $request, $id)
-    {
-        return parent::showAction($request, $id);
-    }
-
-    /**
-     * Displays a form to edit an existing Menu entity.
-     *
-     * @Route("/{id}/edit", name="menu_edit")
-     * @Method("GET")
-     * @Template()
-     */
-    public function editAction(Request $request, $id)
-    {
-        return parent::editAction($request, $id);
     }
 
 

@@ -1,77 +1,101 @@
 @import "utility.less";
 
 html {
-	min-height: 100%;
-	display: flex;
-	flex-direction: column;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 a {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 body {
-	flex-grow: 1;
-	background: black;
-	display: flex;
-	flex-direction: column;
+    flex-grow: 1;
+    background: black;
+    display: flex;
+    flex-direction: column;
 }
 
 #document-wrapper {
-	display: flex;
-	flex-direction: column;
-	background: url('../img/background.jpg');
-	background-repeat: no-repeat;
-	background-size: cover;
+    display: flex;
+    flex-direction: column;
+    background: url('../img/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
     background-attachment: fixed;
     background-position: center;
     flex-grow: 1;
 }
 
 .container.container-tall {
-	padding-top: 70px;
-	background: white;
-	flex-grow: 1;
-	.box-shadow(0px 0px 42px 10px rgba(0,0,0,0.8););
+    padding-top: 70px;
+    background: white;
+    flex-grow: 1;
+    .box-shadow(0px 0px 42px 10px rgba(0,0,0,0.8););
 }
 
 .navbar {
-	margin-bottom: 0;
+    margin-bottom: 0;
 
-	&.navbar-static-top {
-		position: fixed;
-		width: 100%;
-	}
+    &.navbar-static-top {
+        position: fixed;
+        width: 100%;
+    }
 }
 
 #page-header {
-	flex-grow: 0;
+    flex-grow: 0;
 }
 
 #page-body {
-	flex-grow: 1;
-	display: flex;
-	flex-direction: column;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 #page-footer {
-	background: #6ACD0E;
-	flex-grow: 0;
+    background: #6ACD0E;
+    flex-grow: 0;
 }
 
 .align-flexible {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	.align-left {
-		order: -1;
-	}
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .align-left {
+        order: -1;
+    }
 
-	.align-center {
-		order: 0;
-	}
+    .align-center {
+        order: 0;
+    }
 
-	.align-right {
-		order: 1;
-	}
+    .align-right {
+        order: 1;
+    }
+}
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-style: normal;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+
+    &::before {
+        font-family: 'Glyphicons Halflings';
+        font-style: normal;
+        font-weight: normal;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    &:empty {
+        &::before {
+            margin-right: 0;
+        }
+    }
+
 }

@@ -18,25 +18,8 @@ class User extends BaseUser
      */
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    protected $adress;
-
     public function __construct() {
     	$this->roles = ['ROLE_USER'];
         parent::__construct();
-    }
-
-    public function setAdress($adress)
-    {
-        $this->adress = $adress;
-
-        return $this;
-    }
-
-    public function getAdress()
-    {
-        return $this->adress;
     }
 }
