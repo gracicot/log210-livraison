@@ -23,7 +23,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  * Class RestaurantController
  * @package Log210\APIBundle\Controller
  * @Symfony\Component\Routing\Annotation\Route("/restaurants")
- * @Security("has_role('ROLE_RESTAURATEUR')")
  */
 class RestaurantController extends BaseController {
 

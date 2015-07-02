@@ -20,7 +20,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  * Class RestaurateurController
  * @package Log210\APIBundle\Controller
  * @Symfony\Component\Routing\Annotation\Route("/restaurateurs")
- * @Security("has_role('ROLE_ENTREPRENEUR')")
  */
 class RestaurateurController extends BaseController {
 
