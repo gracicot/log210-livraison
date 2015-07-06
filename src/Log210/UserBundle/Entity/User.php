@@ -4,6 +4,7 @@ namespace Log210\UserBundle\Entity;
 
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Log210\LivraisonBundle\Entity\Restaurateur;
 
 /**
  * @ORM\Entity
@@ -23,9 +24,14 @@ class User extends BaseUser
      */
     protected $adress;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Restaurateur", mappedBy="user")
+     **/
+    protected $restaurateur;
+
     public function __construct() {
-    	$this->roles = ['ROLE_USER'];
         parent::__construct();
+    	$this->roles = ['ROLE_USER'];
     }
 
     public function setAdress($adress)
@@ -38,5 +44,19 @@ class User extends BaseUser
     public function getAdress()
     {
         return $this->adress;
+    }
+
+    public function setRestaurateur(Restaurateur $restaurateur = null)
+    {
+        $oldRestaurateur = $this->restaurateur;
+        $this->restaurateur = $restaurateur;
+
+        if ($oldRestaurateur !== null && $oldRestaurateur->getUser() === $this) {
+            $oldRestaurateur->setUser(null);
+        }
+
+        if ($restaurateur !== null && $restaurateur->getUser() !== $this) {
+            $restaurateur->setUser($this);
+        }
     }
 }

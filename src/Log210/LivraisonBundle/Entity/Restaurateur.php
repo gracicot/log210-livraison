@@ -4,6 +4,7 @@ namespace Log210\LivraisonBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Log210\UserBundle\Entity\User;
 
 /**
  * @ORM\Entity
@@ -36,11 +37,10 @@ class Restaurateur
     protected $restaurants;
 
     /**
-     * @ORM\OneToMany(targetEntity="Restaurant", mappedBy="restaurateur")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
-     **/
-    protected $restaurant;
-
+     * @ORM\OneToOne(targetEntity="Restaurant", inversedBy="restaurateur")
+     * @ORM\JoinColumn(name="restaurateur_id", referencedColumnName="id", nullable=true)
+     */
+    protected $user;
 
     public function __construct()
     {
@@ -139,13 +139,33 @@ class Restaurateur
     }
 
     /**
+     * Set restaurants
+     *
+     * @param \Log210\LivraisonBundle\Entity\Restaurant $restaurants
+     * @return Restaurateur
+     */
+    public function setUser(User $user = null)
+    {
+        $oldUser = $this->user;
+        $this->user = $user;
+
+        if ($oldUser !== null && $oldUser->getRestaurateur() === $this) {
+            $oldUser->setRestaurateur(null);
+        }
+
+        if ($user !== null && $user->getRestaurateur() !== $this) {
+            $user->setRestaurateur($this);
+        }
+    }
+
+    /**
      * Get restaurant
      *
      * @return \Log210\LivraisonBundle\Entity\Restaurant
      */
-    public function getRestaurant()
+    public function getUser()
     {
-        return $this->restaurant;
+        return $this->user;
     }
 
     /**

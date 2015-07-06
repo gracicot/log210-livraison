@@ -146,4 +146,59 @@ class RestaurateurController extends Controller
 
       return $this->redirect($this->generateUrl('restaurateur'));
     }
+
+    /**
+     * Deletes a Restaurant entity.
+     *
+     * @Route("/fetch_user/{restaurateur}", name="restaurateur_fetch_user")
+     * @Method("GET")
+     */
+    public function fetchUserAction(Restaurateur $restaurateur)
+    {
+        return $this->jsonResponse($this->toJson($restaurateur->getUser()));
+    }
+
+    /**
+     * Deletes a Restaurant entity.
+     *
+     * @Route("/select_user", name="restaurateur_fetch_user")
+     * @Method("GET")
+     */
+    public function selectUserAction()
+    {
+        
+    }
+
+    /**
+     * Deletes a Restaurant entity.
+     *
+     * @Route("/fetch_user/{restaurateur}", name="restaurateur_fetch_user")
+     * @Method("GET")
+     */
+    public function makeUserAction()
+    {
+        
+    }
+
+    /**
+     * Deletes a Restaurant entity.
+     *
+     * @Route("/select_user/{restaurateur}", name="restaurateur_fetch_user")
+     * @Method("GET")
+     */
+    public function selectUserModalAction()
+    {
+        
+    }
+
+    /**
+     * Deletes a Restaurant entity.
+     *
+     * @Route("/fetch_user/{restaurateur}", name="restaurateur_fetch_user")
+     * @Method("GET")
+     */
+    public function makeUserModalAction()
+    {
+        
+    }
 }
