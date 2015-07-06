@@ -19,19 +19,10 @@ class User extends BaseUser
      */
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    protected $adress;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Restaurateur", mappedBy="user")
-     **/
-    protected $restaurateur;
-
     public function __construct() {
         parent::__construct();
     	$this->roles = ['ROLE_USER'];
+        parent::__construct();
     }
 
     public function setAdress($adress)

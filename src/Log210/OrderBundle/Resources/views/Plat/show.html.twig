@@ -1,0 +1,25 @@
+{% extends 'Log210OrderBundle:Plat:layout.html.twig' %}
+
+{% import 'Log210CommonBundle:Macro:show.html.twig' as show %}
+
+{% use 'Log210CommonBundle:Generic:show.html.twig' %}
+
+{% block title parent() ~ ' - ' ~ entity %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li>{{ entity }}</li>
+{% endblock %}
+
+{% block fields %}
+    {{ show.text(entity, 'name') }}
+    {{ show.text(entity, 'description') }}
+    {{ show.integer(entity, 'prix') }}
+    {{ show.relation(entity, 'menu') }}
+{% endblock %}
+
+{% block actions %}
+    <a class="btn btn-default glyphicon glyphicon-chevron-left" href="{{ path('plat_order') }}">{{ 'back'|trans|capitalize }}</a>
+{% endblock %}
+
+{% block content block('show') %}

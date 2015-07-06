@@ -38,7 +38,7 @@ class Menu
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="Plat", mappedBy="menu")
+     * @ORM\OneToMany(targetEntity="Plat", mappedBy="menu", cascade={"all"}, orphanRemoval=true)
      **/
     protected $plats;
 
@@ -111,6 +111,9 @@ class Menu
      */
     public function addPlat(\Log210\LivraisonBundle\Entity\Plat $plats)
     {
+        if ($plats->getMenu() !== $this) {
+            $plats->setMenu($this);
+        }
         $this->plats[] = $plats;
 
         return $this;
@@ -123,6 +126,10 @@ class Menu
      */
     public function removePlat(\Log210\LivraisonBundle\Entity\Plat $plats)
     {
+        if ($plats->getMenu() === $this) {
+            $plats->setMenu(null);
+        }
+
         $this->plats->removeElement($plats);
     }
 

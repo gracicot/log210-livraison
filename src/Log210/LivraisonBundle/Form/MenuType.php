@@ -17,6 +17,22 @@ class MenuType extends AbstractType
         $builder
             ->add('name')
             ->add('restaurant', 'reference', array('type'=>'Log210LivraisonBundle:restaurant'))
+            ->add($builder->create('platsFields', 'fieldset', ['legend' => 'Plats'])
+                ->add('plats', 'bootstrap_collection', [
+                    'label' => false,
+                    'type' => new PlatType,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                    'add_button_text'    => 'newPlat',
+                    'delete_button_text' => '',
+                    'prototype' => true,
+                    'prototype_name' => 'tag__name__',
+                    'options' => [
+                        'label' => false
+                    ]
+                ])
+            )
         ;
     }
     
