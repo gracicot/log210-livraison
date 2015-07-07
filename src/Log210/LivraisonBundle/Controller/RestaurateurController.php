@@ -3,6 +3,7 @@
 namespace Log210\LivraisonBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Log210\CommonBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -155,35 +156,33 @@ class RestaurateurController extends Controller
      */
     public function fetchUserAction(Restaurateur $restaurateur)
     {
-        return $this->jsonResponse($this->toJson($restaurateur->getUser()));
+        return $this->jsonResponse(new Response($this->toJson($restaurateur->getUser())));
     }
 
     /**
      * Deletes a Restaurant entity.
      *
-     * @Route("/select_user", name="restaurateur_fetch_user")
+     * @Route("/fetch_user/{restaurateur}", name="restaurateur_make_user")
      * @Method("GET")
      */
-    public function selectUserAction()
+    public function makeUserAction(Restaurateur $restaurateur)
     {
-        
+                $form = $this->get('fos_user.registration.form');
+
+                $confirmationEnabled = $this->getParameter('fos_user.registration.confirmation.enabled');
+
+                $process = $formHandler->process($confirmationEnabled);
+                            $user = $form->getData();
+                            $this->getDoctrine()->persist($user);
+                            $this->getDoctrine()->flush();
+
+        return $this->jsonResponse(new Response($this->toJson(['success' => true])));
     }
 
     /**
      * Deletes a Restaurant entity.
      *
-     * @Route("/fetch_user/{restaurateur}", name="restaurateur_fetch_user")
-     * @Method("GET")
-     */
-    public function makeUserAction()
-    {
-        
-    }
-
-    /**
-     * Deletes a Restaurant entity.
-     *
-     * @Route("/select_user/{restaurateur}", name="restaurateur_fetch_user")
+     * @Route("/select_user/{restaurateur}", name="restaurateur_selectModal_user")
      * @Method("GET")
      */
     public function selectUserModalAction()
@@ -194,7 +193,7 @@ class RestaurateurController extends Controller
     /**
      * Deletes a Restaurant entity.
      *
-     * @Route("/fetch_user/{restaurateur}", name="restaurateur_fetch_user")
+     * @Route("/fetch_user/{restaurateur}", name="restaurateur_makeUserModal_user")
      * @Method("GET")
      */
     public function makeUserModalAction()

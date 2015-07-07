@@ -5,6 +5,7 @@ namespace Log210\UserBundle\Entity;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Log210\LivraisonBundle\Entity\Restaurateur;
+use Log210\LivraisonBundle\Entity\Client;
 
 /**
  * @ORM\Entity
@@ -19,22 +20,19 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @ORM\OneToOne(targetEntity="\Log210\LivraisonBundle\Entity\Restaurateur", mappedBy="user")
+     */
+    protected $restaurateur;
+
+    /**
+     * @ORM\OneToOne(targetEntity="\Log210\LivraisonBundle\Entity\Client", mappedBy="user")
+     */
+    protected $client;
+
     public function __construct() {
         parent::__construct();
     	$this->roles = ['ROLE_USER'];
-        parent::__construct();
-    }
-
-    public function setAdress($adress)
-    {
-        $this->adress = $adress;
-
-        return $this;
-    }
-
-    public function getAdress()
-    {
-        return $this->adress;
     }
 
     public function setRestaurateur(Restaurateur $restaurateur = null)
@@ -48,6 +46,20 @@ class User extends BaseUser
 
         if ($restaurateur !== null && $restaurateur->getUser() !== $this) {
             $restaurateur->setUser($this);
+        }
+    }
+
+    public function setClient(Client $client = null)
+    {
+        $oldClient = $this->client;
+        $this->client = $client;
+
+        if ($oldClient !== null && $oldClient->getUser() === $this) {
+            $oldClient->setUser(null);
+        }
+
+        if ($client !== null && $client->getUser() !== $this) {
+            $client->setUser($this);
         }
     }
 }

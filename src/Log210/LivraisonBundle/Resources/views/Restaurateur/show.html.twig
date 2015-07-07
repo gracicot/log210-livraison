@@ -27,33 +27,32 @@
                         </div>
                         <div ng-if="user == null">
                             <div class="col-lg-12">
-                                <a class="btn-card card-plat" ng-click="add()">
-                                    <div class="button-card-content">
-                                        <div class="card-icon glyphicon glyphicon-plus"></div>
-                                        <div class="card-label">{{ 'newMenu'|trans }}</div>
-                                    </div>
+                                <a class="btn btn-primary btn-block" ng-click="add()">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    {{ 'newUser'|trans }}
+                                </a>
+                                <a class="btn btn-success btn-block" ng-click="list()">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    {{ 'selectUser'|trans }}
                                 </a>
                             </div>
                         </div>
                     </div>
                 {% endblock %}
                 {% block controller %}
-                    $scope.user = [];
+                    $scope.user = null;
+                    $scope.userList = [];
 
                     $scope.fetchSuccess = function (data) {
                         $scope.user = data;
                     };
 
-                    $scope.delete = function (id) {
-                        $scope.makeModal(Routing.generate('menu_delete_form', {'id': id}), $scope.postModal)();
-                    };
-
-                    $scope.edit = function (id) {
-                        $scope.makeModal(Routing.generate('menu_edit_modal', {'id': id}), $scope.postModal)();
-                    };
+                    $scope.list = function () {
+                        $scope.makeModal('{{ path('restaurateur_makeUserModal_user', {restaurant: entity.id}) }}', $scope.postModal)();
+                    }
 
                     $scope.add = function () {
-                        $scope.makeModal('{{ path('menu_new_modal', {restaurant: entity.id}) }}', $scope.postModal)();
+                        $scope.makeModal('{{ path('restaurateur_makeUserModal_user', {restaurant: entity.id}) }}', $scope.postModal)();
                     };
                 {% endblock %}
             {% endembed %}

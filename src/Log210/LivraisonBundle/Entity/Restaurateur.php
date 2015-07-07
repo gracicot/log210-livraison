@@ -37,7 +37,7 @@ class Restaurateur
     protected $restaurants;
 
     /**
-     * @ORM\OneToOne(targetEntity="Restaurant", inversedBy="restaurateur")
+     * @ORM\OneToOne(targetEntity="\Log210\UserBundle\Entity\User", inversedBy="restaurateur")
      * @ORM\JoinColumn(name="restaurateur_id", referencedColumnName="id", nullable=true)
      */
     protected $user;
