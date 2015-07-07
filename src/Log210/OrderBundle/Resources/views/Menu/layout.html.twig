@@ -1,8 +1,0 @@
-{% extends 'Log210CommonBundle::layout.html.twig' %}
-
-{% block title 'menu'|trans|capitalize %}
-
-{% block breadcrumbs %}
-    {{ parent() }}
-    <li><a href="{{ path('menu_order') }}">{{ 'menu'|trans|capitalize }}</a></li>
-{% endblock %}

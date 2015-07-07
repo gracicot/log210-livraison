@@ -23,8 +23,9 @@ abstract class BaseController extends SymfonyController
 	protected function toJson($content)
 	{
         $encoders = [new JsonEncoder()];
-        $normalizers = [new GetSetMethodNormalizer()];
-        $serializer = new Serializer($normalizers, $encoders);
+        $normalizer = new GetSetMethodNormalizer();
+        $serializer = new Serializer([$normalizer], $encoders);
+        
 
         return $serializer->serialize($content, 'json');
 	}
@@ -34,8 +35,7 @@ abstract class BaseController extends SymfonyController
         $normalizers = array(new GetSetMethodNormalizer());
         $serializer = new Serializer($normalizers, $encoders);
 
-        return $serializer->deserialize($json, $returnClass,
-            'json');
+        return $serializer->deserialize($json, $returnClass, 'json');
     }
 
 	protected function jsonResponse(Response $response)

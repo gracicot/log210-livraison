@@ -22,8 +22,18 @@
             {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'user', fetch: path('restaurateur_fetch_user', {restaurateur: entity.id}), entity: entity } only %}
                 {% block content %}
                     <div class="row">
-                        <div ng-if="user != null">
-                            {{ 'user.username'|ngExpr }}
+                        <div ng-if="user != null" >
+                            <div ng-class="{disabled: !user.enabled}">
+                                <div class="col-xs-4">Username:</div>
+                                <div class="col-xs-8 text-right">{{ 'user.username'|ngExpr }}</div>
+                                <div class="col-xs-4">Password:</div>
+                                <div class="col-xs-8 text-right disabled">*******</div>
+                                <div class="col-xs-4">Email:</div>
+                                <div class="col-xs-8 text-right">{{ 'user.email'|ngExpr }}</div>
+                            </div>
+                            <div class="col-xs-12">
+                                <label><input type="checkbox" ng-model="user.enabled" ng-change="toggleEnabled()"> Enabled</label>
+                            </div>
                         </div>
                         <div ng-if="user == null">
                             <div class="col-lg-12">
@@ -41,19 +51,22 @@
                 {% endblock %}
                 {% block controller %}
                     $scope.user = null;
-                    $scope.userList = [];
 
                     $scope.fetchSuccess = function (data) {
                         $scope.user = data;
                     };
 
                     $scope.list = function () {
-                        $scope.makeModal('{{ path('restaurateur_makeUserModal_user', {restaurant: entity.id}) }}', $scope.postModal)();
+                        $scope.makeModal('{{ path('restaurateur_makeUserModal_user', {restaurateur: entity.id}) }}', $scope.postModal)();
                     }
 
                     $scope.add = function () {
-                        $scope.makeModal('{{ path('restaurateur_makeUserModal_user', {restaurant: entity.id}) }}', $scope.postModal)();
+                        $scope.makeModal('{{ path('restaurateur_selectModal_user', {restaurateur: entity.id}) }}', $scope.postModal)();
                     };
+
+                    $scope.toggleEnabled = function () {
+                        $http.get(Routing.generate('restaurateur_activate_user', {'user': $scope.user.id, 'enabled': ($scope.user.enabled ? 1:0)}));
+                    }
                 {% endblock %}
             {% endembed %}
         {% endblock %}
@@ -71,4 +84,13 @@
     </a>
 {% endblock %}
 
-{% block content block('show') %}
+{% block content %}
+    {% if entity.restaurants|length == 0 %}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>{{ 'warning'|trans|capitalize }}!</strong> {{ 'noRestaurantWarning'|trans|capitalize }}.
+        </div>
+    {% endif %}
+    {{ block('show') }}
+{% endblock %}

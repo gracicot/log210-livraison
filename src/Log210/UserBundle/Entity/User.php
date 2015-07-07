@@ -49,6 +49,16 @@ class User extends BaseUser
         }
     }
 
+    public function getRestaurateur()
+    {
+        return $this->restaurateur;
+    }
+
+    public function getClient()
+    {
+        return $this->client;
+    }
+
     public function setClient(Client $client = null)
     {
         $oldClient = $this->client;
