@@ -30,6 +30,7 @@ class RestaurateurController extends Controller
         return [
             'show' => 'restaurateur_show',
             'new' => 'restaurateur_new',
+            'index' => 'restaurateur',
             'update' => 'restaurateur_update',
             'delete' => 'restaurateur_delete',
             'create' => 'restaurateur_create',
@@ -134,22 +135,13 @@ class RestaurateurController extends Controller
     /**
      * Deletes a Restaurant entity.
      *
-     * @Route("/unsafe/{id}", name="restaurateur_unsafe_delete")
+     * @Route("/delete/{id}", name="restaurateur_delete_form", options={"expose"=true})
      * @Method("GET")
+     * @Template("Log210CommonBundle::modalForm.html.twig")
      */
-    public function unsafeDeleteAction(Request $request, $id)
+    public function deleteFormAction(Request $request, $id)
     {
-      $entity = $this->getRepository()->find($id);
-
-      if (!$entity) {
-          throw $this->createNotFoundException('Unable to find Restaurateur entity.');
-      }
-
-      $em = $this->getEntityManager();
-      $em->remove($entity);
-      $em->flush();
-
-      return $this->redirect($this->generateUrl('restaurateur'));
+        return parent::deleteFormAction($request, $id);
     }
 
     /**
