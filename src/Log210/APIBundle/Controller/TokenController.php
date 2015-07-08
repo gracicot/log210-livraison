@@ -41,7 +41,7 @@ class TokenController extends BaseController {
             $newToken->setId(bin2hex(openssl_random_pseudo_bytes(30)));
             $newToken->setRefreshToken(bin2hex(openssl_random_pseudo_bytes(30)));
             $dateTime = new \DateTime();
-            $dateTime->add(new \DateInterval("PT8H"));
+            //$dateTime->add(new \DateInterval("PT8H"));
             $newToken->setExpirationDate($dateTime);
             $newToken->setUser($token->getUser());
             $this->getEntityManager()->persist($newToken);
@@ -66,7 +66,7 @@ class TokenController extends BaseController {
 
                 $token = new Token();
                 $dateTime = new \DateTime();
-                $dateTime->add(new \DateInterval("PT8H"));
+                //$dateTime->add(new \DateInterval("PT8H"));
                 $token->setId(bin2hex(openssl_random_pseudo_bytes(30)));
                 $token->setRefreshToken(bin2hex(openssl_random_pseudo_bytes(30)));
                 $token->setExpirationDate($dateTime);

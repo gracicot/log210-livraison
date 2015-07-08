@@ -21,11 +21,6 @@ class UserResponse {
     private $email;
 
     /**
-     * @var string $adress
-     */
-    private $adress;
-
-    /**
      * @var array $roles
      */
     private $roles;
@@ -81,22 +76,6 @@ class UserResponse {
     public function setEmail($email)
     {
         $this->email = $email;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAdress()
-    {
-        return $this->adress;
-    }
-
-    /**
-     * @param string $adress
-     */
-    public function setAdress($adress)
-    {
-        $this->adress = $adress;
     }
 
     /**
