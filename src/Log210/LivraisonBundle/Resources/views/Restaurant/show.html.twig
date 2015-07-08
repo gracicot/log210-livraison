@@ -39,6 +39,14 @@
                         <div ng-repeat="menu in menus">
                             <div class="col-lg-12" initial>
                                 <div class="card card-plat">
+                                    <span
+                                        ng-if="menu.warning"
+                                        class="glyphicon glyphicon-warning-sign"
+                                        data-toggle="tooltip"
+                                        data-placement="left"
+                                        data-container="body"
+                                        title="{{ 'noDescr'|trans|capitalize }}">
+                                    </span>
                                     {{ 'menu.name'|ngExpr }}
                                     <div class="card-action card-action-right card-action-h">
                                         <a

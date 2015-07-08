@@ -20,6 +20,11 @@ class MenuResponse {
     private $links;
 
     /**
+     * @var array $links
+     */
+    private $warining;
+
+    /**
      * @return int
      */
     public function getId()
@@ -65,5 +70,15 @@ class MenuResponse {
     public function setLinks($links)
     {
         $this->links = $links;
+    }
+
+    public function setWarning($warning)
+    {
+        $this->warning = $warning;
+    }
+
+    public function getWarning()
+    {
+        return $this->warning;
     }
 }

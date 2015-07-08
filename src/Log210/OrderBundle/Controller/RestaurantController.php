@@ -51,7 +51,17 @@ class RestaurantController extends Controller
         return parent::indexAction($request);
     }
 
-
+    /**
+     * Lists all Restaurant entities.
+     *
+     * @Route("/liste", name="restaurant_order_list")
+     * @Method("GET")
+     * @Template("Log210OrderBundle:Restaurant:listeOrder.html.twig")
+     */
+    public function listeOrderAction()
+    {
+        return ['entities' => $this->getDoctrine()->getRepository('Log210LivraisonBundle:Commande')->findAll()];
+    }
 
     /**
      * Finds and displays a Restaurant entity.

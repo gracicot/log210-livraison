@@ -27,6 +27,7 @@ list: liste
 #m
 
 #n
+noDescr: Un plat a une decription vide
 noRestaurantWarning: Aucun restaurant choisi
 noRestaurateurWarning: Aucun restaurateur choisi
 name: nom
