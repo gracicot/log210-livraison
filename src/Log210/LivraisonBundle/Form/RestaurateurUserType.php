@@ -5,8 +5,9 @@ namespace Log210\LivraisonBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use FOS\UserBundle\Form\Type\RegistrationFormType;
 
-class RestaurateurType extends AbstractType
+class RestaurateurUserType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,8 +16,7 @@ class RestaurateurType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('description')
+            ->add('user', new RegistrationFormType('Log210\UserBundle\Entity\User'), ['label' => false])
         ;
     }
     
@@ -25,9 +25,9 @@ class RestaurateurType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Log210\LivraisonBundle\Entity\Restaurateur'
-        ));
+        ]);
     }
 
     /**
@@ -35,6 +35,6 @@ class RestaurateurType extends AbstractType
      */
     public function getName()
     {
-        return 'log210_livraisonbundle_restaurateur';
+        return 'log210_livraisonbundle_restaurateur_user';
     }
 }

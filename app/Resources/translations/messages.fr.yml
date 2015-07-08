@@ -27,6 +27,8 @@ list: liste
 #m
 
 #n
+noRestaurantWarning: Aucun restaurant choisi
+noRestaurateurWarning: Aucun restaurateur choisi
 name: nom
 new: nouveau
 newRestaurant: Créer un nouveau restaurant
@@ -61,6 +63,7 @@ security:
 #v
 
 #w
+warning: attention
 
 #x
 

@@ -2,8 +2,9 @@
 
 namespace Log210\CommonBundle\Controller;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response; 
 
 use InvalidArgumentException;
 
@@ -148,10 +149,10 @@ abstract class Controller extends BaseController
     /**
     * Creates a form to edit a entity.
     */
-    protected function createEditForm($entity)
+    protected function createEditForm($entity, AbstractType $form = null, $route = 'update')
     {
-        $form = $this->createForm($this->getForm(), $entity, [
-            'action' => $this->generateUrl($this->getRoute('update'), ['id' => $entity->getId()]),
+        $form = $this->createForm(($form !== null ? $form:$this->getForm()), $entity, [
+            'action' => $this->generateUrl($this->getRoute($route), ['id' => $entity->getId()]),
             'method' => 'PUT',
         ]);
 

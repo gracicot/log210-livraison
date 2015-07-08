@@ -5,6 +5,8 @@ namespace Log210\LivraisonBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Log210\LivraisonBundle\Entity\Menu;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="restaurant")
@@ -188,10 +190,10 @@ class Restaurant
     /**
      * Add menus
      *
-     * @param \Log210\LivraisonBundle\Entity\menu $menus
+     * @param Menu $menus
      * @return Restaurant
      */
-    public function addMenu(\Log210\LivraisonBundle\Entity\menu $menus)
+    public function addMenu(Menu $menus)
     {
         $this->menus[] = $menus;
 
@@ -201,9 +203,9 @@ class Restaurant
     /**
      * Remove menus
      *
-     * @param \Log210\LivraisonBundle\Entity\menu $menus
+     * @param Menu $menus
      */
-    public function removeMenu(\Log210\LivraisonBundle\Entity\menu $menus)
+    public function removeMenu(Menu $menus)
     {
         $this->menus->removeElement($menus);
     }

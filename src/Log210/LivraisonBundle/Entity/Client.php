@@ -2,39 +2,62 @@
 
 namespace Log210\LivraisonBundle\Entity;
 
+use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Log210\UserBundle\Entity\User;
 
 /**
- * Class Client
- * @package Log210\LivraisonBundle\Entity
- *
  * @ORM\Entity
- * @ORM\Table(name="client")
+ * @ORM\Table(name="clients")
  */
-class Client {
-
+class Client extends BaseUser
+{
     /**
-     * @var int $id
-     *
-     * @ORM\Column(type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
-     * @return int
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    public function getId()
+    protected $address;
+
+    /**
+     * @ORM\OneToOne(targetEntity="\Log210\UserBundle\Entity\User", inversedBy="client")
+     * @ORM\JoinColumn(name="client_id", referencedColumnName="id", nullable=true)
+     */
+    protected $user;
+
+    /**
+     * Set restaurants
+     *
+     * @param \Log210\LivraisonBundle\Entity\Restaurant $restaurants
+     * @return Restaurateur
+     */
+    public function setUser(User $user = null)
     {
-        return $this->id;
+        $oldUser = $this->user;
+        $this->user = $user;
+
+        if ($oldUser !== null && $oldUser->getRestaurateur() === $this) {
+            $oldUser->setRestaurateur(null);
+        }
+
+        if ($user !== null && $user->getRestaurateur() !== $this) {
+            $user->setRestaurateur($this);
+        }
     }
 
     /**
-     * @param int $id
+     * Get restaurant
+     *
+     * @return \Log210\LivraisonBundle\Entity\Restaurant
      */
-    public function setId($id)
+    public function getUser()
     {
-        $this->id = $id;
+        return $this->user;
     }
 }
