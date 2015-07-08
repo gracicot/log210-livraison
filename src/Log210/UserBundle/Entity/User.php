@@ -26,13 +26,13 @@ class User extends BaseUser
     protected $restaurateur;
 
     /**
-     * @ORM\OneToOne(targetEntity="\Log210\LivraisonBundle\Entity\Client", mappedBy="user")
+     * @ORM\OneToOne(targetEntity="\Log210\LivraisonBundle\Entity\Client", mappedBy="user", cascade={"persist", "remove"})
      */
     protected $client;
 
     public function __construct() {
         parent::__construct();
-    	$this->roles = ['ROLE_USER'];
+    	$this->roles = ['ROLE_USER', 'ROLE_CLIENT'];
     }
 
     public function setRestaurateur(Restaurateur $restaurateur = null)

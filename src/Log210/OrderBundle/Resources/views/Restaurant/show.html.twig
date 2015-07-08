@@ -20,23 +20,18 @@
 {% endblock %}
 
 {% block actions %}
-    <a class="btn btn-default glyphicon glyphicon-chevron-left" href="{{ path('restaurant_order') }}">{{ 'back'|trans|capitalize }}</a>
-
 {% endblock %}
 
-{% block side %}
-<div class="row">
-    {% for menu in entity.menus %}
-        <div class="col-lg-12" initial>
-            <div class="card card-menu-treeview"  data-href="{{ ngPath('menu_show', {id: 'menu.id'}) }}">
-                {{ menu.name}}
 
-            </div>
-        </div>
+{% block content %}
+ {{ block('show') }}
+ <div class="row">
+ {% for menu in entity.menus %}
+        <div class="col-sm-6">
+          <h2>{{ menu.name}}</h2>
           {% if menu.plats %}
               {% for plat in menu.plats %}
-                  <div class="col-lg-12">
-                      <div class="card card-plat-treeview" data-href="{{ ngPath('plat_show', {id: 'plat.id'}) }}">
+                      <div class="card card-plat-treeview">
                           {{ plat.name}}
                           <div class="card-action card-action-right card-action-h">
                               <a
@@ -45,30 +40,16 @@
                                   data-placement="bottom"
                                   data-container="body"
                                   title="{{ 'adddish'|trans|capitalize }}"
-                                  href="{{ ngPath('plat_show', { 'id': 'plat.id' }) }}">
+                                  href="#">
                               </a>
                           </div>
                       </div>
 
-                  </div>
               {% endfor %}
           {% endif %}
+        </div>
     {% endfor %}
-    {% for menu in entity.menus %}
-        <ul>
-          <li> {{menu.name}}</li>
+    </div>
 
-              {% if menu.plats %}
-                  {% for plat in menu.plats %}
-
-                  <ul>      {{ plat.name }} </ul>
-
-                  {% endfor %}
-              {% endif %}
-
-        </ul>
-    {% endfor %}
-
+    <a class="btn btn-default glyphicon glyphicon-chevron-left" href="{{ path('restaurant_order') }}">{{ 'back'|trans|capitalize }}</a>
 {% endblock %}
-
-{% block content block('show') %}
