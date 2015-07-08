@@ -167,4 +167,15 @@ class Commande {
     {
         $this->client = $client;
     }
+
+    public function getTotal()
+    {
+        $total = 0;
+        
+        foreach ($this->getCommandePlats() as $commandePlat) {
+            $total += $commandePlat->getQuantity() * $commandePlat->getPlat()->getPrix();
+        }
+
+        return $total;
+    }
 }
