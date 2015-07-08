@@ -32,7 +32,6 @@ class UserController extends BaseController {
         $newUser->setUsername($content["username"]);
         $newUser->setEmail($content["email"]);
         $newUser->setPlainPassword($content["password"]);
-        $newUser->setAdress($content["adress"]);
         $newUser->setEnabled(true);
 
         $this->getUserManager()->updateUser($newUser);
@@ -131,7 +130,6 @@ class UserController extends BaseController {
         $userResponse->setId($user->getId());
         $userResponse->setUsername($user->getUsername());
         $userResponse->setEmail($user->getEmail());
-        $userResponse->setAdress($user->getAdress());
         $userResponse->setRoles($user->getRoles());
         $userResponse->setLinks(array(new Link('self', '/api/profiles/' . $user->getId())));
         return $userResponse;
