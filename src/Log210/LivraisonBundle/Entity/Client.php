@@ -2,7 +2,6 @@
 
 namespace Log210\LivraisonBundle\Entity;
 
-use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Log210\UserBundle\Entity\User;
 
@@ -10,7 +9,7 @@ use Log210\UserBundle\Entity\User;
  * @ORM\Entity
  * @ORM\Table(name="clients")
  */
-class Client extends BaseUser
+class Client
 {
     /**
      * @ORM\Id
@@ -20,8 +19,7 @@ class Client extends BaseUser
     protected $id;
 
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="text")
      */
     protected $address;
 
@@ -42,12 +40,12 @@ class Client extends BaseUser
         $oldUser = $this->user;
         $this->user = $user;
 
-        if ($oldUser !== null && $oldUser->getRestaurateur() === $this) {
-            $oldUser->setRestaurateur(null);
+        if ($oldUser !== null && $oldUser->getClient() === $this) {
+            $oldUser->setClient(null);
         }
 
-        if ($user !== null && $user->getRestaurateur() !== $this) {
-            $user->setRestaurateur($this);
+        if ($user !== null && $user->getClient() !== $this) {
+            $user->setClient($this);
         }
     }
 
@@ -59,5 +57,17 @@ class Client extends BaseUser
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
     }
 }
