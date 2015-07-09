@@ -20,6 +20,21 @@ class MenuResponse {
     private $links;
 
     /**
+     * @var array $plats
+     */
+    private $plats;
+
+    /**
+     * MenuResponse constructor.
+     * @param int $id
+     */
+    public function __construct()
+    {
+        $this->links = array();
+        $this->plats = array();
+    }
+
+    /**
      * @var array $links
      */
     private $warining;
@@ -70,6 +85,22 @@ class MenuResponse {
     public function setLinks($links)
     {
         $this->links = $links;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPlats()
+    {
+        return $this->plats;
+    }
+
+    /**
+     * @param array $plats
+     */
+    public function setPlats($plats)
+    {
+        $this->plats = $plats;
     }
 
     public function setWarning($warning)

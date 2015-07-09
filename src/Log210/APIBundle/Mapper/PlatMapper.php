@@ -34,7 +34,7 @@ class PlatMapper {
      * @param Plat $platEntity
      * @return PlatResponse
      */
-    public static function toPlatResponse(Plat $platEntity) {
+    public static function toPlatResponse($platEntity) {
         $platResponse = new PlatResponse();
         $platResponse->setId($platEntity->getId());
         $platResponse->setName($platEntity->getName());
