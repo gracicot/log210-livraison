@@ -3,6 +3,7 @@
 namespace Log210\APIBundle\Controller;
 use Log210\APIBundle\Entity\Token;
 use Log210\APIBundle\Message\Request\CommandeRequest;
+use Log210\APIBundle\Message\Response\CommandeResponse;
 use Log210\CommonBundle\Controller\BaseController;
 use Log210\LivraisonBundle\Entity\Commande;
 use Log210\LivraisonBundle\Entity\CommandePlat;
@@ -66,8 +67,14 @@ class CommandeController extends BaseController {
 
         $this->getEntityManager()->flush();
 
-        return new Response('', Response::HTTP_CREATED, array('Location' => $this->generateUrl('commande_api_get',
-            array('id' => $commandeEntity->getId()))));
+        $commandeResponse = $this->convertCommandeEntityToCommandeResponse($commandeEntity);
+
+        return new Response(json_encode($commandeResponse), Response::HTTP_CREATED, array(
+            'Location' => $this->generateUrl('commande_api_get', array(
+                'id' => $commandeEntity->getId()
+            )),
+            'Content-Type' => 'application/json'
+        ));
     }
 
     /**
@@ -124,6 +131,44 @@ class CommandeController extends BaseController {
     private function findTokenById($id)
     {
         return $this->getEntityManager()->getRepository('Log210APIBundle:Token')->find($id);
+    }
+
+    /**
+     * @param Commande $commandeEntity
+     * @return array
+     */
+    private function convertCommandeEntityToCommandeResponse($commandeEntity)
+    {
+        $commandeResponse = array(
+            "id" => $commandeEntity->getId(),
+            "adresse" => $commandeEntity->getAdresse(),
+            "client_id" => $commandeEntity->getClient()->getId(),
+            "date_heure" => $commandeEntity->getDateHeure()->format('Y-m-d H:i'),
+            "restaurant_id" => $commandeEntity->getRestaurant()->getId(),
+            "commande_plats" => array(),
+            "links" => array(
+                array(
+                    "rel" => "self",
+                    "href" => "/api/commandes/" . $commandeEntity->getId()
+                ),
+                array(
+                    "rel" => "restaurant",
+                    "href" => "/api/restaurants/" . $commandeEntity->getRestaurant()->getId()
+                ),
+                array(
+                    "rel" => "client",
+                    "href" => "/api/profiles/" . $commandeEntity->getClient()->getUser()->getId()
+                )
+            )
+        );
+        foreach ($commandeEntity->getCommandePlats() as $commandePlatEntity) {
+            $commandePlatResponse = array(
+                "plat_id" => $commandePlatEntity->getPlat()->getId(),
+                "quantity" => $commandePlatEntity->getQuantity()
+            );
+            array_push($commandeResponse["commande_plats"], $commandePlatResponse);
+        }
+        return $commandeResponse;
     }
 
 }
