@@ -1,43 +1,67 @@
-{% extends 'layout.html.twig' %}
+{% extends 'Log210LivraisonBundle:Restaurateur:layout.html.twig' %}
 
-{% block body -%}
-    <h1>Restaurateur list</h1>
-<div class="container">
-  <table class="table table-hover">
-        <thead>
-            <tr>
-              
-                <th>Name</th>
-                <th>Description</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-            <td><a href="{{ path('restaurateur_show', { 'id': entity.id }) }}">{{ entity.name }}</a>
-            <td>{{ entity.name }}</td>
-            <td>{{ entity.description }}</td>
-                  <td>
+{% block content %}
+  {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'listing', fetch: path('restaurateur_api_get_all') } only %}
+      {% block content %}
+              <div class="row">
+                  <div ng-repeat="entity in data">
+                      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                          <div class="card card-restaurant" data-href="{{ ngPath('restaurateur_show', { 'id': 'entity.id' }) }}" initial>
+                              <h4>{{ 'entity.name'|ngExpr }}</h4>
+                              <h5>{{ 'description'|trans|capitalize }}:</h5>
+                              {{ 'entity.description'|ngExpr }}
+                              <div class="card-action card-action-right">
+                                  <a
+                                      class="btn btn-info glyphicon glyphicon-search"
+                                      data-toggle="tooltip"
+                                      data-placement="left"
+                                      title="{{ 'show'|trans|capitalize }}"
+                                      href="{{ ngPath('restaurateur_show', { 'id': 'entity.id' }) }}">
+                                  </a>
+                                  <a
+                                      class="btn btn-warning glyphicon glyphicon-pencil"
+                                      data-toggle="tooltip"
+                                      data-placement="left"
+                                      title="{{ 'edit'|trans|capitalize }}"
+                                      href="{{ ngPath('restaurant_edit', { 'id': 'entity.id' }) }}">
+                                  </a>
+                                  <a
+                                      class="btn btn-danger glyphicon glyphicon-trash"
+                                      data-toggle="tooltip"
+                                      data-placement="left"
+                                      title="{{ 'delete'|trans|capitalize }}"
+                                      ng-click="delete(entity.id)">
+                                  </a>
+                              </div>
+                          </div>
+                        </div>
 
-                      <a class="glyphicon glyphicon-edit" href="{{ path('restaurateur_edit', { 'id': entity.id }) }}" rel="tooltip" title="Edit"></a>
-                      <a class="glyphicon glyphicon-remove"
-                          href="{{ path('restaurateur_unsafe_delete', { 'id': entity.id }) }}"
-                          onclick="return confirm('Voulez-vous vraiment supprimer ce restaurant?')"
-                          rel="tooltip"
-                          title="Supprimer">
-                      </a>
-                  </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                    <a class="btn-card card-restaurant" href="{{ path('restaurateur_new') }}">
+                        <div class="button-card-content">
+                            <div class="card-icon glyphicon glyphicon-plus"></div>
+                            <div class="card-label">{{ 'newRestaurateur'|trans }}</div>
+                        </div>
+                    </a>
+                </div>
+                  </div>
+        {% endblock %}
+        {% block controller %}
+            $scope.data = [];
 
-        <ul>
-        <li>
-            <a href="{{ path('restaurateur_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+            $scope.fetchSuccess = function (data) {
+                $scope.data = data;
+            };
+
+            $scope.delete = function (id) {
+                $scope.makeModal(Routing.generate('restaurateur_delete_form', {'id': id}), $scope.postModal)();
+            };
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li>{{ 'list'|trans|capitalize }}</li>
+{% endblock %}

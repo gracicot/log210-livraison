@@ -29,6 +29,14 @@ class MenuMapper {
         $menuResponse = new MenuResponse();
         $menuResponse->setId($menuEntity->getId());
         $menuResponse->setName($menuEntity->getName());
+        $menuResponse->setWarning(0);
+        foreach ($menuEntity->getPlats() as $plat) {
+            $desc = $plat->getDescription();
+            if (empty($desc)) {
+                $menuResponse->setWarning(1);
+                break;
+            }
+        }
         $links = array(
             new Link('plats', '/api/menus/' . $menuEntity->getId() . '/plats'),
             new Link('restaurant', '/api/menus/' . $menuEntity->getId() . '/restaurant'),

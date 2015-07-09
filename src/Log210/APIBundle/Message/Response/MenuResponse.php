@@ -33,7 +33,12 @@ class MenuResponse {
         $this->links = array();
         $this->plats = array();
     }
-    
+
+    /**
+     * @var array $links
+     */
+    private $warining;
+
     /**
      * @return int
      */
@@ -96,5 +101,15 @@ class MenuResponse {
     public function setPlats($plats)
     {
         $this->plats = $plats;
+    }
+
+    public function setWarning($warning)
+    {
+        $this->warning = $warning;
+    }
+
+    public function getWarning()
+    {
+        return $this->warning;
     }
 }
