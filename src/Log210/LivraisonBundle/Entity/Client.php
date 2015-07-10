@@ -24,6 +24,13 @@ class Client
     protected $address;
 
     /**
+     * @var string $phoneNumber
+     *
+     * @ORM\Column(type="text")
+     */
+    protected $phoneNumber;
+
+    /**
      * @ORM\OneToOne(targetEntity="\Log210\UserBundle\Entity\User", inversedBy="client")
      * @ORM\JoinColumn(name="client_id", referencedColumnName="id", nullable=true)
      */
@@ -85,6 +92,22 @@ class Client
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
+
+    /**
+     * @param string $phoneNumber
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
     }
 
     public function __toString()
