@@ -16,6 +16,11 @@ class Client extends User {
      */
     protected $address;
 
+    public function __construct() {
+        parent::__construct();
+        $this->addRole("ROLE_CLIENT");
+    }
+
     public function getAddress()
     {
         return $this->address;

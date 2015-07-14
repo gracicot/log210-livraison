@@ -31,6 +31,7 @@ class Restaurateur extends User {
 
     public function __construct() {
         parent::__construct();
+        $this->addRole("ROLE_RESTAURATEUR");
         $this->restaurants = new ArrayCollection();
     }
 
