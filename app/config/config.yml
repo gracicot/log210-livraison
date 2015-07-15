@@ -42,7 +42,7 @@ fos_user:
           type: log210_user_registration
     profile:
       form:
-        type: log210_user_profile      
+        type: log210_user_profile
 braincrafted_bootstrap:
     output_dir:
     assets_dir: %kernel.root_dir%/../vendor/twbs/bootstrap

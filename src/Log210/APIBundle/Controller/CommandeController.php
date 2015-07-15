@@ -4,6 +4,7 @@ namespace Log210\APIBundle\Controller;
 use Log210\APIBundle\Entity\Token;
 use Log210\APIBundle\Mapper\CommandeMapper;
 use Log210\APIBundle\Message\Request\CommandeRequest;
+use Log210\APIBundle\Message\Response\CommandeResponse;
 use Log210\CommonBundle\Controller\BaseController;
 use Log210\LivraisonBundle\Entity\Commande;
 use Log210\LivraisonBundle\Entity\CommandePlat;

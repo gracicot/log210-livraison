@@ -15,11 +15,14 @@ class RestaurateurType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('username')
+            ->add('plainPassword', 'password', array('label'=>'Password'))
+            ->add('email', 'email')
             ->add('name')
             ->add('description')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

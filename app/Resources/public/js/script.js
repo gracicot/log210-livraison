@@ -64,7 +64,7 @@ var apiClient = {
      * @param token A valid API token
      * @param callback A function called once the request is complete. Parameters passed are (commande, error)
 	 */
-	creerCommande: function (commande, token, callback) {
+	createCommande: function (commande, token, callback) {
 		$.ajax('/api/commandes', {
 			contentType: 'application/json',
 			data: JSON.stringify(commande),
