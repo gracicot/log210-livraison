@@ -31,11 +31,25 @@ class Commande {
     private $dateHeure;
 
     /**
+     * @var \DateTime $dateHeure
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $dateHeureLivraison;
+
+    /**
      * @var string $adresse
      *
      * @ORM\Column(type="string")
      */
     private $adresse;
+
+    /**
+     * @var string $etat
+     *
+     * @ORM\Column(type="string")
+     */
+    private $etat;
 
     /**
      * @var ArrayCollection $commandePlats
