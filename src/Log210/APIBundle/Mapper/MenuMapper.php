@@ -28,9 +28,8 @@ class MenuMapper {
     public static function toMenuResponse(Menu $menuEntity) {
         $menuResponse = new MenuResponse();
         $menuResponse->setId($menuEntity->getId());
-        $menuResponse->setName($menuEntity->getName());-
-                $menuResponse->setWarning(0);
-
+        $menuResponse->setName($menuEntity->getName());
+        $menuResponse->setWarning(0);
         foreach ($menuEntity->getPlats() as $plat) {
             $desc = $plat->getDescription();
             if (empty($desc)) {
@@ -38,12 +37,18 @@ class MenuMapper {
                 break;
             }
         }
-
-        $links = array();
-        array_push($links, new Link('plats', '/api/menus/' . $menuEntity->getId() . '/plats'));
-        array_push($links, new Link('restaurant', '/api/menus/' . $menuEntity->getId() . '/restaurant'));
-        array_push($links, new Link('self', '/api/menus/' . $menuEntity->getId()));
+        $links = array(
+            new Link('plats', '/api/menus/' . $menuEntity->getId() . '/plats'),
+            new Link('restaurant', '/api/menus/' . $menuEntity->getId() . '/restaurant'),
+            new Link('self', '/api/menus/' . $menuEntity->getId())
+        );
         $menuResponse->setLinks($links);
+        $platResponses = array();
+        foreach ($menuEntity->getPlats() as $platEntity)
+            array_push($platResponses, PlatMapper::toPlatResponse($platEntity));
+
+        $menuResponse->setPlats($platResponses);
+
         return $menuResponse;
     }
 

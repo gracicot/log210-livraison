@@ -5,8 +5,6 @@ namespace Log210\LivraisonBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Log210\LivraisonBundle\Entity\Menu;
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="restaurant")
@@ -48,19 +46,29 @@ class Restaurant
     protected $restaurateur;
 
     /**
+     * @var ArrayCollection $menus
+     *
      * @ORM\OneToMany(targetEntity="Menu", mappedBy="restaurant")
      **/
     protected $menus;
 
+    /**
+     * @var ArrayCollection $commandes
+     *
+     * @ORM\OneToMany(targetEntity="Commande", mappedBy="restaurant")
+     */
+    protected $commandes;
+
     public function __construct()
     {
         $this->menus = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -83,7 +91,7 @@ class Restaurant
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -106,7 +114,7 @@ class Restaurant
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -129,7 +137,7 @@ class Restaurant
     /**
      * Get address
      *
-     * @return string 
+     * @return string
      */
     public function getAddress()
     {
@@ -152,7 +160,7 @@ class Restaurant
     /**
      * Get phone
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -175,7 +183,7 @@ class Restaurant
     /**
      * Get restaurateur
      *
-     * @return \Log210\LivraisonBundle\Entity\Restaurateur 
+     * @return \Log210\LivraisonBundle\Entity\Restaurateur
      */
     public function getRestaurateur()
     {
@@ -190,12 +198,12 @@ class Restaurant
     /**
      * Add menus
      *
-     * @param Menu $menus
+     * @param Menu $menu
      * @return Restaurant
      */
-    public function addMenu(Menu $menus)
+    public function addMenu(Menu $menu)
     {
-        $this->menus[] = $menus;
+        $this->getMenus()->add($menu);
 
         return $this;
     }
@@ -203,20 +211,36 @@ class Restaurant
     /**
      * Remove menus
      *
-     * @param Menu $menus
+     * @param Menu $menu
      */
-    public function removeMenu(Menu $menus)
+    public function removeMenu(Menu $menu)
     {
-        $this->menus->removeElement($menus);
+        $this->getMenus()->removeElement($menu);
     }
 
     /**
      * Get menus
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return ArrayCollection
      */
     public function getMenus()
     {
         return $this->menus;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCommandes()
+    {
+        return $this->commandes;
+    }
+
+    /**
+     * @param ArrayCollection $commandes
+     */
+    public function setCommandes(ArrayCollection $commandes)
+    {
+        $this->commandes = $commandes;
     }
 }
