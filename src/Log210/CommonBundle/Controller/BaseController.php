@@ -43,4 +43,8 @@ abstract class BaseController extends SymfonyController
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
 	}
+
+    protected function getUser() {
+        return $this->get('security.context')->getToken()->getUser();
+    }
 }
