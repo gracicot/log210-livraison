@@ -157,7 +157,7 @@ class CommandeController extends BaseController {
                 ),
                 array(
                     "rel" => "client",
-                    "href" => "/api/profiles/" . $commandeEntity->getClient()->getUser()->getId()
+                    "href" => "/api/clients/" . $commandeEntity->getClient()->getId()
                 )
             )
         );

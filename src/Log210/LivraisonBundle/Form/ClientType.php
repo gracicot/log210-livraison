@@ -16,9 +16,10 @@ class ClientType extends AbstractType
     {
         $builder
             ->add('address')
+            ->add('phoneNumber')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
