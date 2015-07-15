@@ -11,14 +11,7 @@ use Log210\UserBundle\Entity\User;
  * @ORM\Table(name="restaurateur")
  * @ORM\Entity(repositoryClass="Log210\LivraisonBundle\EntityRepository\RestaurateurRepository")
  */
-class Restaurateur
-{
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+class Restaurateur extends User {
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -36,25 +29,10 @@ class Restaurateur
      **/
     protected $restaurants;
 
-    /**
-     * @ORM\OneToOne(targetEntity="\Log210\UserBundle\Entity\User", inversedBy="restaurateur", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="restaurateur_id", referencedColumnName="id", nullable=true)
-     */
-    protected $user;
-
-    public function __construct()
-    {
+    public function __construct() {
+        parent::__construct();
+        $this->addRole("ROLE_RESTAURATEUR");
         $this->restaurants = new ArrayCollection();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -73,7 +51,7 @@ class Restaurateur
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -96,7 +74,7 @@ class Restaurateur
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -136,36 +114,6 @@ class Restaurateur
         $this->restaurants = $restaurants;
 
         return $this;
-    }
-
-    /**
-     * Set restaurants
-     *
-     * @param \Log210\LivraisonBundle\Entity\Restaurant $restaurants
-     * @return Restaurateur
-     */
-    public function setUser(User $user = null)
-    {
-        $oldUser = $this->user;
-        $this->user = $user;
-
-        if ($oldUser !== null && $oldUser->getRestaurateur() === $this) {
-            $oldUser->setRestaurateur(null);
-        }
-
-        if ($user !== null && $user->getRestaurateur() !== $this) {
-            $user->setRestaurateur($this);
-        }
-    }
-
-    /**
-     * Get restaurant
-     *
-     * @return \Log210\LivraisonBundle\Entity\Restaurant
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**

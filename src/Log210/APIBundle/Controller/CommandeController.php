@@ -2,6 +2,7 @@
 
 namespace Log210\APIBundle\Controller;
 use Log210\APIBundle\Entity\Token;
+use Log210\APIBundle\Mapper\CommandeMapper;
 use Log210\APIBundle\Message\Request\CommandeRequest;
 use Log210\APIBundle\Message\Response\CommandeResponse;
 use Log210\CommonBundle\Controller\BaseController;
@@ -67,9 +68,25 @@ class CommandeController extends BaseController {
 
         $this->getEntityManager()->flush();
 
-        $commandeResponse = $this->convertCommandeEntityToCommandeResponse($commandeEntity);
+        $commandeResponse = CommandeMapper::convertCommandeEntityToCommandeResponse($commandeEntity);
 
-        return new Response(json_encode($commandeResponse), Response::HTTP_CREATED, array(
+        $transport = \Swift_SmtpTransport::newInstance('smtp.mail.com', 587)->setUsername("log210ete201501@mail.com")->setPassword("fuhrmanator")->setEncryption("tls");
+        $mailer = \Swift_Mailer::newInstance($transport);
+        $message = \Swift_Message::newInstance('Confirmation de commande')->setFrom("log210ete201501@mail.com")->setTo(trim(strtoupper($user->getEmail())))->setBody("Votre commande avec le numero de confirmation " . $commandeEntity->getId() . " a ete creer");
+        var_dump($mailer->send($message));
+
+        $curlHandle = curl_init();
+
+        curl_setopt($curlHandle, CURLOPT_URL, "http://textbelt.com/canada");
+        curl_setopt($curlHandle, CURLOPT_POST, true);
+        curl_setopt($curlHandle, CURLOPT_POSTFIELDS, "number=" . urlencode($user->getClient()->getPhoneNumber()) . "&message=" . urlencode("Votre commande avec le numero de confirmation " . $commandeEntity->getId() . " a ete creer"));
+
+        $result = curl_exec($curlHandle);
+        var_dump($result);
+
+        curl_close($curlHandle);
+
+        return new Response($this->toJson($commandeResponse), Response::HTTP_CREATED, array(
             'Location' => $this->generateUrl('commande_api_get', array(
                 'id' => $commandeEntity->getId()
             )),
@@ -85,11 +102,17 @@ class CommandeController extends BaseController {
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
      */
     public function getAction($id) {
-        return new Response('', Response::HTTP_NO_CONTENT);
+        $commandeEntity = $this->findCommandeById($id);
+
+        $commandeResponse = CommandeMapper::convertCommandeEntityToCommandeResponse($commandeEntity);
+
+        return new Response($this->toJson($commandeResponse), Response::HTTP_OK, array(
+            "Content-Type" => "application/json"
+        ));
     }
 
     /**
-     * @param $json
+     * @param string $json
      * @return CommandeRequest
      */
     private function convertCommandeRequest($json)
@@ -98,7 +121,7 @@ class CommandeController extends BaseController {
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return Restaurant
      */
     private function getRestaurantById($id)
@@ -107,7 +130,7 @@ class CommandeController extends BaseController {
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return Plat
      */
     private function findPlatById($id)
@@ -116,7 +139,7 @@ class CommandeController extends BaseController {
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return Client
      */
     private function findClientById($id)
@@ -134,41 +157,12 @@ class CommandeController extends BaseController {
     }
 
     /**
-     * @param Commande $commandeEntity
-     * @return array
+     * @param int $id
+     * @return Commande
      */
-    private function convertCommandeEntityToCommandeResponse($commandeEntity)
+    private function findCommandeById($id)
     {
-        $commandeResponse = array(
-            "id" => $commandeEntity->getId(),
-            "adresse" => $commandeEntity->getAdresse(),
-            "client_id" => $commandeEntity->getClient()->getId(),
-            "date_heure" => $commandeEntity->getDateHeure()->format('Y-m-d H:i'),
-            "restaurant_id" => $commandeEntity->getRestaurant()->getId(),
-            "commande_plats" => array(),
-            "links" => array(
-                array(
-                    "rel" => "self",
-                    "href" => "/api/commandes/" . $commandeEntity->getId()
-                ),
-                array(
-                    "rel" => "restaurant",
-                    "href" => "/api/restaurants/" . $commandeEntity->getRestaurant()->getId()
-                ),
-                array(
-                    "rel" => "client",
-                    "href" => "/api/profiles/" . $commandeEntity->getClient()->getUser()->getId()
-                )
-            )
-        );
-        foreach ($commandeEntity->getCommandePlats() as $commandePlatEntity) {
-            $commandePlatResponse = array(
-                "plat_id" => $commandePlatEntity->getPlat()->getId(),
-                "quantity" => $commandePlatEntity->getQuantity()
-            );
-            array_push($commandeResponse["commande_plats"], $commandePlatResponse);
-        }
-        return $commandeResponse;
+        return $this->getEntityManager()->getRepository('Log210LivraisonBundle:Commande')->find($id);
     }
 
 }

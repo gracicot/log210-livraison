@@ -9,6 +9,8 @@ use Log210\LivraisonBundle\Entity\Client;
 
 /**
  * @ORM\Entity
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\Table(name="users")
  */
 class User extends BaseUser
@@ -20,56 +22,8 @@ class User extends BaseUser
      */
     protected $id;
 
-    /**
-     * @ORM\OneToOne(targetEntity="\Log210\LivraisonBundle\Entity\Restaurateur", mappedBy="user")
-     */
-    protected $restaurateur;
-
-    /**
-     * @ORM\OneToOne(targetEntity="\Log210\LivraisonBundle\Entity\Client", mappedBy="user", cascade={"persist", "remove"})
-     */
-    protected $client;
-
     public function __construct() {
         parent::__construct();
-    	$this->roles = ['ROLE_USER', 'ROLE_CLIENT'];
-    }
-
-    public function setRestaurateur(Restaurateur $restaurateur = null)
-    {
-        $oldRestaurateur = $this->restaurateur;
-        $this->restaurateur = $restaurateur;
-
-        if ($oldRestaurateur !== null && $oldRestaurateur->getUser() === $this) {
-            $oldRestaurateur->setUser(null);
-        }
-
-        if ($restaurateur !== null && $restaurateur->getUser() !== $this) {
-            $restaurateur->setUser($this);
-        }
-    }
-
-    public function getRestaurateur()
-    {
-        return $this->restaurateur;
-    }
-
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    public function setClient(Client $client = null)
-    {
-        $oldClient = $this->client;
-        $this->client = $client;
-
-        if ($oldClient !== null && $oldClient->getUser() === $this) {
-            $oldClient->setUser(null);
-        }
-
-        if ($client !== null && $client->getUser() !== $this) {
-            $client->setUser($this);
-        }
+    	$this->roles = ['ROLE_USER'];
     }
 }

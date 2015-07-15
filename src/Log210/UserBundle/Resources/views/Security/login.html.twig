@@ -18,13 +18,13 @@
 	    <input placeholder="{{ 'security.login.password'|trans }}" class="form-control" type="password" id="password" name="_password" required="required" />
     </div>
     <div class="form-group">
-	    
+
 	    <label for="remember_me">
 	    	<input type="checkbox" id="remember_me" name="_remember_me" value="on" />
 	    	{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}
 	    </label>
     </div>
     <input type="submit" id="_submit" name="_submit" class="btn btn-default navbar-btn" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
-    <a href="{{path('fos_user_registration_register')}}" class="btn btn-primary navbar-btn"> {{'signup'|trans}}</a>
+    <a href="{{path('client_new')}}" class="btn btn-primary navbar-btn"> {{'signup'|trans}}</a>
 </form>
 {% endblock fos_user_content %}
