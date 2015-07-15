@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Log210\UserBundle\Entity\User;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Log210\LivraisonBundle\EntityRepository\LivreurRepository")
  * @ORM\Table(name="livreur")
  */
 class Livreur extends User {

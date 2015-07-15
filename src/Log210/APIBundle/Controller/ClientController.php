@@ -64,11 +64,10 @@ class ClientController extends BaseController {
 
         $user = $token->getUser();
 
-        $client = $this->getClientById($user->getId());
-        if (is_null($client))
+        if (!$user instanceof Client)
             return new Response('', Response::HTTP_FORBIDDEN);
 
-        $clientResponse = $this->toClientResponse($client);
+        $clientResponse = $this->toClientResponse($user);
 
         return new Response($this->toJson($clientResponse), Response::HTTP_OK, array('Content-Type' => 'application/json'));
     }
@@ -95,14 +94,13 @@ class ClientController extends BaseController {
 
         $user = $token->getUser();
 
-        $client = $this->getClientById($user->getId());
-        if (is_null($client))
+        if (!$user instanceof Client)
             return new Response('', Response::HTTP_FORBIDDEN);
 
         if ($user->getId() != $id)
             return new Response('', Response::HTTP_UNAUTHORIZED);
 
-        $clientResponse = $this->toClientResponse($client);
+        $clientResponse = $this->toClientResponse($user);
 
         return new Response($this->toJson($clientResponse), Response::HTTP_OK, array('Content-Type' => 'application/json'));
     }
