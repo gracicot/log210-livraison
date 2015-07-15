@@ -25,31 +25,71 @@
 
 {% block content %}
  {{ block('show') }}
- <div class="row">
- {% for menu in entity.menus %}
-        <div class="col-sm-6">
-          <h2>{{ menu.name}}</h2>
-          {% if menu.plats %}
-              {% for plat in menu.plats %}
-                      <div class="card card-plat-treeview">
-                          {{ plat.name}}
-                          <div class="card-action card-action-right card-action-h">
-                              <a
-                                  class="btn btn-info glyphicon glyphicon-plus-sign"
-                                  data-toggle="tooltip"
-                                  data-placement="bottom"
-                                  data-container="body"
-                                  title="{{ 'adddish'|trans|capitalize }}"
-                                  href="#">
-                              </a>
-                          </div>
-                      </div>
 
-              {% endfor %}
-          {% endif %}
-        </div>
-    {% endfor %}
-    </div>
 
-    <a class="btn btn-default glyphicon glyphicon-chevron-left" href="{{ path('restaurant_order') }}">{{ 'back'|trans|capitalize }}</a>
+     {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'commande', fetch: path('menu_api_get_all_plats', {id: entity.menus[0].id}), entity:entity } only %}
+        {% block content %}
+            <div class="row">
+            <h2>{{ entity.menus[0]}}</h2>
+            <div class="col-md-6">
+                <div ng-repeat="plat in plats">
+                        <div class="listePlat">
+
+                                <div  class="row card card-plat-treeview">
+                                    <div class=" col-xs-6">{{ "plat.name" |ngExpr}}</div>
+                                    <div class="quantite col-xs-6"><input type="number" ng-model="plat.quantite" class="form-control" placeholder="Quantiter" aria-describedby="basic-addon1"></div>
+                                    <div class="card-action card-action-right card-action-h">
+                                        <a
+                                                class="btn btn-info glyphicon glyphicon-plus-sign"
+                                                data-toggle="tooltip"
+                                                data-placement="bottom"
+                                                data-container="body"
+                                                title="{{ 'adddish'|trans|capitalize }}"
+                                                href="#">
+                                        </a>
+                                    </div>
+                                </div>
+
+
+                        </div>
+                    </div>
+            </div>
+
+            </div>
+            <a class="btn btn-default glyphicon glyphicon-chevron-left" href="{{ path('restaurant_order') }}">{{ 'back'|trans|capitalize }}</a>
+            <a class="btn btn-default glyphicon " ng-click="passerCommande()">{{ 'commander'|trans|capitalize }}</a>
+        {% endblock %}
+         {% block controller %}
+            $scope.plats=[];
+
+             var commande = {
+             adresse: "{{ app.user.client.address }}",
+             commande_plats: [],
+             date_heure:"" ,
+             restaurant_id:{{ entity.id }}
+             };
+
+             $scope.fetchSuccess = function (data) {
+                $scope.plats = data;
+             };
+
+             $scope.passerCommande=function(){
+             for (x in $scope.plats)
+             {
+             plat=new Object();
+             plat.plat_id=$scope.plats[x].id;
+             plat.quantity=$scope.plats[x].quantite
+             commande.commande_plats.push(plat);
+             console.log($scope.plats[x].quantite);
+             }
+
+
+
+                console.log(commande);
+                 {#apiClient.creerCommande(commande, token, function(commande, error) {
+                 //window.location
+                 });#}
+             };
+        {% endblock %}
+     {% endembed %}
 {% endblock %}
