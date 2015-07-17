@@ -35,15 +35,22 @@ class CommandeController extends BaseController {
 
         if ($access_token !== null) {
             $token = $this->findTokenById($access_token);
-            if (is_null($token))
+            
+            if (is_null($token)) {
                 return new Response('Invalid Token', Response::HTTP_UNAUTHORIZED);
+            }
 
-            if ($token->isExpired())
+            if ($token->isExpired()) {
                 return new Response('Expired Token', Response::HTTP_UNAUTHORIZED);
+            }
 
             $user = $token->getUser();
         } else {
             $user = $this->getUser();
+        }
+
+        if ($user === null) {
+            return new Response('No Authorization', Response::HTTP_UNAUTHORIZED);
         }
 
         $commandeRequest = $this->convertCommandeRequest($request->getContent());
