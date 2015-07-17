@@ -2,6 +2,7 @@
 
 namespace Log210\APIBundle\Controller;
 
+use Log210\APIBundle\Mapper\CommandeMapper;
 use Log210\APIBundle\Mapper\MenuMapper;
 use Log210\APIBundle\Mapper\RestaurantMapper;
 use Log210\APIBundle\Message\Request\MenuRequest;
@@ -12,12 +13,6 @@ use Log210\LivraisonBundle\Entity\Restaurant;
 use Log210\LivraisonBundle\Entity\Restaurateur;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Class RestaurantController
@@ -244,6 +239,28 @@ class RestaurantController extends BaseController {
         $menuResponse = MenuMapper::toMenuResponse($menuEntity);
 
         return $this->jsonResponse(new Response($this->toJson($menuResponse)));
+    }
+
+    /**
+     * @param int $restaurant_id
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("/{restaurant_id}/commandes", name="restaurant_api_get_commandes")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
+     */
+    public function getCommandesAction($restaurant_id) {
+        $commandeEntities = $this->getRestaurantById($restaurant_id)->getCommandes();
+
+        $commandeResponses = array();
+
+        foreach ($commandeEntities as $commandeEntity) {
+            $commandeResponse = CommandeMapper::convertCommandeEntityToCommandeResponse($commandeEntity);
+            array_push($commandeResponses, $commandeResponse);
+        }
+
+        return new Response($this->toJson($commandeResponses), Response::HTTP_OK, array(
+            "Content-Type" => "application/json"
+        ));
     }
 
     /**

@@ -41,8 +41,12 @@ class RestaurateurMapper {
     public static function toRestaurateur(RestaurateurRequest $restaurateurRequest, Restaurateur $restaurateurEntity = null) {
         if (is_null($restaurateurEntity))
             $restaurateurEntity = new Restaurateur();
+        $restaurateurEntity->setUsername($restaurateurRequest->getUsername());
+        $restaurateurEntity->setPlainPassword($restaurateurRequest->getPassword());
+        $restaurateurEntity->setEmail($restaurateurRequest->getEmail());
         $restaurateurEntity->setName($restaurateurRequest->getName());
         $restaurateurEntity->setDescription($restaurateurRequest->getDescription());
+        $restaurateurEntity->setEnabled(true);
         return $restaurateurEntity;
     }
 }

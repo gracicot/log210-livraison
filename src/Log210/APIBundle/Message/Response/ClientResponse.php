@@ -3,8 +3,7 @@
 namespace Log210\APIBundle\Message\Response;
 
 
-class UserResponse {
-
+class ClientResponse {
     /**
      * @var int $id
      */
@@ -21,6 +20,16 @@ class UserResponse {
     private $email;
 
     /**
+     * @var string $address
+     */
+    private $address;
+
+    /**
+     * @var string $phone_number
+     */
+    private $phone_number;
+
+    /**
      * @var array $roles
      */
     private $roles;
@@ -33,80 +42,98 @@ class UserResponse {
     /**
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
     /**
      * @param int $id
      */
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
     /**
      * @return string
      */
-    public function getUsername()
-    {
+    public function getUsername() {
         return $this->username;
     }
 
     /**
      * @param string $username
      */
-    public function setUsername($username)
-    {
+    public function setUsername($username) {
         $this->username = $username;
     }
 
     /**
      * @return string
      */
-    public function getEmail()
-    {
+    public function getEmail() {
         return $this->email;
     }
 
     /**
      * @param string $email
      */
-    public function setEmail($email)
-    {
+    public function setEmail($email) {
         $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress() {
+        return $this->address;
+    }
+
+    /**
+     * @param string $address
+     */
+    public function setAddress($address) {
+        $this->address = $address;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone_number() {
+        return $this->phone_number;
+    }
+
+    /**
+     * @param string $phone_number
+     */
+    public function setPhone_number($phone_number) {
+        $this->phone_number = $phone_number;
     }
 
     /**
      * @return array
      */
-    public function getRoles()
-    {
+    public function getRoles() {
         return $this->roles;
     }
 
     /**
      * @param array $roles
      */
-    public function setRoles($roles)
-    {
+    public function setRoles($roles) {
         $this->roles = $roles;
     }
 
     /**
      * @return array
      */
-    public function getLinks()
-    {
+    public function getLinks() {
         return $this->links;
     }
 
     /**
      * @param array $links
      */
-    public function setLinks($links)
-    {
+    public function setLinks($links) {
         $this->links = $links;
     }
 }
