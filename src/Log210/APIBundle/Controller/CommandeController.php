@@ -30,17 +30,21 @@ class CommandeController extends BaseController {
      */
     public function createAction(Request $request) {
         $access_token = $request->headers->get("Authorization");
-        if (is_null($access_token))
-            return new Response('No Authorization Header', Response::HTTP_UNAUTHORIZED);
 
-        $token = $this->findTokenById($access_token);
-        if (is_null($token))
-            return new Response('Invalid Token', Response::HTTP_UNAUTHORIZED);
+        $user = null;
 
-        if ($token->isExpired())
-            return new Response('Expired Token', Response::HTTP_UNAUTHORIZED);
+        if ($access_token !== null) {
+            $token = $this->findTokenById($access_token);
+            if (is_null($token))
+                return new Response('Invalid Token', Response::HTTP_UNAUTHORIZED);
 
-        $user = $token->getUser();
+            if ($token->isExpired())
+                return new Response('Expired Token', Response::HTTP_UNAUTHORIZED);
+
+            $user = $token->getUser();
+        } else {
+            $user = $this->getUser();
+        }
 
         $commandeRequest = $this->convertCommandeRequest($request->getContent());
 
@@ -50,7 +54,7 @@ class CommandeController extends BaseController {
         $commandeEntity->setAdresse($commandeRequest->getAdresse());
         $commandeEntity->setDateHeure($commandeRequest->getDate_heure());
         $commandeEntity->setRestaurant($this->getRestaurantById($commandeRequest->getRestaurant_id()));
-        $commandeEntity->setClient($user->getClient());
+        $commandeEntity->setClient($user);
 
         $this->getEntityManager()->persist($commandeEntity);
 
@@ -79,7 +83,7 @@ class CommandeController extends BaseController {
 
         curl_setopt($curlHandle, CURLOPT_URL, "http://textbelt.com/canada");
         curl_setopt($curlHandle, CURLOPT_POST, true);
-        curl_setopt($curlHandle, CURLOPT_POSTFIELDS, "number=" . urlencode($user->getClient()->getPhoneNumber()) . "&message=" . urlencode("Votre commande avec le numero de confirmation " . $commandeEntity->getId() . " a ete creer"));
+        curl_setopt($curlHandle, CURLOPT_POSTFIELDS, "number=" . urlencode($user->getPhoneNumber()) . "&message=" . urlencode("Votre commande avec le numero de confirmation " . $commandeEntity->getId() . " a ete creer"));
 
         $result = curl_exec($curlHandle);
         var_dump($result);
