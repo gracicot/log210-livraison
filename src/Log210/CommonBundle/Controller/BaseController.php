@@ -44,7 +44,7 @@ abstract class BaseController extends SymfonyController
 		return $response;
 	}
 
-    protected function getUser() {
+    public function getUser() {
         return $this->get('security.context')->getToken()->getUser();
     }
 }
