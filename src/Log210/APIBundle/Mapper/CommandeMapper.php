@@ -31,7 +31,7 @@ class CommandeMapper
                 ),
                 array(
                     "rel" => "client",
-                    "href" => "/api/profiles/" . $commandeEntity->getClient()->getUser()->getId()
+                    "href" => "/api/profiles/" . $commandeEntity->getClient()->getId()
                 )
             )
         );

@@ -31,13 +31,6 @@ class Commande {
     private $dateHeure;
 
     /**
-     * @var \DateTime $dateHeure
-     *
-     * @ORM\Column(type="datetime")
-     */
-    private $dateHeureLivraison;
-
-    /**
      * @var string $adresse
      *
      * @ORM\Column(type="string")
@@ -124,6 +117,22 @@ class Commande {
     public function setAdresse($adresse)
     {
         $this->adresse = $adresse;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEtat()
+    {
+        return $this->etat;
+    }
+
+    /**
+     * @param string $etat
+     */
+    public function setEtat($etat)
+    {
+        $this->etat = $etat;
     }
 
     /**

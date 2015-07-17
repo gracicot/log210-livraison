@@ -1,0 +1,19 @@
+{
+    "id": {{ menu.id }},
+    "name": "{{ menu.name }}",
+    "plats": {% set plats = menu.plats %}{% include 'Log210APIBundle:Plat:plats.json.twig' %},
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/menus/{{ menu.id }}"
+        },
+        {
+            "rel": "restaurant",
+            "href": "/api/menus/{{ menu.id }}/restaurant"
+        },
+        {
+            "rel": "plats",
+            "href": "/api/menus/{{ menu.id }}/plats"
+        }
+    ]
+}

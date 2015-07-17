@@ -1,0 +1,9 @@
+[
+    {% set first = true %}
+    {% for plat in plats %}
+        {% if not first %}
+            ,
+        {% endif %}
+        {% include 'Log210APIBundle:Plat:plat.json.twig' %}
+    {% endfor %}
+]

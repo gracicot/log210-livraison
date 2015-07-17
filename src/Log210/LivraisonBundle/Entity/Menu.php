@@ -86,7 +86,7 @@ class Menu
      * @param \Log210\LivraisonBundle\Entity\Restaurant $restaurant
      * @return Menu
      */
-    public function setRestaurant(\Log210\LivraisonBundle\Entity\Restaurant $restaurant = null)
+    public function setRestaurant(Restaurant $restaurant = null)
     {
         $this->restaurant = $restaurant;
 
@@ -109,7 +109,7 @@ class Menu
      * @param \Log210\LivraisonBundle\Entity\Plat $plats
      * @return Menu
      */
-    public function addPlat(\Log210\LivraisonBundle\Entity\Plat $plats)
+    public function addPlat(Plat $plats)
     {
         if ($plats->getMenu() !== $this) {
             $plats->setMenu($this);
@@ -124,7 +124,7 @@ class Menu
      *
      * @param \Log210\LivraisonBundle\Entity\Plat $plats
      */
-    public function removePlat(\Log210\LivraisonBundle\Entity\Plat $plats)
+    public function removePlat(Plat $plats)
     {
         if ($plats->getMenu() === $this) {
             $plats->setMenu(null);

@@ -1,0 +1,11 @@
+{
+    "access_token": "{{ token.id }}",
+    "refresh_token": "{{ token.refreshToken }}",
+    "expires_in": {{ token.expirationDate|date("U") - "now"|date("U") }},
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/tokens/{{ token.id }}"
+        }
+    ]
+}

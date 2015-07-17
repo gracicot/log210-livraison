@@ -1,0 +1,16 @@
+{
+    "id": {{ plat.id }},
+    "name": "{{ plat.name }}",
+    "description": "{{ plat.description }}",
+    "prix": {{ plat.prix }},
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/menus/{{ plat.menu.id }}/plats/{{ plat.id }}"
+        },
+        {
+            "rel": "menu",
+            "href": "/api/menus/{{ plat.menu.id }}"
+        }
+    ]
+}

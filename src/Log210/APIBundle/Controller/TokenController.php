@@ -30,58 +30,45 @@ class TokenController extends BaseController {
     public function createAction(Request $request) {
         $decodedRequest = json_decode($request->getContent(), true);
 
-        if (array_key_exists("refresh_token", $decodedRequest)) {
-            $token = $this->findTokenByRefreshToken($decodedRequest["refresh_token"]);
+        $newToken = null;
 
-            if (is_null($token))
+        if (array_key_exists("refresh_token", $decodedRequest)) {
+            $oldToken = $this->findTokenByRefreshToken($decodedRequest["refresh_token"]);
+
+            if (is_null($oldToken))
                 return new Response('{"error": "Refresh token invalid"}', Response::HTTP_BAD_REQUEST, array(
                     'Content-Type' => 'application/json'));
 
             $newToken = new Token();
-            $newToken->setId(bin2hex(openssl_random_pseudo_bytes(30)));
-            $newToken->setRefreshToken(bin2hex(openssl_random_pseudo_bytes(30)));
-            $dateTime = new \DateTime();
-            $dateTime->add(new \DateInterval("PT8H"));
-            $newToken->setExpirationDate($dateTime);
-            $newToken->setUser($token->getUser());
-            $this->getEntityManager()->persist($newToken);
-            $this->getEntityManager()->remove($token);
-            $this->getEntityManager()->flush();
+            $newToken->setUser($oldToken->getUser());
 
-            $tokenResponse = $this->toTokenResponse($newToken);
-            return new Response($this->toJson($tokenResponse), Response::HTTP_CREATED, array("Location" => $this
-                ->generateUrl('token_api_get', array("id" => $newToken->getId()), true), 'Content-Type' =>
-                'application/json'));
+            $this->getEntityManager()->remove($oldToken);
         } else {
-            if (!array_key_exists("username", $decodedRequest))
-                return new Response('{"error": "username field missing"}', Response::HTTP_BAD_REQUEST, array(
-                    'Content-Type' => 'application/json'));
-            else if (!array_key_exists("password", $decodedRequest))
-                return new Response('{"error": "password field missing"}', Response::HTTP_BAD_REQUEST, array(
-                    'Content-Type' => 'application/json'));
             $passwordOk = $this->authentificateUser($decodedRequest["username"], $decodedRequest["password"]);
 
             if ($passwordOk) {
                 $username = $decodedRequest["username"];
 
-                $token = new Token();
-                $dateTime = new \DateTime();
-                $dateTime->add(new \DateInterval("PT8H"));
-                $token->setId(bin2hex(openssl_random_pseudo_bytes(30)));
-                $token->setRefreshToken(bin2hex(openssl_random_pseudo_bytes(30)));
-                $token->setExpirationDate($dateTime);
-                $token->setUser($this->findUserByUsername($username));
-
-                $this->getEntityManager()->persist($token);
-                $this->getEntityManager()->flush();
-
-                $tokenResponse = $this->toTokenResponse($token);
-                return new Response($this->toJson($tokenResponse), Response::HTTP_CREATED, array("Location" => $this
-                    ->generateUrl('token_api_get', array("id" => $token->getId()), true), 'Content-Type' =>
-                    'application/json'));
+                $newToken = new Token();
+                $newToken->setUser($this->findUserByUsername($username));
             } else
                 return new Response('', Response::HTTP_UNAUTHORIZED);
         }
+
+        $newToken->setId(bin2hex(openssl_random_pseudo_bytes(30)));
+        $newToken->setRefreshToken(bin2hex(openssl_random_pseudo_bytes(30)));
+        $dateTime = new \DateTime();
+        $dateTime->add(new \DateInterval("PT8H"));
+        $newToken->setExpirationDate($dateTime);
+
+        $this->getEntityManager()->persist($newToken);
+        $this->getEntityManager()->flush();
+
+        $response = new Response('', Response::HTTP_CREATED, [
+            "Location" => $this->generateUrl('token_api_get', ["id" => $newToken->getId()], true),
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Token:token.json.twig", ["token" => $newToken], $response);
     }
 
     /**
@@ -97,8 +84,10 @@ class TokenController extends BaseController {
         if (is_null($token))
             return new Response('', Response::HTTP_NOT_FOUND);
 
-        return new Response($this->toJson($this->toTokenResponse($token)), Response::HTTP_OK, array('Content-Type' =>
-            'application/json'));
+        $response = new Response('', Response::HTTP_OK, [
+            'Content-Type' => 'application/json'
+        ]);
+        return $this->render("Log210APIBundle:Token:token.json.twig", ["token" => $token], $response);
     }
 
     /**

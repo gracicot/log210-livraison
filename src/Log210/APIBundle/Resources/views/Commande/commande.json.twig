@@ -1,0 +1,32 @@
+{
+    "id": {{ commande.id }},
+    "date_heure": "{{ commande.dateHeure|date('Y-m-d H:i') }}",
+    "adresse": "{{ commande.adresse }}",
+    "commande_plats": [
+        {% set first = true %}
+        {% for commandePlat in commande.commandePlats %}
+            {% if not first %}
+                ,
+            {% endif %}
+            {
+                "plat_id": {{ commandePlat.plat.id }},
+                "quantity": {{ commandePlat.quantity }}
+            }
+            {% set first = false %}
+        {% endfor %}
+    ],
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/commandes/{{ commande.id }}"
+        },
+        {
+            "rel": "restaurant",
+            "href": "/api/restaurants/{{ commande.restaurant.id }}"
+        },
+        {
+            "rel": "client",
+            "href": "/api/clients/{{ commande.client.id }}"
+        }
+    ]
+}

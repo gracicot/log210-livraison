@@ -12,6 +12,7 @@ class MenuMapper {
 
     /**
      * @param MenuRequest $menuRequest
+     * @param Menu $menuEntity
      * @return Menu
      */
     public static function toMenu(MenuRequest $menuRequest, Menu $menuEntity = null) {

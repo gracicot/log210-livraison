@@ -66,7 +66,7 @@ class CommandeRequest {
     }
 
     /**
-     * @param array $commandePlats
+     * @param array $commande_plats
      */
     public function setCommande_plats($commande_plats)
     {

@@ -1,0 +1,10 @@
+[
+    {% set first = true %}
+    {% for commande in commandes %}
+        {% if not first %}
+            ,
+        {% endif %}
+        {% include 'Log210APIBundle:Commande:commande.json.twig' %}
+        {% set first = false %}
+    {% endfor %}
+]

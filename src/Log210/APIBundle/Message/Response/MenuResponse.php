@@ -26,7 +26,6 @@ class MenuResponse {
 
     /**
      * MenuResponse constructor.
-     * @param int $id
      */
     public function __construct()
     {
@@ -37,7 +36,7 @@ class MenuResponse {
     /**
      * @var array $links
      */
-    private $warining;
+    private $warning;
 
     /**
      * @return int

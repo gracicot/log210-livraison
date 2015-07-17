@@ -2,17 +2,15 @@
 
 namespace Log210\APIBundle\Controller;
 use Log210\APIBundle\Entity\Token;
-use Log210\APIBundle\Mapper\CommandeMapper;
 use Log210\APIBundle\Message\Request\CommandeRequest;
-use Log210\APIBundle\Message\Response\CommandeResponse;
 use Log210\CommonBundle\Controller\BaseController;
+use Log210\LivraisonBundle\Entity\Client;
 use Log210\LivraisonBundle\Entity\Commande;
 use Log210\LivraisonBundle\Entity\CommandePlat;
 use Log210\LivraisonBundle\Entity\Plat;
 use Log210\LivraisonBundle\Entity\Restaurant;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Client;
 
 /**
  * Class CommandeController
@@ -42,6 +40,9 @@ class CommandeController extends BaseController {
 
         $user = $token->getUser();
 
+        if (!$user instanceof Client)
+            return new Response('', Response::HTTP_FORBIDDEN);
+
         $commandeRequest = $this->convertCommandeRequest($request->getContent());
 
         $commandeRequest->setDate_heure(new \DateTime($commandeRequest->getDate_heure()));
@@ -50,7 +51,8 @@ class CommandeController extends BaseController {
         $commandeEntity->setAdresse($commandeRequest->getAdresse());
         $commandeEntity->setDateHeure($commandeRequest->getDate_heure());
         $commandeEntity->setRestaurant($this->getRestaurantById($commandeRequest->getRestaurant_id()));
-        $commandeEntity->setClient($user->getClient());
+        $commandeEntity->setEtat("commander");
+        $commandeEntity->setClient($user);
 
         $this->getEntityManager()->persist($commandeEntity);
 
@@ -68,30 +70,19 @@ class CommandeController extends BaseController {
 
         $this->getEntityManager()->flush();
 
-        $commandeResponse = CommandeMapper::convertCommandeEntityToCommandeResponse($commandeEntity);
+        $this->sendEmail('Confirmation de commande', "log210ete201501@mail.com", $user->getEmail(), "Votre commande avec le numero de confirmation " . $commandeEntity->getId() . " a ete creer");
 
-        $transport = \Swift_SmtpTransport::newInstance('smtp.mail.com', 587)->setUsername("log210ete201501@mail.com")->setPassword("fuhrmanator")->setEncryption("tls");
-        $mailer = \Swift_Mailer::newInstance($transport);
-        $message = \Swift_Message::newInstance('Confirmation de commande')->setFrom("log210ete201501@mail.com")->setTo(trim(strtoupper($user->getEmail())))->setBody("Votre commande avec le numero de confirmation " . $commandeEntity->getId() . " a ete creer");
-        var_dump($mailer->send($message));
+        $this->sendTextMessage($user->getPhoneNumber(), "Votre commande avec le numero de confirmation " . $commandeEntity->getId() . " a ete creer");
 
-        $curlHandle = curl_init();
-
-        curl_setopt($curlHandle, CURLOPT_URL, "http://textbelt.com/canada");
-        curl_setopt($curlHandle, CURLOPT_POST, true);
-        curl_setopt($curlHandle, CURLOPT_POSTFIELDS, "number=" . urlencode($user->getClient()->getPhoneNumber()) . "&message=" . urlencode("Votre commande avec le numero de confirmation " . $commandeEntity->getId() . " a ete creer"));
-
-        $result = curl_exec($curlHandle);
-        var_dump($result);
-
-        curl_close($curlHandle);
-
-        return new Response($this->toJson($commandeResponse), Response::HTTP_CREATED, array(
-            'Location' => $this->generateUrl('commande_api_get', array(
+        $response = new Response('', Response::HTTP_CREATED, [
+            'Location' => $this->generateUrl('commande_api_get', [
                 'id' => $commandeEntity->getId()
-            )),
+            ], true),
             'Content-Type' => 'application/json'
-        ));
+        ]);
+        return $this->render("Log210APIBundle:Commande:commande.json.twig", [
+            "commande" => $commandeEntity
+        ], $response);
     }
 
     /**
@@ -104,11 +95,12 @@ class CommandeController extends BaseController {
     public function getAction($id) {
         $commandeEntity = $this->findCommandeById($id);
 
-        $commandeResponse = CommandeMapper::convertCommandeEntityToCommandeResponse($commandeEntity);
-
-        return new Response($this->toJson($commandeResponse), Response::HTTP_OK, array(
-            "Content-Type" => "application/json"
-        ));
+        $response = new Response('', Response::HTTP_OK, [
+            'Content-Type' => 'application/json'
+        ]);
+        return $this->render("Log210APIBundle:Commande:commande.json.twig", [
+            "commande" => $commandeEntity
+        ], $response);
     }
 
     /**
@@ -139,15 +131,6 @@ class CommandeController extends BaseController {
     }
 
     /**
-     * @param int $id
-     * @return Client
-     */
-    private function findClientById($id)
-    {
-        return $this->getEntityManager()->getRepository('Log210LivraisonBundle:Client')->find($id);
-    }
-
-    /**
      * @param string $id
      * @return Token
      */
@@ -163,6 +146,40 @@ class CommandeController extends BaseController {
     private function findCommandeById($id)
     {
         return $this->getEntityManager()->getRepository('Log210LivraisonBundle:Commande')->find($id);
+    }
+
+    /**
+     * @param string $phoneNumber
+     * @param string $message
+     */
+    private function sendTextMessage($phoneNumber, $message)
+    {
+        $curlHandle = curl_init();
+
+        curl_setopt($curlHandle, CURLOPT_URL, "http://textbelt.com/canada");
+        curl_setopt($curlHandle, CURLOPT_POST, true);
+        curl_setopt($curlHandle, CURLOPT_POSTFIELDS, "number=" . urlencode($phoneNumber) . "&message=" . urlencode($message));
+
+        curl_exec($curlHandle);
+
+        curl_close($curlHandle);
+    }
+
+    /**
+     * @param $title
+     * @param $from
+     * @param $to
+     * @param $body
+     */
+    private function sendEmail($title, $from, $to, $body)
+    {
+        $transport = \Swift_SmtpTransport::newInstance('smtp.mail.com', 587)->setUsername("log210ete201501@mail.com")->setPassword("fuhrmanator")->setEncryption("tls");
+        $mailer = \Swift_Mailer::newInstance($transport);
+        $message = \Swift_Message::newInstance($title);
+        $message->setFrom($from);
+        $message->setTo(trim(strtoupper($to)));
+        $message->setBody($body);
+        $mailer->send($message);
     }
 
 }

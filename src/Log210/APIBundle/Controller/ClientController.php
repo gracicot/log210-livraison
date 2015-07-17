@@ -1,13 +1,11 @@
 <?php
 
 namespace Log210\APIBundle\Controller;
-use FOS\UserBundle\Model\UserManager;
 use Log210\APIBundle\Entity\Token;
 use Log210\APIBundle\Message\Response\Link;
 use Log210\APIBundle\Message\Response\ClientResponse;
 use Log210\CommonBundle\Controller\BaseController;
 use Log210\LivraisonBundle\Entity\Client;
-use Log210\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

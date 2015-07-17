@@ -1,0 +1,21 @@
+{
+    "id": {{ restaurant.id }},
+    "name": "{{ restaurant.name }}",
+    "description": "{{ restaurant.description }}",
+    "address": "{{ restaurant.address }}",
+    "phone": "{{ restaurant.phone }}",
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/restaurants/{{ restaurant.id }}"
+        },
+        {
+            "rel": "restaurateur",
+            "href": "/api/restaurants/{{ restaurant.id }}/restaurateur"
+        },
+        {
+            "rel": "menus",
+            "href": "/api/restaurants/{{ restaurant.id }}/menus"
+        }
+    ]
+}

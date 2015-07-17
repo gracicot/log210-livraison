@@ -1,0 +1,10 @@
+[
+    {% set first = true %}
+    {% for menu in menus %}
+        {% if not first %}
+            ,
+        {% endif %}
+        {% include 'Log210APIBundle:Menu:menu.json.twig' %}
+        {% set first = false %}
+    {% endfor %}
+]

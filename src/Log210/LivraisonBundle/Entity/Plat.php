@@ -129,7 +129,7 @@ class Plat
      * @param \Log210\LivraisonBundle\Entity\Menu $menu
      * @return Plat
      */
-    public function setMenu(\Log210\LivraisonBundle\Entity\Menu $menu = null)
+    public function setMenu(Menu $menu = null)
     {
         $this->menu = $menu;
 
