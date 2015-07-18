@@ -1,13 +1,4 @@
-dashboard:
-    pattern:  /{_locale}
-    defaults: { _controller: Log210LivraisonBundle:Dashboard:index, _locale: fr }
-    requirements:
-        culture:  en|fr
-select_lang:
-    pattern:  /{_locale}/select_lang/{langue}
-    defaults: { _controller: Log210LivraisonBundle:Dashboard:selectLang, _locale: fr  }
-    requirements:
-        _locale:  en|fr
+
 
 log210_api:
     resource: "@Log210APIBundle/Controller/"
@@ -50,3 +41,15 @@ fos_user_change_password:
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+dashboard:
+    pattern:  /{_locale}
+    defaults: { _controller: Log210LivraisonBundle:Dashboard:index, _locale: fr }
+    requirements:
+        _locale:  en|fr
+
+select_lang:
+    pattern:  /{_locale}/select_lang/{langue}
+    defaults: { _controller: Log210LivraisonBundle:Dashboard:selectLang, _locale: fr  }
+    requirements:
+        _locale:  en|fr
