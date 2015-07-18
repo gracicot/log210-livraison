@@ -61,8 +61,6 @@ class ClientController extends Controller {
      * @Template()
      */
     public function newAction(Request $request) {
-        if (!is_null($this->getUser()))
-            return $this->redirectToRoute("index");
         return parent::newAction($request);
     }
 }

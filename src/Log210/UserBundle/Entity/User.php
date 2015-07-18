@@ -24,6 +24,7 @@ class User extends BaseUser
 
     public function __construct() {
         parent::__construct();
+        $this->setEnabled(true);
     	$this->roles = ['ROLE_USER'];
     }
 }

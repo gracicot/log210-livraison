@@ -69,7 +69,7 @@
                             <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="address col-xs-6"><input type="text" ng-model="address" class="form-control" placeholder="{{ app.user.client.address }}" aria-describedby="basic-addon1"></div>
+                            <div class="address col-xs-6"><input type="text" ng-model="address" class="form-control" placeholder="{{ app.user.address }}" aria-describedby="basic-addon1"></div>
                             <div class="input-group">
                                 <input type="datetime" class="form-control" />
                                 <span class="input-group-addon">
@@ -103,7 +103,7 @@
                     + currentdate.getSeconds();
 
                 var commande = {
-                    adresse: "{{ app.user.client.address }}",
+                    adresse: "{{ app.user.address }}",
                     commande_plats: [],
                     date_heure: datetime,
                     restaurant_id: {{ entity.id }}
