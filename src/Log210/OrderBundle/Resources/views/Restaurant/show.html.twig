@@ -25,31 +25,108 @@
 
 {% block content %}
  {{ block('show') }}
- <div class="row">
- {% for menu in entity.menus %}
-        <div class="col-sm-6">
-          <h2>{{ menu.name}}</h2>
-          {% if menu.plats %}
-              {% for plat in menu.plats %}
-                      <div class="card card-plat-treeview">
-                          {{ plat.name}}
-                          <div class="card-action card-action-right card-action-h">
-                              <a
-                                  class="btn btn-info glyphicon glyphicon-plus-sign"
-                                  data-toggle="tooltip"
-                                  data-placement="bottom"
-                                  data-container="body"
-                                  title="{{ 'adddish'|trans|capitalize }}"
-                                  href="#">
-                              </a>
-                          </div>
-                      </div>
 
-              {% endfor %}
-          {% endif %}
-        </div>
-    {% endfor %}
-    </div>
 
-    <a class="btn btn-default glyphicon glyphicon-chevron-left" href="{{ path('restaurant_order') }}">{{ 'back'|trans|capitalize }}</a>
+     {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'commande', fetch: path('menu_api_get_all_plats', {id: entity.menus[0].id}), entity:entity } only %}
+        {% block content %}
+            <div class="row">
+            <h2>{{ entity.menus[0]}}</h2>
+            <div class="col-md-6">
+                <div ng-repeat="plat in plats">
+                        <div class="listePlat">
+
+                                <div  class="row card card-plat-treeview">
+                                    <div class=" col-xs-6">{{ "plat.name" |ngExpr}}</div>
+                                    <div class="quantite col-xs-6"><input type="number" ng-model="plat.quantite" class="form-control" placeholder="Quantiter" aria-describedby="basic-addon1"></div>
+                                    <div class="card-action card-action-right card-action-h">
+                                        <a
+                                                class="btn btn-info glyphicon glyphicon-plus-sign"
+                                                data-toggle="tooltip"
+                                                data-placement="bottom"
+                                                data-container="body"
+                                                title="{{ 'adddish'|trans|capitalize }}"
+                                                href="#">
+                                        </a>
+                                    </div>
+                                </div>
+
+
+                        </div>
+                    </div>
+            </div>
+
+            </div>
+            <a class="btn btn-default glyphicon glyphicon-chevron-left" href="{{ path('restaurant_order') }}">{{ 'back'|trans|capitalize }}</a>
+            <a class="btn btn-default glyphicon " data-toggle="modal" data-target="#myModal" >{{ 'commander'|trans|capitalize }}</a>
+
+
+
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="address col-xs-6"><input type="text" ng-model="address" class="form-control" placeholder="{{ app.user.client.address }}" aria-describedby="basic-addon1"></div>
+                            <div class="input-group">
+                                <input type="datetime" class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <a class="btn btn-default glyphicon " ng-click="passerCommande()" data-dismiss="modal" >{{ 'Accepter'|trans|capitalize }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endblock %}
+        {% block controller %}
+            $scope.plats=[];
+
+            $scope.fetchSuccess = function (data) {
+                $scope.plats = data;
+            };
+
+            $scope.passerCommande = function() {
+                var currentdate = new Date();
+                var datetime =  currentdate.getDate() + "/"
+                    + (currentdate.getMonth()+1)  + "/"
+                    + currentdate.getFullYear() + " @ "
+                    + currentdate.getHours() + ":"
+                    + currentdate.getMinutes() + ":"
+                    + currentdate.getSeconds();
+
+                var commande = {
+                    adresse: "{{ app.user.client.address }}",
+                    commande_plats: [],
+                    date_heure: datetime,
+                    restaurant_id: {{ entity.id }}
+                };
+
+                if (!$scope.address == null || !$scope.address == "") {
+                    commande.adresse = $scope.address;
+                }
+
+                for (x in $scope.plats) {
+                    plat = new Object();
+
+                    plat.plat_id = $scope.plats[x].id;
+                    plat.quantity = $scope.plats[x].quantite;
+
+                    commande.commande_plats.push(plat);
+                }
+
+                // l'appel a l'API pour enregistrer la commande se fera ici.
+                // le token n'est pas necessaire.
+                
+                console.log(commande);
+            };
+        {% endblock %}
+     {% endembed %}
 {% endblock %}

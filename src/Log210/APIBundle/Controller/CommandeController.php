@@ -28,20 +28,24 @@ class CommandeController extends BaseController {
      */
     public function createAction(Request $request) {
         $access_token = $request->headers->get("Authorization");
-        if (is_null($access_token))
-            return new Response('No Authorization Header', Response::HTTP_UNAUTHORIZED);
 
-        $token = $this->findTokenById($access_token);
-        if (is_null($token))
-            return new Response('Invalid Token', Response::HTTP_UNAUTHORIZED);
+        $user = null;
 
-        if ($token->isExpired())
-            return new Response('Expired Token', Response::HTTP_UNAUTHORIZED);
-
-        $user = $token->getUser();
-
-        if (!$user instanceof Client)
-            return new Response('', Response::HTTP_FORBIDDEN);
+        if ($access_token !== null) {
+            $token = $this->findTokenById($access_token);
+            if (is_null($token))
+                return new Response('Invalid Token', Response::HTTP_UNAUTHORIZED);
+    
+            if ($token->isExpired())
+                return new Response('Expired Token', Response::HTTP_UNAUTHORIZED);
+    
+            $user = $token->getUser();
+        } else {
+            $user = $this->getUser();
+        }
+        
+        if ($user === null)
+            return new Response('No Authorization', Response::HTTP_UNAUTHORIZED);
 
         $commandeRequest = $this->convertCommandeRequest($request->getContent());
 
