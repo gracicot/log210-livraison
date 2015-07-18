@@ -1,0 +1,23 @@
+{
+    "id": {{ client.id }},
+    "username": "{{ client.username }}",
+    "email": "{{ client.email }}",
+    "address": "{{ client.address }}",
+    "phone_number": "{{ client.phoneNumber }}",
+    "roles": [
+        {% set first = true %}
+        {% for role in client.roles %}
+            {% if not first %}
+                ,
+            {% endif %}
+            "{{ role }}"
+            {% set first = false %}
+        {% endfor %}
+    ],
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/clients/{{ client.id }}"
+        }
+    ]
+}

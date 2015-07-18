@@ -7,6 +7,7 @@
  */
 
 namespace Log210\APIBundle\Controller;
+use Log210\APIBundle\Entity\Token;
 use Log210\CommonBundle\Controller\BaseController;
 use Log210\LivraisonBundle\Entity\Livreur;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,6 +52,55 @@ class LivreurController extends BaseController {
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
      */
     public function getAction($id) {
-        return new Response();
+        $livreurEntity = $this->getEntityManager()->getRepository("Log210LivraisonBundle:Livreur")->find($id);
+        if (is_null($livreurEntity))
+            return new Response("", Response::HTTP_NOT_FOUND);
+
+        $response = new Response("", Response::HTTP_OK, [
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Livreur:livreur.json.twig", [
+            "livreur" => $livreurEntity
+        ], $response);
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("/me", name="livreur_api_get_me")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
+     */
+    public function getMeAction(Request $request) {
+        $access_token = $request->headers->get("Authorization");
+        if (is_null($access_token))
+            return new Response('No Authorization Header', Response::HTTP_UNAUTHORIZED);
+
+        $token = $this->findTokenById($access_token);
+        if (is_null($token))
+            return new Response('Invalid Token', Response::HTTP_UNAUTHORIZED);
+
+        if ($token->isExpired())
+            return new Response('Expired Token', Response::HTTP_UNAUTHORIZED);
+
+        $user = $token->getUser();
+
+        if (!$user instanceof Livreur)
+            return new Response("", Response::HTTP_FORBIDDEN);
+
+        $response = new Response("", Response::HTTP_OK, [
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Livreur:livreur.json.twig", [
+            "livreur" => $user
+        ], $response);
+    }
+
+    /**
+     * @param string $id
+     * @return Token
+     */
+    private function findTokenById($id) {
+        return $this->getEntityManager()->getRepository('Log210APIBundle:Token')->find($id);
     }
 }

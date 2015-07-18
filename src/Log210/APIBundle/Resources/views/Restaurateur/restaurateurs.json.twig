@@ -1,0 +1,10 @@
+[
+    {% set first = true %}
+    {% for restaurateur in restaurateurs %}
+        {% if not first %}
+            ,
+        {% endif %}
+        {% include 'Log210APIBundle:Restaurateur:restaurateur.json.twig' %}
+        {% set first = false %}
+    {% endfor %}
+]
