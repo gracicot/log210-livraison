@@ -6,6 +6,7 @@ adddish : ajouter une plat
 back: retour
 #c
 createrestaurateur: Créer un nouveau restaurateur
+commandelist: mes commandes
 #d
 dashboard: tableau de bord
 delete: supprimer
@@ -45,7 +46,8 @@ phone: téléphone
 restaurateur: restaurateur
 restaurant: restaurant
 remember_me: se souvenir
-restaurantList: Liste des restaurants
+restaurantlist: mes restaurants
+restaurateurlist: mes restaurateurs
 #s
 save: enregistrer
 signout: Déconnexion

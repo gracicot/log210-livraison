@@ -30,7 +30,9 @@ class RestaurantController extends Controller
             'update' => 'restaurant_update',
             'delete' => 'restaurant_delete',
             'create' => 'restaurant_create',
-            'edit' => 'restaurant_edit'
+            'edit' => 'restaurant_edit',
+            'english' => 'english',
+            'french' => 'french'
         ];
     }
 
@@ -153,4 +155,6 @@ class RestaurantController extends Controller
     {
         return parent::deleteFormAction($request, $id);
     }
+
+
 }
