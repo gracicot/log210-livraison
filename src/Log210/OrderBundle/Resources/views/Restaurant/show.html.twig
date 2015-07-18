@@ -94,7 +94,7 @@
 
             $scope.passerCommande = function() {
 
-                var date=$scope.date.getDate()+"-"+$scope.date.getMonth()+"-"+$scope.date.getFullYear()+" "+$scope.date.getHours()+":"+$scope.date.getMinutes()+":00";
+                var date=$scope.date.getDate()+"-"+($scope.date.getMonth()+1)+"-"+$scope.date.getFullYear()+" "+$scope.date.getHours()+":"+$scope.date.getMinutes()+":00";
 
                 var commande = {
                     adresse: "{{ app.user.address }}",

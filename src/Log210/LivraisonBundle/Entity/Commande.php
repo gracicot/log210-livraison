@@ -174,7 +174,7 @@ class Commande {
      */
     public function setEtat($etat)
     {
-        if (!array_search($etat, Commande::$ETATS))
+        if (array_search($etat, Commande::$ETATS) === false)
             return false;
         $this->etat = $etat;
         return null;

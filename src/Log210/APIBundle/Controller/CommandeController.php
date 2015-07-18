@@ -48,6 +48,9 @@ class CommandeController extends BaseController {
         if ($user === null)
             return new Response('No Authorization', Response::HTTP_UNAUTHORIZED);
 
+        if (!$user instanceof Client)
+            return new Response("", Response::HTTP_FORBIDDEN);
+
         $commandeRequest = $this->convertCommandeRequest($request->getContent());
 
         $commandeRequest->setDate_heure(new \DateTime($commandeRequest->getDate_heure()));
