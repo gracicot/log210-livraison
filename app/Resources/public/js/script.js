@@ -71,6 +71,7 @@ var apiClient = {
 				console.log(jqXHR);
 				callback(null, errorThrown);
 			},
+			method: 'POST',
 			success: function(data, textStatus, jqXHR) {
 				console.log(jqXHR);
 				callback(data);
