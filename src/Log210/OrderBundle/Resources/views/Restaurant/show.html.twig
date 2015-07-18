@@ -68,10 +68,11 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                         </div>
-                        <div class="modal-body">
-                            <div class="address col-xs-6"><input type="text" ng-model="address" class="form-control" placeholder="{{ app.user.address }}" aria-describedby="basic-addon1"></div>
-                            <div class="input-group">
-                                <input type="datetime" class="form-control" />
+                        <div >
+                            <div class="address col-xs-12"><input type="text" ng-model="address" class="form-control" placeholder="{{ app.user.address }}" aria-describedby="basic-addon1"></div>
+                            <div class="col-xs-12">
+                                <span class="col-xs-1">Delivery: </span>
+                                <input id="date" type="datetime-local" ng-model="date" class="form-control " />
 
                             </div>
                         </div>
@@ -92,18 +93,13 @@
             };
 
             $scope.passerCommande = function() {
-                var currentdate = new Date();
-                var datetime =  currentdate.getDate() + "-"
-                    + (currentdate.getMonth()+1)  + "-"
-                    + currentdate.getFullYear() + " "
-                    + currentdate.getHours() + ":"
-                    + currentdate.getMinutes() + ":"
-                    + currentdate.getSeconds();
+
+                var date=$scope.date.getDate()+"-"+$scope.date.getMonth()+"-"+$scope.date.getFullYear()+" "+$scope.date.getHours()+":"+$scope.date.getMinutes()+":00";
 
                 var commande = {
                     adresse: "{{ app.user.address }}",
                     commande_plats: [],
-                    date_heure: datetime,
+                    date_heure: date,
                     restaurant_id: {{ entity.id }}
                 };
 
@@ -119,14 +115,9 @@
 
                     commande.commande_plats.push(plat);
                 }
-
-                // l'appel a l'API pour enregistrer la commande se fera ici.
-                // le token n'est pas necessaire.
-                
                 console.log(commande);
 
-                apiClient.createCommande(commande, function(){console.log("reussi");});
-
+                apiClient.createCommande(commande, function(){ window.location = "../";});
             };
         {% endblock %}
      {% endembed %}
