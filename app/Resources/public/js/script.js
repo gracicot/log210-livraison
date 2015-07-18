@@ -67,7 +67,7 @@ var apiClient = {
 		$.ajax('/api/commandes', {
 			contentType: 'application/json',
 			data: JSON.stringify(commande),
-			error: function(jqHXR, textStatus, errorThrown) {
+			error: function(jqXHR, textStatus, errorThrown) {
 				console.log(jqXHR);
 				callback(null, errorThrown);
 			},
