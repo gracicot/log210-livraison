@@ -61,10 +61,9 @@ var apiClient = {
 	 *  date_heure: "A date-time string representation (ex: '1970-01-01 23:59')",
 	 *  restaurant_id: 0 // The id of the restaurant
 	 * }
-     * @param token A valid API token
      * @param callback A function called once the request is complete. Parameters passed are (commande, error)
 	 */
-	createCommande: function (commande, token, callback) {
+	createCommande: function (commande, callback) {
 		$.ajax('/api/commandes', {
 			contentType: 'application/json',
 			data: JSON.stringify(commande),
