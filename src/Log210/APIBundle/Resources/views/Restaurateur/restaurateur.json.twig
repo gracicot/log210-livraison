@@ -1,0 +1,17 @@
+{
+    "id": {{ restaurateur.id }},
+    "username": "{{ restaurateur.username }}",
+    "email": "{{ restaurateur.email }}",
+    "name": "{{ restaurateur.name }}",
+    "description": "{{ restaurateur.description }}",
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/restaurateurs/{{ restaurateur.id }}"
+        },
+        {
+            "rel": "restaurants",
+            "href": "/api/restaurateurs/{{ restaurateur.id }}/restaurants"
+        }
+    ]
+}

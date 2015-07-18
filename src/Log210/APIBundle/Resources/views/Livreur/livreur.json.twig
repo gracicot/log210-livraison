@@ -1,0 +1,17 @@
+{
+    "id": {{ livreur.id }},
+    "username": "{{ livreur.username }}",
+    "email": "{{ livreur.email }}",
+    "name": "{{ livreur.name }}",
+    "emplacement_actuel": "{{ livreur.emplacementActuel }}",
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/livreurs/{{ livreur.id }}"
+        },
+        {
+            "rel": "commandes",
+            "href": "/api/livreurs/{{ livreur.id }}/commandes"
+        }
+    ]
+}

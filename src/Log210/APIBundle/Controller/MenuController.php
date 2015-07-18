@@ -35,7 +35,15 @@ class MenuController extends BaseController {
 
         $this->persistEntity($menuEntity);
 
-        return $this->createCreatedResponse($this->generateUrl('menu_api_get', array("id" => $menuEntity->getId())));
+        $response = new Response("", Response::HTTP_CREATED, [
+            "Location" => $this->generateUrl('menu_api_get', [
+                "id" => $menuEntity->getId()
+            ]),
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Menu:menu.json.twig", [
+            "menu" => $menuEntity
+        ], $response);
     }
 
     /**
@@ -47,11 +55,12 @@ class MenuController extends BaseController {
     public function getAllAction() {
         $menuEntities = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Menu')->findAll();
 
-        $menuResponses = array();
-        foreach ($menuEntities as $menuEntity)
-            array_push($menuResponses, MenuMapper::toMenuResponse($menuEntity));
-
-        return $this->jsonResponse(new Response($this->toJson($menuResponses)));
+        $response = new Response("", Response::HTTP_OK, [
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Menu:menus.json.twig", [
+            "menus" => $menuEntities
+        ], $response);
     }
 
     /**
@@ -64,11 +73,14 @@ class MenuController extends BaseController {
     public function getAction($id) {
         $menuEntity = $this->getMenuById($id);
         if (is_null($menuEntity))
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
-        $menuResponse = MenuMapper::toMenuResponse($menuEntity);
-
-        return $this->jsonResponse(new Response($this->toJson($menuResponse)));
+        $response = new Response("", Response::HTTP_OK, [
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Menu:menu.json.twig", [
+            "menu" => $menuEntity
+        ], $response);
     }
 
     /**
@@ -82,7 +94,7 @@ class MenuController extends BaseController {
     public function updateMenuAction($id, Request $request) {
         $menuEntity = $this->getMenuById($id);
         if (is_null($menuEntity))
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
         $menuRequest = $this->convertMenuRequest($request->getContent());
 
@@ -90,7 +102,7 @@ class MenuController extends BaseController {
 
         $this->getEntityManager()->flush();
 
-        return $this->createNoContentResponse();
+        return new Response("", Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -103,13 +115,13 @@ class MenuController extends BaseController {
     public function deleteMenuAction($id) {
         $menuEntity = $this->getMenuById($id);
         if (is_null($menuEntity))
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
         foreach ($menuEntity->getPlats() as $platEntity)
             $this->removeEntity($platEntity);
         $this->removeEntity($menuEntity);
 
-        return $this->createNoContentResponse();
+        return new Response("", Response::HTTP_NO_CONTENT);
     }
     /**
      * @param int $id
@@ -124,19 +136,20 @@ class MenuController extends BaseController {
 
         $menuEntity = $this->getMenuById($id);
         if (is_null($menuEntity))
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
         $restaurantEntity = $this->getRestaurantById($requestBody["restaurant-id"]);
         if (is_null($restaurantEntity)) {
-            return new Response('{"error": "Restaurant not found"}', Response::HTTP_BAD_REQUEST, array(
-                "Content-Type" => "application/json"));
+            return new Response('{"error": "Restaurant not found"}', Response::HTTP_BAD_REQUEST, [
+                "Content-Type" => "application/json"
+            ]);
         }
 
         $menuEntity->setRestaurant($restaurantEntity);
 
         $this->getEntityManager()->flush();
 
-        return $this->createNoContentResponse();
+        return new Response("", Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -149,9 +162,11 @@ class MenuController extends BaseController {
     public function getRestaurantAction($id) {
         $menuEntity = $this->getMenuById($id);
         if (is_null($menuEntity) || is_null($menuEntity->getRestaurant()))
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
-        return $this->forward('Log210APIBundle:Restaurant:get', array('id' => $menuEntity->getRestaurant()->getId()));
+        return $this->forward("Log210APIBundle:Restaurant:get", [
+            "id" => $menuEntity->getRestaurant()->getId()
+        ]);
     }
 
     /**
@@ -164,13 +179,13 @@ class MenuController extends BaseController {
     public function unlinkRestaurantAction($id) {
         $menuEntity = $this->getMenuById($id);
         if (is_null($menuEntity))
-            $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
         $menuEntity->setRestaurant(null);
 
         $this->getEntityManager()->flush();
 
-        return $this->createNoContentResponse();
+        return new Response("", Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -184,7 +199,7 @@ class MenuController extends BaseController {
     public function createPlatAction($id, Request $request) {
         $menuEntity = $this->getMenuById($id);
         if (is_null($menuEntity))
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
         $platRequest = $this->convertPlatRequest($request->getContent());
 
@@ -193,8 +208,16 @@ class MenuController extends BaseController {
 
         $this->persistEntity($platEntity);
 
-        return $this->createCreatedResponse($this->generateUrl("menu_api_get_plat", array('menu_id' => $id,
-            'plat_id' => $platEntity->getId())));
+        $response = new Response("", Response::HTTP_CREATED, [
+            "Location" => $this->generateUrl("menu_api_get_plat", [
+                "menu_id" => $id,
+                "plat_id" => $platEntity->getId()
+            ]),
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Plat:plat.json.twig", [
+            "plat" => $platEntity
+        ], $response);
     }
 
     /**
@@ -207,13 +230,14 @@ class MenuController extends BaseController {
     public function getAllPlatsAction($id) {
         $menuEntity = $this->getMenuById($id);
         if (is_null($menuEntity))
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
-        $platResponses = array();
-        foreach ($menuEntity->getPlats() as $platEntity)
-            array_push($platResponses, PlatMapper::toPlatResponse($platEntity));
-
-        return $this->jsonResponse(new Response($this->toJson($platResponses)));
+        $response = new Response("", Response::HTTP_OK, [
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Plat:plats.json.twig", [
+            "plats" => $menuEntity->getPlats()
+        ], $response);
     }
 
     /**
@@ -227,11 +251,14 @@ class MenuController extends BaseController {
     public function getPlatAction($menu_id, $plat_id) {
         $platEntity = $this->getPlatById($plat_id);
         if (is_null($platEntity) || $platEntity->getMenu()->getId() != $menu_id)
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
-        $platResponse = PlatMapper::toPlatResponse($platEntity);
-
-        return $this->jsonResponse(new Response($this->toJson($platResponse)));
+        $response = new Response("", Response::HTTP_OK, [
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Plat:plat.json.twig", [
+            "plat" => $platEntity
+        ], $response);
     }
 
     /**
@@ -246,7 +273,7 @@ class MenuController extends BaseController {
     public function updatePlatAction($menu_id, $plat_id, Request $request) {
         $platEntity = $this->getPlatById($plat_id);
         if (is_null($platEntity) || $platEntity->getMenu()->getId() != $menu_id)
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
         $platRequest = $this->convertPlatRequest($request->getContent());
 
@@ -254,7 +281,7 @@ class MenuController extends BaseController {
 
         $this->getEntityManager()->flush();
 
-        return $this->createNoContentResponse();
+        return new Response("", Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -268,11 +295,11 @@ class MenuController extends BaseController {
     public function deletePlatAction($menu_id, $plat_id) {
         $platEntity = $this->getPlatById($plat_id);
         if (is_null($platEntity) || $platEntity->getMenu()->getId() != $menu_id)
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
         $this->removeEntity($platEntity);
 
-        return $this->createNoContentResponse();
+        return new Response("", Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -336,30 +363,5 @@ class MenuController extends BaseController {
     {
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
-    }
-
-    /**
-     * @param string $newResourceLocation
-     * @return Response
-     */
-    private function createCreatedResponse($newResourceLocation)
-    {
-        return new Response('', Response::HTTP_CREATED, array('Location' => $newResourceLocation));
-    }
-
-    /**
-     * @return Response
-     */
-    private function createNoContentResponse()
-    {
-        return new Response('', Response::HTTP_NO_CONTENT);
-    }
-
-    /**
-     * @return Response
-     */
-    private function createNotFoundResponse()
-    {
-        return new Response('', Response::HTTP_NOT_FOUND);
     }
 }

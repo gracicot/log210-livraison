@@ -5,8 +5,6 @@ namespace Log210\APIBundle\Controller;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManager;
 use Log210\APIBundle\Entity\Token;
-use Log210\APIBundle\Message\Response\Link;
-use Log210\APIBundle\Message\Response\TokenResponse;
 use Log210\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,10 +63,14 @@ class TokenController extends BaseController {
         $this->getEntityManager()->flush();
 
         $response = new Response('', Response::HTTP_CREATED, [
-            "Location" => $this->generateUrl('token_api_get', ["id" => $newToken->getId()], true),
+            "Location" => $this->generateUrl('token_api_get', [
+                "id" => $newToken->getId()
+            ], true),
             "Content-Type" => "application/json"
         ]);
-        return $this->render("Log210APIBundle:Token:token.json.twig", ["token" => $newToken], $response);
+        return $this->render("Log210APIBundle:Token:token.json.twig", [
+            "token" => $newToken
+        ], $response);
     }
 
     /**
@@ -87,7 +89,9 @@ class TokenController extends BaseController {
         $response = new Response('', Response::HTTP_OK, [
             'Content-Type' => 'application/json'
         ]);
-        return $this->render("Log210APIBundle:Token:token.json.twig", ["token" => $token], $response);
+        return $this->render("Log210APIBundle:Token:token.json.twig", [
+            "token" => $token
+        ], $response);
     }
 
     /**
@@ -142,22 +146,6 @@ class TokenController extends BaseController {
         $encoder = $this->getEncoder($user);
 
         return $encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt()) == 1 ? true : false;
-    }
-
-    /**
-     * @param Token $token
-     * @return TokenResponse
-     */
-    private function toTokenResponse($token)
-    {
-        $tokenResponse = new TokenResponse();
-        $tokenResponse->setAccess_token($token->getId());
-        $tokenResponse->setRefresh_token($token->getRefreshToken());
-        $dateNow = strtotime("now");
-        $dateExpiry = strtotime($token->getExpirationDate()->format('Y-m-d H:i:s'));
-        $tokenResponse->setExpires_in($dateExpiry - $dateNow);
-        $tokenResponse->setLinks(array(new Link("self", "/api/tokens/" . $token->getId())));
-        return $tokenResponse;
     }
 
     /**

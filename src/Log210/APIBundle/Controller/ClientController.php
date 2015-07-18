@@ -2,8 +2,6 @@
 
 namespace Log210\APIBundle\Controller;
 use Log210\APIBundle\Entity\Token;
-use Log210\APIBundle\Message\Response\Link;
-use Log210\APIBundle\Message\Response\ClientResponse;
 use Log210\CommonBundle\Controller\BaseController;
 use Log210\LivraisonBundle\Entity\Client;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,8 +35,16 @@ class ClientController extends BaseController {
 
         $this->getEntityManager()->persist($newClientEntity);
         $this->getEntityManager()->flush();
-        return new Response('', Response::HTTP_CREATED, array('Location' => $this
-            ->generateUrl('client_api_get', array("id" => $newClientEntity->getId()), true)));
+
+        $response = new Response('', Response::HTTP_CREATED, [
+            "Location" => $this->generateUrl("client_api_get", [
+                "id" => $newClientEntity->getId()
+            ], true),
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Client:client.json.twig", [
+            "client" => $newClientEntity
+        ], $response);
     }
 
     /**
@@ -65,9 +71,12 @@ class ClientController extends BaseController {
         if (!$user instanceof Client)
             return new Response('', Response::HTTP_FORBIDDEN);
 
-        $clientResponse = $this->toClientResponse($user);
-
-        return new Response($this->toJson($clientResponse), Response::HTTP_OK, array('Content-Type' => 'application/json'));
+        $response = new Response('', Response::HTTP_OK, [
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Client:client.json.twig", [
+            "client" => $user
+        ], $response);
     }
 
     /**
@@ -98,43 +107,20 @@ class ClientController extends BaseController {
         if ($user->getId() != $id)
             return new Response('', Response::HTTP_UNAUTHORIZED);
 
-        $clientResponse = $this->toClientResponse($user);
-
-        return new Response($this->toJson($clientResponse), Response::HTTP_OK, array('Content-Type' => 'application/json'));
+        $response = new Response('', Response::HTTP_OK, [
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Client:client.json.twig", [
+            "client" => $user
+        ], $response);
     }
 
     /**
      * @param string $id
      * @return Token
      */
-    private function findTokenById($id)
-    {
+    private function findTokenById($id) {
         return $this->getEntityManager()->getRepository('Log210APIBundle:Token')->find($id);
-    }
-
-    /**
-     * @param Client $client
-     * @return ClientResponse
-     */
-    private function toClientResponse($client)
-    {
-        $clientResponse = new ClientResponse();
-        $clientResponse->setId($client->getId());
-        $clientResponse->setUsername($client->getUsername());
-        $clientResponse->setEmail($client->getEmail());
-        $clientResponse->setAddress($client->getAddress());
-        $clientResponse->setPhone_number($client->getPhoneNumber());
-        $clientResponse->setRoles($client->getRoles());
-        $clientResponse->setLinks(array(new Link('self', '/api/clients/' . $client->getId())));
-        return $clientResponse;
-    }
-
-    /**
-     * @param $id
-     * @return Client
-     */
-    private function getClientById($id) {
-        return $this->getEntityManager()->getRepository('Log210LivraisonBundle:Client')->find($id);
     }
 
 }

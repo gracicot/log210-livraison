@@ -2,7 +2,6 @@
 
 namespace Log210\APIBundle\Controller;
 
-use Log210\APIBundle\Mapper\RestaurantMapper;
 use Log210\APIBundle\Mapper\RestaurateurMapper;
 use Log210\APIBundle\Message\Request\RestaurateurRequest;
 use Log210\CommonBundle\Controller\BaseController;
@@ -31,8 +30,15 @@ class RestaurateurController extends BaseController {
 
         $this->persistEntity($restaurateurEntity);
 
-        return $this->createCreatedResponse($this->generateUrl('restaurateur_api_get', array('id' => $restaurateurEntity
-            ->getId()), true));
+        $response = new Response("", Response::HTTP_CREATED, [
+            "Location" => $this->generateUrl("restaurateur_api_get", [
+                "id" => $restaurateurEntity->getId()
+            ], true),
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Restaurateur:restaurateur.json.twig", [
+            "restaurateur" => $restaurateurEntity
+        ], $response);
     }
 
     /**
@@ -42,14 +48,15 @@ class RestaurateurController extends BaseController {
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
      */
     public function getAllAction() {
-        $restaurateursEntities = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurateur')
+        $restaurateurEntities = $this->getEntityManager()->getRepository('Log210LivraisonBundle:Restaurateur')
             ->findAll();
 
-        $restaurateursResponses = array();
-        foreach ($restaurateursEntities as $restaurateurEntity)
-            array_push($restaurateursResponses, RestaurateurMapper::toRestaurateurResponse($restaurateurEntity));
-
-        return $this->jsonResponse(new Response($this->toJson($restaurateursResponses)));
+        $response = new Response("", Response::HTTP_OK, [
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Restaurateur:restaurateurs.json.twig", [
+            "restaurateurs" => $restaurateurEntities
+        ], $response);
     }
 
     /**
@@ -63,11 +70,14 @@ class RestaurateurController extends BaseController {
         $restaurateurEntity = $this->getRestaurateurById($id);
 
         if (is_null($restaurateurEntity))
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
-        $restaurateur = RestaurateurMapper::toRestaurateurResponse($restaurateurEntity);
-
-        return $this->jsonResponse(new Response($this->toJson($restaurateur)));
+        $response = new Response("", Response::HTTP_OK, [
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Restaurateur:restaurateur.json.twig", [
+            "restaurateur" => $restaurateurEntity
+        ], $response);
     }
 
     /**
@@ -82,7 +92,7 @@ class RestaurateurController extends BaseController {
         $restaurateurEntity = $this->getRestaurateurById($id);
 
         if (is_null($restaurateurEntity))
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
         $restaurateurRequest = $this->convertRestaurateurRequest($request->getContent());
 
@@ -90,7 +100,7 @@ class RestaurateurController extends BaseController {
 
         $this->getEntityManager()->flush();
 
-        return $this->createNoContentResponse();
+        return new Response("", Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -104,14 +114,14 @@ class RestaurateurController extends BaseController {
         $restaurateurEntity = $this->getRestaurateurById($id);
 
         if (is_null($restaurateurEntity))
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
         foreach ($restaurateurEntity->getRestaurants() as $restaurantEntity)
             $restaurantEntity->setRestaurateur(null);
 
         $this->removeEntity($restaurateurEntity);
 
-        return $this->createNoContentResponse();
+        return new Response("", Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -125,13 +135,14 @@ class RestaurateurController extends BaseController {
         $restaurateurEntity = $this->getRestaurateurById($id);
 
         if (is_null($restaurateurEntity))
-            return $this->createNotFoundResponse();
+            return new Response("", Response::HTTP_NOT_FOUND);
 
-        $restaurantResponses = array();
-        foreach ($restaurateurEntity->getRestaurants() as $restaurantEntity)
-            array_push($restaurantResponses, RestaurantMapper::toRestaurantResponse($restaurantEntity));
-
-        return $this->jsonResponse(new Response($this->toJson($restaurantResponses)));
+        $response = new Response("", Response::HTTP_OK, [
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Restaurant:restaurants.json.twig", [
+            "restaurants" => $restaurateurEntity->getRestaurants()
+        ], $response);
     }
 
     /**
@@ -159,31 +170,6 @@ class RestaurateurController extends BaseController {
     {
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
-    }
-
-    /**
-     * @param string $newResourceLocation
-     * @return Response
-     */
-    private function createCreatedResponse($newResourceLocation)
-    {
-        return new Response('', Response::HTTP_CREATED, array('Location' => $newResourceLocation));
-    }
-
-    /**
-     * @return Response
-     */
-    private function createNoContentResponse()
-    {
-        return new Response('', Response::HTTP_NO_CONTENT);
-    }
-
-    /**
-     * @return Response
-     */
-    private function createNotFoundResponse()
-    {
-        return new Response('', Response::HTTP_NOT_FOUND);
     }
 
     /**
