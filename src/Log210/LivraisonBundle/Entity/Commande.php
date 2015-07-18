@@ -3,7 +3,6 @@
 namespace Log210\LivraisonBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -44,7 +43,7 @@ class Commande {
     /**
      * @var \DateTime $dateHeure
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateHeureLivraison;
 
@@ -72,7 +71,7 @@ class Commande {
     /**
      * @var Restaurant $restaurant
      *
-     * @ORM\ManyToOne(targetEntity="Restaurant")
+     * @ORM\ManyToOne(targetEntity="Restaurant", inversedBy="commandes")
      * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
      */
     private $restaurant;

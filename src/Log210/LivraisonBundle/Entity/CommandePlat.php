@@ -23,7 +23,7 @@ class CommandePlat {
     /**
      * @var Commande $commande
      *
-     * @ORM\ManyToOne(targetEntity="Commande")
+     * @ORM\ManyToOne(targetEntity="Commande", inversedBy="commandePlats")
      * @ORM\JoinColumn(name="commande_id", referencedColumnName="id")
      * @ORM\Id
      */

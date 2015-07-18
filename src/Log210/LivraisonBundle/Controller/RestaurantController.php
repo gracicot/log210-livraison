@@ -17,7 +17,7 @@ use Log210\LivraisonBundle\Form\RestaurantType;
  * Restaurant controller.
  *
  * @Route("/restaurant")
- * @Security("has_role('ROLE_RESTAURATEUR')")
+ * @Security("has_role('ROLE_RESTAURATEUR') || has_role('ROLE_ENTREPRENEUR')")
  */
 class RestaurantController extends Controller
 {

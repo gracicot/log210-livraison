@@ -13,9 +13,6 @@ namespace Log210\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Security\Core\Validator\Constraint\UserPassword as OldUserPassword;
-use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class ProfileFormType extends AbstractType
 {
@@ -23,7 +20,8 @@ class ProfileFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('adress');
+        $builder->add('address')
+            ->add("phoneNumber");
     }
 
     public function getParent()

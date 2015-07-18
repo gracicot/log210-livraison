@@ -75,9 +75,11 @@ class CommandeController extends BaseController {
 
         $this->getEntityManager()->flush();
 
-        $this->sendEmail('Confirmation de commande', "log210ete201501@mail.com", $user->getEmail(), "Votre commande avec le numero de confirmation " . $commandeEntity->getId() . " a ete creer");
+        $this->sendEmail('Confirmation de commande', "log210ete201501@mail.com", $user->getEmail(),
+            "Votre commande avec le numero de confirmation " . $commandeEntity->getId() . " a ete creer");
 
-        $this->sendTextMessage($user->getPhoneNumber(), "Votre commande avec le numero de confirmation " . $commandeEntity->getId() . " a ete creer");
+        $this->sendTextMessage($user->getPhoneNumber(), "Votre commande avec le numero de confirmation " .
+            $commandeEntity->getId() . " a ete creer");
 
         $response = new Response('', Response::HTTP_CREATED, [
             'Location' => $this->generateUrl('commande_api_get', [
@@ -212,10 +214,11 @@ class CommandeController extends BaseController {
 
         curl_setopt($curlHandle, CURLOPT_URL, "http://textbelt.com/canada");
         curl_setopt($curlHandle, CURLOPT_POST, true);
-        curl_setopt($curlHandle, CURLOPT_POSTFIELDS, "number=" . urlencode($phoneNumber) . "&message=" . urlencode($message));
+        curl_setopt($curlHandle, CURLOPT_POSTFIELDS, "number=" . urlencode($phoneNumber) . "&message=" .
+            urlencode($message));
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
 
         curl_exec($curlHandle);
-
         curl_close($curlHandle);
     }
 
@@ -227,7 +230,8 @@ class CommandeController extends BaseController {
      */
     private function sendEmail($title, $from, $to, $body)
     {
-        $transport = \Swift_SmtpTransport::newInstance('smtp.mail.com', 587)->setUsername("log210ete201501@mail.com")->setPassword("fuhrmanator")->setEncryption("tls");
+        $transport = \Swift_SmtpTransport::newInstance('smtp.mail.com', 587)->setUsername("log210ete201501@mail.com")
+            ->setPassword("fuhrmanator")->setEncryption("tls");
         $mailer = \Swift_Mailer::newInstance($transport);
         $message = \Swift_Message::newInstance($title);
         $message->setFrom($from);

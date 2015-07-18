@@ -3,6 +3,7 @@
     "date_heure": "{{ commande.dateHeure|date('Y-m-d H:i') }}",
     "date_heure_livraison": "{{ commande.dateHeureLivraison|date('Y-m-d H:i') }}",
     "adresse": "{{ commande.adresse }}",
+    "etat": "{{ commande.etat }}",
     "commande_plats": [
         {% set first = true %}
         {% for commandePlat in commande.commandePlats %}
