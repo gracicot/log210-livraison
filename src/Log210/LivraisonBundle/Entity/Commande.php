@@ -67,6 +67,14 @@ class Commande {
      */
     private $client;
 
+    /**
+     * @var Livreur $livreur
+     *
+     * @ORM\ManyToOne(targetEntity="Livreur", inversedBy="commandesAcceptees")
+     * @ORM\JoinColumn(name="livreur_id", referencedColumnName="id")
+     */
+    private $livreur;
+
     public function __construct() {
         $this->commandePlats = new ArrayCollection();
     }
@@ -189,6 +197,22 @@ class Commande {
     public function setClient($client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * @return Livreur
+     */
+    public function getLivreur()
+    {
+        return $this->livreur;
+    }
+
+    /**
+     * @param Livreur $livreur
+     */
+    public function setLivreur($livreur)
+    {
+        $this->livreur = $livreur;
     }
 
     public function getTotal()
