@@ -25,7 +25,7 @@ abstract class BaseController extends SymfonyController
         $encoders = [new JsonEncoder()];
         $normalizer = new GetSetMethodNormalizer();
         $serializer = new Serializer([$normalizer], $encoders);
-        
+
 
         return $serializer->serialize($content, 'json');
 	}

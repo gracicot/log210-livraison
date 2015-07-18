@@ -3,6 +3,7 @@
 namespace Log210\LivraisonBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -26,6 +27,26 @@ class DashboardController extends Controller
      */
     public function indexAction(Request $request)
     {
+      //$request = $this->getRequest();
+
+      //$locale=$request->getLocale();
+
+      //$request->setLocale('en_US')
+      //$this->get('session')->set('_locale','en');
+
         return [];
     }
+
+    public function selectLangAction($langue = null)
+{
+    if($langue != null)
+    {
+        $this->container->get('request')->setLocale($langue);
+    }
+
+    $url = $this->container->get('router')->generate('dashboard', array('_locale' => $langue));
+
+    return new RedirectResponse($url);
+}
+
 }

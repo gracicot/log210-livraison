@@ -6,6 +6,7 @@ action: actions
 back: back
 #c
 createrestaurateur: Create a new restaurateur
+commandelist: my order
 #d
 dashboard: dashboard
 delete: delete
@@ -45,11 +46,12 @@ phone: phone
 restaurateur: restaurateur
 restaurant: restaurant
 remember_me: remember_me
-restaurantList: Restaurant list
+restaurantlist: my restaurants
+restaurateurlist: my restaurateurs
 #s
 save: save
-signout: déconnexion
-signin: connexion
+signout: signout
+signin: connect
 signup: signup
 submit: submit
 delete: supprimer

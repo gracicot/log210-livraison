@@ -4,7 +4,7 @@ namespace Log210\CommonBundle\Controller;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response; 
+use Symfony\Component\HttpFoundation\Response;
 
 use InvalidArgumentException;
 
@@ -187,7 +187,7 @@ abstract class Controller extends BaseController
             'form' => $editForm->createView(),
         ];
     }
-    
+
     /**
      * Deletes a entity.
      */
