@@ -72,9 +72,7 @@
                             <div class="address col-xs-6"><input type="text" ng-model="address" class="form-control" placeholder="{{ app.user.address }}" aria-describedby="basic-addon1"></div>
                             <div class="input-group">
                                 <input type="datetime" class="form-control" />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
+
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -95,9 +93,9 @@
 
             $scope.passerCommande = function() {
                 var currentdate = new Date();
-                var datetime =  currentdate.getDate() + "/"
-                    + (currentdate.getMonth()+1)  + "/"
-                    + currentdate.getFullYear() + " @ "
+                var datetime =  currentdate.getDate() + "-"
+                    + (currentdate.getMonth()+1)  + "-"
+                    + currentdate.getFullYear() + " "
                     + currentdate.getHours() + ":"
                     + currentdate.getMinutes() + ":"
                     + currentdate.getSeconds();
@@ -126,6 +124,9 @@
                 // le token n'est pas necessaire.
                 
                 console.log(commande);
+
+                apiClient.createCommande(commande, function(){console.log("reussi");});
+
             };
         {% endblock %}
      {% endembed %}
