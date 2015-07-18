@@ -3,6 +3,7 @@
 namespace Log210\LivraisonBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,6 +14,16 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="commande")
  */
 class Commande {
+
+    private static $ETATS = [
+        Commande::ETAT_COMMANDER,
+        Commande::ETAT_ENPREPARATION,
+        Commande::ETAT_PRETE
+    ];
+
+    const ETAT_COMMANDER = "commander";
+    const ETAT_ENPREPARATION = "en preparation";
+    const ETAT_PRETE = "prete";
 
     /**
      * @var int $id
@@ -29,6 +40,13 @@ class Commande {
      * @ORM\Column(type="datetime")
      */
     private $dateHeure;
+
+    /**
+     * @var \DateTime $dateHeure
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $dateHeureLivraison;
 
     /**
      * @var string $adresse
@@ -112,6 +130,22 @@ class Commande {
     }
 
     /**
+     * @return \DateTime
+     */
+    public function getDateHeureLivraison()
+    {
+        return $this->dateHeureLivraison;
+    }
+
+    /**
+     * @param \DateTime $dateHeureLivraison
+     */
+    public function setDateHeureLivraison($dateHeureLivraison)
+    {
+        $this->dateHeureLivraison = $dateHeureLivraison;
+    }
+
+    /**
      * @return string
      */
     public function getAdresse()
@@ -137,10 +171,14 @@ class Commande {
 
     /**
      * @param string $etat
+     * @return null|bool
      */
     public function setEtat($etat)
     {
+        if (!array_search($etat, Commande::$ETATS))
+            return false;
         $this->etat = $etat;
+        return null;
     }
 
     /**

@@ -9,6 +9,7 @@ use Log210\LivraisonBundle\Entity\Commande;
 use Log210\LivraisonBundle\Entity\CommandePlat;
 use Log210\LivraisonBundle\Entity\Plat;
 use Log210\LivraisonBundle\Entity\Restaurant;
+use Log210\LivraisonBundle\Entity\Restaurateur;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -55,7 +56,7 @@ class CommandeController extends BaseController {
         $commandeEntity->setAdresse($commandeRequest->getAdresse());
         $commandeEntity->setDateHeure($commandeRequest->getDate_heure());
         $commandeEntity->setRestaurant($this->getRestaurantById($commandeRequest->getRestaurant_id()));
-        $commandeEntity->setEtat("commander");
+        $commandeEntity->setEtat(Commande::ETAT_COMMANDER);
         $commandeEntity->setClient($user);
 
         $this->getEntityManager()->persist($commandeEntity);
@@ -101,6 +102,55 @@ class CommandeController extends BaseController {
 
         $response = new Response('', Response::HTTP_OK, [
             'Content-Type' => 'application/json'
+        ]);
+        return $this->render("Log210APIBundle:Commande:commande.json.twig", [
+            "commande" => $commandeEntity
+        ], $response);
+    }
+
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("/{id}", name="commande_api_update")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("PUT")
+     */
+    public function updateAction($id, Request $request) {
+        $access_token = $request->headers->get("Authorization");
+
+        if (is_null($access_token))
+            return new Response("", Response::HTTP_UNAUTHORIZED);
+
+        $token = $this->findTokenById($access_token);
+        if (is_null($token))
+            return new Response("", Response::HTTP_UNAUTHORIZED);
+
+        if ($token->isExpired())
+            return new Response("", Response::HTTP_UNAUTHORIZED);
+
+        $user = $token->getUser();
+        if (!$user instanceof Restaurateur)
+            return new Response("", Response::HTTP_FORBIDDEN);
+
+        $commandeEntity = $this->findCommandeById($id);
+        if (is_null($commandeEntity))
+            return new Response("", Response::HTTP_NOT_FOUND);
+
+        $found = false;
+        foreach ($user->getRestaurants() as $restaurant)
+            if ($restaurant->getId() === $commandeEntity->getId())
+                $found = true;
+        if (!$found)
+            return new Response("", Response::HTTP_FORBIDDEN);
+
+        $commandeRequest = json_decode($request->getContent(), true);
+        $commandeEntity->setEtat($commandeRequest["etat"]);
+
+        $this->getEntityManager()->flush();
+
+        $response = new Response("", Response::HTTP_OK, [
+            "Content-Type" => "application/json"
         ]);
         return $this->render("Log210APIBundle:Commande:commande.json.twig", [
             "commande" => $commandeEntity

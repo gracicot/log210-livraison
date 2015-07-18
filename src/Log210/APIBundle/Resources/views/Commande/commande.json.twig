@@ -1,6 +1,7 @@
 {
     "id": {{ commande.id }},
     "date_heure": "{{ commande.dateHeure|date('Y-m-d H:i') }}",
+    "date_heure_livraison": "{{ commande.dateHeureLivraison|date('Y-m-d H:i') }}",
     "adresse": "{{ commande.adresse }}",
     "commande_plats": [
         {% set first = true %}
