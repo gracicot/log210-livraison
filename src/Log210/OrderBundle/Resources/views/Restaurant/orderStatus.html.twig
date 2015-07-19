@@ -1,0 +1,47 @@
+{% extends 'Log210OrderBundle:Restaurant:layout.html.twig' %}
+
+{% block content %}
+     {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'carnet', fetch: path('restaurant_api_get_commandes', {restaurant_id: restaurant.id}), restaurant:restaurant } only %}
+        {% block content %}
+            <div ng-if="commandes.length > 0">
+                <div ng-repeat="commande in commandes">
+                    <div class="row">
+                        <div class="col-sm-9" style="border-bottom: thin dotted black;margin-top:20px;">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    {{ 'commande.client.name' }}
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                    {{ 'commande.total' }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div ng-if="commande.etat === 'commander'" class="text-right">
+                                <div>Commandée</div>
+                                <a class="btn btn-success">Preparer</a>
+                            </div>
+                            <div ng-if="commande.etat === 'en preparation'" class="text-right">
+                                <div>En préparation</div>
+                                <div><a class="btn btn-success">Prête</a></div>
+                            </div>
+                            <div ng-if="commande.etat === 'prete'" class="text-right">
+                                <div>Prête</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="commandes.length == 0 && loading == 0">
+                <span>{{ 'noCommande'|trans|capitalize }}</span>
+            </div>
+        {% endblock %}
+        {% block controller %}
+            $scope.commandes=[];
+
+            $scope.fetchSuccess = function (data) {
+                $scope.commandes = data;
+            };
+        {% endblock %}
+     {% endembed %}
+{% endblock %}

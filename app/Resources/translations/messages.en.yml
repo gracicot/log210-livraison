@@ -28,6 +28,7 @@ list: list
 #m
 
 #n
+noCommande: This restaurant has no pending commands
 noDescr: A dish has an empty description
 noRestaurantWarning: No restaurant selected
 noRestaurateurWarning: No restaurateur selected

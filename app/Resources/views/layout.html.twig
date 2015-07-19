@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<ul class="nav pull-right">
-<li><a href="{{ path('select_lang', {'langue' : 'fr'}) }}">FR</a></li>
-    <li><a href="{{ path('select_lang', {'langue' : 'en'}) }}">EN</a></li>
-</ul>
 <html>
     <head>
         <meta charset="UTF-8" />
@@ -28,8 +24,7 @@
             <div id="page-header">
                 <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
                     <div class="container">
-                      {% set user = app.security.getToken().getUser() %}
-                        {% if user != 'anon.' %}
+                        {% if app.user != 'anon.' %}
                             {% if is_granted('ROLE_USER') %}
                               <a href="{{ path('restaurant_order')}}" class="navbar-brand">{{ "restaurant"|trans|capitalize }}</a>
                               {% endif %}
@@ -39,19 +34,37 @@
                             {% if is_granted('ROLE_ENTREPRENEUR') %}
                               <a href="{{ path('restaurateur')}}" class="navbar-brand">{{ "restaurateurlist"|trans|capitalize }}</a>
                             {% endif %}
-                            {% if user == 'livreur' %}
+                            {% if app.user == 'livreur' %}
                               <a href="#" class="navbar-brand">{{ "commandelist"|trans|capitalize }} </a>
                             {% endif %}
 
-                            {% if user == 'client' %}
+                            {% if app.user == 'client' %}
                               <a href="#" class="navbar-brand">{{ "restaurantlist"|trans|capitalize }}</a>
                             {% endif %}
                             <div class="navbar-right">
-                              <a href="{{path('fos_user_profile_show')}}" class="navbar-brand">{{user}}</a>"
-                              <a href="{{path('fos_user_security_logout')}}" class="btn btn-default navbar-btn"> {{'signout'|trans|capitalize}}</a>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Language <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{ path('select_lang', {'langue' : 'fr'}) }}">Français</a></li>
+                                        <li><a href="{{ path('select_lang', {'langue' : 'en'}) }}">English</a></li>
+                                    </ul>
+                                </div>
+                                <a href="{{path('fos_user_profile_show')}}" class="navbar-brand">{{app.user}}</a>"
+                                <a href="{{path('fos_user_security_logout')}}" class="btn btn-default navbar-btn"> {{'signout'|trans|capitalize}}</a>
                             </div>
                         {% else %}
                             <div class="navbar-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Language <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{ path('select_lang', {'langue' : 'fr'}) }}">Français</a></li>
+                                        <li><a href="{{ path('select_lang', {'langue' : 'en'}) }}">English</a></li>
+                                    </ul>
+                                </div>
                               {{ render(controller('FOSUserBundle:Security:login'))}}
                             </div>
                         {% endif %}

@@ -28,6 +28,7 @@ list: liste
 #m
 
 #n
+noCommande: Ce restaurant n'a pas de commande en attente
 noDescr: Un plat a une decription vide
 noRestaurantWarning: Aucun restaurant choisi
 noRestaurateurWarning: Aucun restaurateur choisi

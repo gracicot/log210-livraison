@@ -81,10 +81,10 @@ abstract class Controller extends BaseController
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    protected function createCreateForm($entity)
+    protected function createCreateForm($entity, AbstractType $form = null, $route = 'create')
     {
-        $form = $this->createForm($this->getForm(), $entity, [
-            'action' => $this->generateUrl($this->getRoute('create')),
+        $form = $this->createForm(($form !== null ? $form:$this->getForm()), $entity, [
+            'action' => $this->generateUrl($this->getRoute($route)),
             'method' => 'POST',
         ]);
 
@@ -101,10 +101,7 @@ abstract class Controller extends BaseController
         $entity = $this->getRepository()->makeEntity();
         $form   = $this->createCreateForm($entity);
 
-        return [
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ];
+        return [ 'form' => $form->createView() ];
     }
 
     /**
