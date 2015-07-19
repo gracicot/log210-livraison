@@ -1,21 +1,20 @@
 {% extends 'Log210OrderBundle:Restaurant:layout.html.twig' %}
 
-
 {% block content %}
-    {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'commande', fetch: path('menu_api_get_all_plats', {id: entity.menus[0].id}), entity:entity } only %}e
+    {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'commande', fetch: path('commande_api_get_all') } only %}
         {% block content %}
     <div class="address "><input type="text" ng-model="address" class="form-control"  aria-describedby="basic-addon1"></div>
 	<div>
         <ul>
-            {% for entity in entities %}
+            <div ng-repeat="commande in commandes">
 
                 <div data-toggle="modal" data-target="#myModal">
                     <li style="border-bottom: thin dotted black;margin-top:20px;">
-                        <span class="pull-right">{{ entity.total }}</span>
-                        <a>{{ entity.client }}</a>
+                        <span class="pull-right">{{ "commande.total" |ngExpr}}</span>
+                        <a>{{ "commande.client" |ngExpr}}</a>
                     </li>
                 </div>
-            {% endfor %}
+            </div>
         </ul>
     </div>
 
@@ -36,6 +35,15 @@
             </div>
         </div>
     </div>
+        {% endblock %}
+        {% block controller %}
+            $scope.commandes=[];
+
+            $scope.fetchSuccess = function (data) {
+            console.log(data);
+            $scope.commandes = data;
+            };
+
         {% endblock %}
     {% endembed %}
 {% endblock %}
