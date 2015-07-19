@@ -10,8 +10,8 @@
 
                 <div data-toggle="modal" data-target="#myModal">
                     <li style="border-bottom: thin dotted black;margin-top:20px;">
-                        <span class="pull-right">{{ "commande.total" |ngExpr}}</span>
-                        <a>{{ "commande.client" |ngExpr}}</a>
+                        <span class="pull-right">{{ "commande.date_heure" |ngExpr}}</span>
+                        <a>{{ "commande.adresse" |ngExpr}}</a>
                     </li>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <a class="btn btn-default glyphicon " ng-click="#" data-dismiss="modal" >{{ 'Accepter'|trans|capitalize }}</a>
+                    <a class="btn btn-default glyphicon "  data-dismiss="modal" >{{ 'Accepter'|trans|capitalize }}</a>
                 </div>
             </div>
         </div>
@@ -42,6 +42,7 @@
             $scope.fetchSuccess = function (data) {
             $scope.commandes = data;
             };
+
 
         {% endblock %}
     {% endembed %}

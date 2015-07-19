@@ -58,7 +58,7 @@ class RestaurantController extends Controller
      * @Method("GET")
      * @Template("Log210OrderBundle:Restaurant:listeOrder.html.twig")
      */
-    public function listeOrderAction(Restaurant $restaurant)
+    public function listeOrderAction()
     {
         return [];
     }
