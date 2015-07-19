@@ -124,17 +124,24 @@ class CommandeController extends BaseController {
     public function updateAction($id, Request $request) {
         $access_token = $request->headers->get("Authorization");
 
-        if (is_null($access_token))
+        $user = null;
+
+        if (!is_null($access_token)) {
+            $token = $this->findTokenById($access_token);
+            if (is_null($token))
+                return new Response("", Response::HTTP_UNAUTHORIZED);
+
+            if ($token->isExpired())
+                return new Response("", Response::HTTP_UNAUTHORIZED);
+
+            $user = $token->getUser();
+        } else {
+            $user = $this->getUser();
+        }
+
+        if (is_null($user))
             return new Response("", Response::HTTP_UNAUTHORIZED);
 
-        $token = $this->findTokenById($access_token);
-        if (is_null($token))
-            return new Response("", Response::HTTP_UNAUTHORIZED);
-
-        if ($token->isExpired())
-            return new Response("", Response::HTTP_UNAUTHORIZED);
-
-        $user = $token->getUser();
         if (!$user instanceof Restaurateur)
             return new Response("", Response::HTTP_FORBIDDEN);
 
@@ -149,10 +156,15 @@ class CommandeController extends BaseController {
         if (!$found)
             return new Response("", Response::HTTP_FORBIDDEN);
 
+
         $commandeRequest = json_decode($request->getContent(), true);
         $commandeEntity->setEtat($commandeRequest["etat"]);
 
         $this->getEntityManager()->flush();
+
+        $this->sendTextMessage($commandeEntity->getClient()->getPhoneNumber(),
+            "Votre commande avec le numero de confirmation " . $commandeEntity->getId() . " est maintenant "
+            . $commandeEntity->getEtat());
 
         $response = new Response("", Response::HTTP_OK, [
             "Content-Type" => "application/json"

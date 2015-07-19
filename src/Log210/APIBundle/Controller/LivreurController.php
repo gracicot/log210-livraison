@@ -106,17 +106,25 @@ class LivreurController extends BaseController {
      */
     public function linkCommandeAction(Request $request) {
         $access_token = $request->headers->get("Authorization");
-        if (is_null($access_token))
+
+        $user = null;
+
+        if (!is_null($access_token)) {
+            $token = $this->findTokenById($access_token);
+            if (is_null($token))
+                return new Response("", Response::HTTP_UNAUTHORIZED);
+
+            if ($token->isExpired())
+                return new Response("", Response::HTTP_UNAUTHORIZED);
+
+            $user = $token->getUser();
+        } else {
+            $user = $this->getUser();
+        }
+
+        if (is_null($user))
             return new Response("", Response::HTTP_UNAUTHORIZED);
 
-        $token = $this->findTokenById($access_token);
-        if (is_null($token))
-            return new Response("", Response::HTTP_UNAUTHORIZED);
-
-        if ($token->isExpired())
-            return new Response("", Response::HTTP_UNAUTHORIZED);
-
-        $user = $token->getUser();
         if (!$user instanceof Livreur)
             return new Response("", Response::HTTP_FORBIDDEN);
 
