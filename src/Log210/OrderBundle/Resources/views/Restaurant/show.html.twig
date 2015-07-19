@@ -27,32 +27,19 @@
  {{ block('show') }}
 
 
-     {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'commande', fetch: path('menu_api_get_all_plats', {id: entity.menus[0].id}), entity:entity } only %}e
+     {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'commande', fetch: path('menu_api_get_all_plats', {id: entity.menus[0].id}), entity:entity } only %}
         {% block content %}
             <div class="row">
-            <h2>{{ entity.menus[0]}}</h2>
             <div class="col-md-6">
+                <h2>{{ entity.menus[0]}}</h2>
                 <div ng-repeat="plat in plats">
-                        <div class="listePlat">
-
-                                <div  class="row card card-plat-treeview">
-                                    <div class=" col-xs-6">{{ "plat.name" |ngExpr}}</div>
-                                    <div class="quantite col-xs-6"><input type="number" ng-model="plat.quantite" class="form-control" placeholder="Quantiter" aria-describedby="basic-addon1"></div>
-                                    <div class="card-action card-action-right card-action-h">
-                                        <a
-                                                class="btn btn-info glyphicon glyphicon-plus-sign"
-                                                data-toggle="tooltip"
-                                                data-placement="bottom"
-                                                data-container="body"
-                                                title="{{ 'adddish'|trans|capitalize }}"
-                                                href="#">
-                                        </a>
-                                    </div>
-                                </div>
-
-
+                    <div class="card card-plat-treeview">
+                        <div class="row">
+                                <div class="col-xs-6">{{ "plat.name" |ngExpr}}</div>
+                                <div class="quantite col-xs-6"><input type="number" ng-model="plat.quantite" class="form-control" placeholder="Quantité" aria-describedby="basic-addon1"></div>
                         </div>
                     </div>
+                </div>
             </div>
 
             </div>

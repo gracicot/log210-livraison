@@ -17,7 +17,17 @@
                             </div>
                         </div>
                         <div class="col-sm-3">
-
+                            <div ng-if="commande.etat === 'commander'" class="text-right">
+                                <div>Commandée</div>
+                                <a class="btn btn-success">Preparer</a>
+                            </div>
+                            <div ng-if="commande.etat === 'en preparation'" class="text-right">
+                                <div>En préparation</div>
+                                <div><a class="btn btn-success">Prête</a></div>
+                            </div>
+                            <div ng-if="commande.etat === 'prete'" class="text-right">
+                                <div>Prête</div>
+                            </div>
                         </div>
                     </div>
                 </div>
