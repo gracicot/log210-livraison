@@ -25,7 +25,7 @@ class RestaurantController extends Controller
         return [
             'index' => 'restaurant_order',
             'show' => 'restaurant_order_show',
-
+            'liste'=> 'restaurant_order_listeOrder',
         ];
     }
 
@@ -54,13 +54,25 @@ class RestaurantController extends Controller
     /**
      * Lists all Restaurant entities.
      *
-     * @Route("/commandes_list/{restaurant}", name="restaurant_order_list")
+     * @Route("/commandes_list", name="restaurant_order_list")
      * @Method("GET")
      * @Template("Log210OrderBundle:Restaurant:listeOrder.html.twig")
      */
     public function listeOrderAction(Restaurant $restaurant)
     {
-        return ['restaurant' => $restaurant];
+        return [];
+    }
+
+    /**
+     * Lists all Restaurant entities.
+     *
+     * @Route("/commandes_status/{restaurant}", name="restaurant_order_status")
+     * @Method("GET")
+     * @Template("Log210OrderBundle:Restaurant:orderStatus.html.twig")
+     */
+    public function listeOrderStatusAction(Restaurant $restaurant)
+    {
+        return [ 'restaurant' => $restaurant ];
     }
 
     /**

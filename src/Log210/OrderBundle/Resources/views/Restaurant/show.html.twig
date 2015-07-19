@@ -27,7 +27,7 @@
  {{ block('show') }}
 
 
-     {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'commande', fetch: path('menu_api_get_all_plats', {id: entity.menus[0].id}), entity:entity } only %}
+     {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'commande', fetch: path('menu_api_get_all_plats', {id: entity.menus[0].id}), entity:entity } only %}e
         {% block content %}
             <div class="row">
             <h2>{{ entity.menus[0]}}</h2>
