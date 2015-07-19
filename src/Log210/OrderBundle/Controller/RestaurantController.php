@@ -25,7 +25,7 @@ class RestaurantController extends Controller
         return [
             'index' => 'restaurant_order',
             'show' => 'restaurant_order_show',
-
+            'liste'=> 'restaurant_order_listeOrder',
         ];
     }
 

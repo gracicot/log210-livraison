@@ -1,13 +1,41 @@
 {% extends 'Log210OrderBundle:Restaurant:layout.html.twig' %}
 
-{% block content %}
-	<ul>
-		{% for entity in entities %}
 
-			<li style="border-bottom: thin dotted black;margin-top:20px;">
-				<span class="pull-right">{{ entity.total }}</span>
-				{{ entity.client }}
-			</li>
-		{% endfor %}
-	</ul>
+{% block content %}
+    {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'commande', fetch: path('menu_api_get_all_plats', {id: entity.menus[0].id}), entity:entity } only %}e
+        {% block content %}
+    <div class="address "><input type="text" ng-model="address" class="form-control"  aria-describedby="basic-addon1"></div>
+	<div>
+        <ul>
+            {% for entity in entities %}
+
+                <div data-toggle="modal" data-target="#myModal">
+                    <li style="border-bottom: thin dotted black;margin-top:20px;">
+                        <span class="pull-right">{{ entity.total }}</span>
+                        <a>{{ entity.client }}</a>
+                    </li>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div >
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <a class="btn btn-default glyphicon " ng-click="#" data-dismiss="modal" >{{ 'Accepter'|trans|capitalize }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

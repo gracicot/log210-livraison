@@ -41,7 +41,7 @@ class Commande {
     private $dateHeure;
 
     /**
-     * @var \DateTime $dateHeure
+     * @var \DateTime $dateHeureLivraison
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
