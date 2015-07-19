@@ -16,10 +16,10 @@ class RestaurateurType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('plainPassword', 'password', array('label'=>'Password'))
             ->add('email', 'email')
             ->add('name')
             ->add('description')
+            ->add('restaurants')
         ;
     }
 
