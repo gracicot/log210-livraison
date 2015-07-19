@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class RestaurateurType extends AbstractType
+class RestaurateurNewType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -16,6 +16,7 @@ class RestaurateurType extends AbstractType
     {
         $builder
             ->add('username')
+            ->add('plainPassword', 'password', array('label'=>'Password'))
             ->add('email', 'email')
             ->add('name')
             ->add('description')

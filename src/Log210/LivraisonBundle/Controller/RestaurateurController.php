@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Log210\LivraisonBundle\Entity\Restaurateur;
 use Log210\LivraisonBundle\Form\RestaurateurType;
+use Log210\LivraisonBundle\Form\RestaurateurNewType;
 use Log210\LivraisonBundle\Form\RestaurateurUserType;
 use Log210\UserBundle\Entity\User;
 use IllegalArgumentException;
@@ -82,13 +83,16 @@ class RestaurateurController extends Controller
      */
     public function newAction(Request $request)
     {
-        return parent::newAction($request);
+        $entity = $this->getRepository()->makeEntity();
+        $form   = $this->createCreateForm($entity, new RestaurateurNewType);
+
+        return [ 'form' => $form->createView() ];
     }
 
     /**
      * Finds and displays a Restaurateur entity.
      *
-     * @Route("/{id}", name="restaurateur_show")
+     * @Route("/{id}", name="restaurateur_show", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -100,7 +104,7 @@ class RestaurateurController extends Controller
     /**
      * Displays a form to edit an existing Restaurateur entity.
      *
-     * @Route("/{id}/edit", name="restaurateur_edit")
+     * @Route("/{id}/edit", name="restaurateur_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -162,50 +166,6 @@ class RestaurateurController extends Controller
     }
 
     /**
-     * Deletes a Restaurant entity.
-     *
-     * @Route("/select_user/{restaurateur}", name="restaurateur_selectModal_user")
-     * @Template("Log210CommonBundle::modalForm.html.twig")
-     * @Method("GET")
-     */
-    public function selectUserModalAction(Restaurateur $restaurateur)
-    {
-        $editForm = $this->createEditForm($restaurateur, new RestaurateurUserType, 'update_user');
-
-        return [
-            'title' => 'user',
-            'form' => $editForm->createView(),
-        ];
-    }
-
-    /**
-     * Edits an existing Restaurateur entity.
-     *
-     * @Route("/update_user/{id}", name="restaurateur_update_user")
-     * @Method("PUT")
-     */
-    public function updateUserAction(Request $request, $id)
-    {
-        $entity = $this->getRepository()->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find entity.');
-        }
-
-        $editForm = $this->createEditForm($entity, new RestaurateurUserType, 'update_user');
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            $entity->getUser()->addRole('ROLE_RESTAURATEUR');
-            $entity->getUser()->removeRole('ROLE_CLIENT');
-            $em = $this->getEntityManager();
-            $em->flush();
-        }
-
-        return $this->jsonResponse(new Response(json_encode(['success' => $editForm->isValid()])));
-    }
-
-    /**
      * Edits an existing Restaurateur entity.
      *
      * @Route("/enable_user/{user}/{enabled}", name="restaurateur_activate_user", options={"expose"=true})
@@ -221,16 +181,5 @@ class RestaurateurController extends Controller
             throw new IllegalArgumentException("The enabled parameter is invalid");
         }
         return $this->jsonResponse(new Response(json_encode(['success' => true])));
-    }
-
-    /**
-     * Deletes a Restaurant entity.
-     *
-     * @Route("/fetch_user/{restaurateur}", name="restaurateur_makeUserModal_user")
-     * @Method("GET")
-     */
-    public function makeUserModalAction(Restaurateur $restaurateur)
-    {
-        return null;
     }
 }
