@@ -96,6 +96,23 @@ class CommandeController extends BaseController {
     }
 
     /**
+     * @return Response
+     *
+     * @Symfony\Component\Routing\Annotation\Route("", name="commande_api_get_all")
+     * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
+     */
+    public function getAllAction() {
+        $commandeEntities = $this->getEntityManager()->getRepository("Log210LivraisonBundle:Commande")->findAll();
+
+        $response = new Response("", Response::HTTP_OK, [
+            "Content-Type" => "application/json"
+        ]);
+        return $this->render("Log210APIBundle:Commande:commandes.json.twig", [
+            "commandes" =>$commandeEntities
+        ], $response);
+    }
+
+    /**
      * @param int $id
      * @return Response
      *
