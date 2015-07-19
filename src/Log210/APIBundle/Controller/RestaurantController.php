@@ -268,8 +268,8 @@ class RestaurantController extends BaseController {
      * @Symfony\Component\Routing\Annotation\Route("/{restaurant_id}/commandes", name="restaurant_api_get_commandes")
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
      */
-    public function getCommandesAction($restaurant_id) {
-        $commandeEntities = $this->getRestaurantById($restaurant_id)->getCommandes();
+    public function getCommandesAction(Restaurant $restaurant_id) {
+        $commandeEntities = $restaurant_id->getCommandes();
 
         $response = new Response('', Response::HTTP_OK, [
             "Content-Type" => "application/json"
