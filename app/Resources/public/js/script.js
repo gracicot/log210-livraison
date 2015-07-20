@@ -63,7 +63,7 @@ var apiClient = {
 	 * }
      * @param callback A function called once the request is complete. Parameters passed are (commande, error)
 	 */
-	createCommande: function (commande, callback) {
+	createCommande: function(commande, callback) {
 		$.ajax('/api/commandes', {
 			contentType: 'application/json',
 			data: JSON.stringify(commande),
@@ -74,6 +74,41 @@ var apiClient = {
 			method: 'POST',
 			success: function(data, textStatus, jqXHR) {
 				console.log(jqXHR);
+				callback(data);
+			}
+		});
+	},
+	COMMANDE_COMMANDER: "commander",
+	COMMANDE_EN_PREPARATION: "en preparation",
+	COMMANDE_PRETE: "prete",
+	/**
+	 * Update a commande etat variable
+	 * @param id
+	 * @param etat
+	 * @param callback
+	 */
+	updateCommande: function(id, etat, callback) {
+		$.ajax("/api/commandes/" + id, {
+			contentType: "application/json",
+			data: JSON.stringify({etat: etat}),
+			error: function(jqXHR, textStatus, errorThrown) {
+				callback(null, errorThrown);
+			},
+			method: "PUT",
+			success: function(data, textStatus, jqXHR) {
+				callback(data);
+			}
+		});
+	},
+	accepterCommande: function (commandeId, callback) {
+		$.ajax("/api/livreurs/me/commandes", {
+			contentType: "application/json",
+			data: JSON.stringify({commande_id: commandeId}),
+			error: function(jqXHR, textStatus, errorThrown) {
+				callback(null, errorThrown);
+			},
+			method: "POST",
+			success: function(data, textStatus, jqXHR) {
 				callback(data);
 			}
 		});
