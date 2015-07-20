@@ -16,7 +16,7 @@ use Log210\LivraisonBundle\Entity\Restaurant;
  * Restaurant controller.
  *
  * @Route("/order")
- * @Security("has_role('ROLE_CLIENT')")
+ * @Security("has_role('ROLE_LIVREUR')")
  */
 class RestaurantController extends Controller
 {
