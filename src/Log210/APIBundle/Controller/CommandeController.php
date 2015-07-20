@@ -104,10 +104,15 @@ class CommandeController extends BaseController {
     public function getAllAction(Request $request) {
 
         $filters = [];
-        $filters["etat"] = $request->query->get("etat");
-        $filters["livreur"] = $request->query->get("livreur_id");
-        if ($filters["livreur"] === "null")
-            $filters["livreur"] = null;
+
+        if ($request->query->has("etat"))
+            $filters["etat"] = $request->query->get("etat");
+        if ($request->query->has("livreur_id")) {
+            $filters["livreur"] = $request->query->get("livreur_id");
+            if ($filters["livreur"] === "null")
+                $filters["livreur"] = null;
+        }
+
 
         $commandeEntities = $this->getEntityManager()->getRepository("Log210LivraisonBundle:Commande")->findBy($filters);
 
