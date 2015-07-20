@@ -1,7 +1,11 @@
 {
     "id": {{ commande.id }},
     "date_heure": "{{ commande.dateHeure|date('Y-m-d H:i') }}",
-    "date_heure_livraison": {{ (commande.dateHeureLivraison is null) ? 'null' : '"' ~ commande.dateHeureLivraison|date('Y-m-d H:i') ~ '"' }},
+    {% if commande.dateHeureLivraison is null %}
+        "date_heure_livraison": null,
+    {% else %}
+        "date_heure_livraison": "{{ commande.dateHeureLivraison|date('Y-m-d H:i') }}",
+    {% endif %}
     "adresse": "{{ commande.adresse }}",
     "etat": "{{ commande.etat }}",
     "commande_plats": [
