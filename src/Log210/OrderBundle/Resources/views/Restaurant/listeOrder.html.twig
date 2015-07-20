@@ -88,7 +88,15 @@
 
             $scope.commandes=[];
             $scope.fetchSuccess = function (data) {
-            $scope.commandes = data;
+                for (objet in data)
+                {
+                    if (data[objet].etat=="prete" && data[objet].dateHeureLivraison==null)
+                    {
+                        $scope.commandes.push(data[objet]);
+                        console.log(data[objet]);
+                    }
+
+                }
             };
 
 
