@@ -36,15 +36,15 @@ class CommandeController extends BaseController {
             $token = $this->findTokenById($access_token);
             if (is_null($token))
                 return new Response('Invalid Token', Response::HTTP_UNAUTHORIZED);
-    
+
             if ($token->isExpired())
                 return new Response('Expired Token', Response::HTTP_UNAUTHORIZED);
-    
+
             $user = $token->getUser();
         } else {
             $user = $this->getUser();
         }
-        
+
         if ($user === null)
             return new Response('No Authorization', Response::HTTP_UNAUTHORIZED);
 
@@ -101,8 +101,15 @@ class CommandeController extends BaseController {
      * @Symfony\Component\Routing\Annotation\Route("", name="commande_api_get_all")
      * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Method("GET")
      */
-    public function getAllAction() {
-        $commandeEntities = $this->getEntityManager()->getRepository("Log210LivraisonBundle:Commande")->findAll();
+    public function getAllAction(Request $request) {
+
+        $filters = [];
+        $filters["etat"] = $request->query->get("etat");
+        $filters["livreur"] = $request->query->get("livreur_id");
+        if ($filters["livreur"] === "null")
+            $filters["livreur"] = null;
+
+        $commandeEntities = $this->getEntityManager()->getRepository("Log210LivraisonBundle:Commande")->findBy($filters);
 
         $response = new Response("", Response::HTTP_OK, [
             "Content-Type" => "application/json"
