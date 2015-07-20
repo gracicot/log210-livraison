@@ -30,7 +30,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <a class="btn btn-default glyphicon "  data-dismiss="modal" >{{ 'Accepter'|trans|capitalize }}</a>
+                    <a class="btn btn-default glyphicon " ng-click="accepterCommande()" data-dismiss="modal" >{{ 'Accepter'|trans|capitalize }}</a>
                 </div>
             </div>
         </div>
@@ -44,6 +44,7 @@
             var directionsService = new google.maps.DirectionsService();
             var map;
             initializeMap();
+            var id;
 
             function initializeMap() {
                 directionsDisplay = new google.maps.DirectionsRenderer();
@@ -62,6 +63,7 @@
             $scope.calcRoute= function (adresseLivraison){
                 var start = $scope.adresseLivreur;
                 var end = adresseLivraison.adresse;
+                id=adresseLivraison.id;
             console.log(start+"-"+end);
                 var request = {
                 origin:start,
@@ -77,8 +79,10 @@
                 });
             }
 
-
-
+            $scope.accepterCommande=function()
+            {
+                apiClient.accepterCommande(id, function(){ console.log("patate");});
+            }
 
 
 
