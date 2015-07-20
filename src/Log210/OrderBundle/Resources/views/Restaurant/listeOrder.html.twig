@@ -3,15 +3,15 @@
 {% block content %}
     {% embed 'Log210CommonBundle:Generic:ajaxToolbox.html.twig' with { module: 'commande', fetch: path('commande_api_get_all') } only %}
         {% block content %}
-    <div class="address "><input type="text" ng-model="address" class="form-control"  aria-describedby="basic-addon1"></div>
+    <div class="address "><input type="text" ng-model="adresseLivreur" class="form-control"  aria-describedby="basic-addon1"></div>
 	<div>
         <ul>
             <div ng-repeat="commande in commandes">
 
-                <div data-toggle="modal" data-target="#myModal">
+                <div >
                     <li style="border-bottom: thin dotted black;margin-top:20px;">
                         <span class="pull-right">{{ "commande.date_heure" |ngExpr}}</span>
-                        <a>{{ "commande.adresse" |ngExpr}}</a>
+                        <a ng-click="calcRoute(commande)" ng-model="adresseLivraison" data-toggle="modal" data-target="#myModal">{{ "commande.adresse" |ngExpr}}</a>
                     </li>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                     <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                 </div>
                 <div >
-
+                    <div id="googleMap" style="width:500px;height:380px;"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -37,8 +37,52 @@
     </div>
         {% endblock %}
         {% block controller %}
-            $scope.commandes=[];
 
+
+
+            var directionsDisplay;
+            var directionsService = new google.maps.DirectionsService();
+            var map;
+            initializeMap();
+
+            function initializeMap() {
+                directionsDisplay = new google.maps.DirectionsRenderer();
+                var mapProp = {
+                center:new google.maps.LatLng(48,74),
+                zoom:7,
+                mapTypeId:google.maps.MapTypeId.ROADMAP
+                };
+                map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+                directionsDisplay.setMap(map);
+            }
+
+
+
+
+            $scope.calcRoute= function (adresseLivraison){
+                var start = $scope.adresseLivreur;
+                var end = adresseLivraison.adresse;
+            console.log(start+"-"+end);
+                var request = {
+                origin:start,
+                destination:end,
+                travelMode: google.maps.TravelMode.DRIVING
+                 };
+
+            directionsService.route(request, function(response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                    console.log("patate");
+                    }
+                });
+            }
+
+
+
+
+
+
+            $scope.commandes=[];
             $scope.fetchSuccess = function (data) {
             $scope.commandes = data;
             };
