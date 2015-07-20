@@ -68,8 +68,10 @@ class TokenController extends BaseController {
             ], true),
             "Content-Type" => "application/json"
         ]);
+        $userReflectionClass = new \ReflectionClass($newToken->getUser());
         return $this->render("Log210APIBundle:Token:token.json.twig", [
-            "token" => $newToken
+            "token" => $newToken,
+            "user_type" => $userReflectionClass->getShortName()
         ], $response);
     }
 
@@ -89,8 +91,10 @@ class TokenController extends BaseController {
         $response = new Response('', Response::HTTP_OK, [
             'Content-Type' => 'application/json'
         ]);
+        $userReflectionClass = new \ReflectionClass($token->getUser());
         return $this->render("Log210APIBundle:Token:token.json.twig", [
-            "token" => $token
+            "token" => $token,
+            "user_type" => $userReflectionClass->getShortName()
         ], $response);
     }
 
