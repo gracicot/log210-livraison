@@ -133,6 +133,9 @@ class LivreurController extends BaseController {
         if (is_null($commandeEntity))
             return new Response("", Response::HTTP_UNPROCESSABLE_ENTITY);
 
+        if (!$commandeEntity->getEtat() === Commande::ETAT_PRETE)
+            return new Response("", Response::HTTP_UNPROCESSABLE_ENTITY);
+
         if (!is_null($commandeEntity->getLivreur()))
             return new Response("", Response::HTTP_UNPROCESSABLE_ENTITY);
 
@@ -157,6 +160,6 @@ class LivreurController extends BaseController {
      * @return Commande
      */
     private function findComandeById($id) {
-        return $this->getEntityManager()->getRepository("Log210APIBundle:Commande")->find($id);
+        return $this->getEntityManager()->getRepository("Log210LivraisonBundle:Commande")->find($id);
     }
 }
