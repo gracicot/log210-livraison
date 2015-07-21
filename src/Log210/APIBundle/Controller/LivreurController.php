@@ -129,7 +129,7 @@ class LivreurController extends BaseController {
             return new Response("", Response::HTTP_FORBIDDEN);
 
         $commandeRequest = json_decode($request->getContent(), true);
-        $commandeEntity = $this->findComandeById($commandeRequest["commande_id"]);
+        $commandeEntity = $this->findComandeById($commandeRequest['commande_id']);
         if (is_null($commandeEntity))
             return new Response("", Response::HTTP_UNPROCESSABLE_ENTITY);
 
@@ -140,7 +140,7 @@ class LivreurController extends BaseController {
             return new Response("", Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $commandeEntity->setLivreur($user);
-        $commandeEntity->setDateHeureLivraison(new \DateTime());
+        $commandeEntity->setDateHeureLivraison(new \DateTime("now"));
 
         $this->getEntityManager()->flush();
 
