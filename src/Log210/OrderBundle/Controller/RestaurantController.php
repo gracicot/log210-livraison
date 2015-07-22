@@ -67,7 +67,7 @@ class RestaurantController extends Controller
     /**
      * Lists all Restaurant entities.
      *
-     * @Route("/commandes_status/{restaurant}", name="restaurant_order_status")
+     * @Route("/commandes_status/{restaurant}", name="restaurant_order_status", options={"expose"=true})
      * @Method("GET")
      * @Template("Log210OrderBundle:Restaurant:orderStatus.html.twig")
      */

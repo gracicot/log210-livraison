@@ -175,7 +175,16 @@ class Restaurant
      */
     public function setRestaurateur(Restaurateur $restaurateur = null)
     {
+        $oldRestaurateur = $this->restaurateur;
         $this->restaurateur = $restaurateur;
+        
+        if ($restaurateur !== null && !$restaurateur->getRestaurants()->contains($restaurateur)) {
+            $restaurateur->addRestaurant($this);
+        }
+        
+        if ($oldRestaurateur !== null && $oldRestaurateur->getRestaurants()->contains($restaurateur)) {
+            $restaurateur->removeRestaurant($this);
+        }
 
         return $this;
     }

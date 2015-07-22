@@ -87,9 +87,15 @@ class Restaurateur extends User {
      * @param \Log210\LivraisonBundle\Entity\Restaurant $restaurants
      * @return Restaurateur
      */
-    public function addRestaurant(Restaurant $restaurants)
+    public function addRestaurant(Restaurant $restaurant)
     {
-        $this->restaurants->add($restaurants);
+        if (!$this->restaurants->contains($restaurant)) {
+            $this->restaurants->add($restaurant);
+        }
+
+        if ($restaurant->getRestaurateur() !== $this) {
+            $restaurant->setRestaurateur($this);
+        }
 
         return $this;
     }
@@ -99,9 +105,15 @@ class Restaurateur extends User {
      *
      * @param \Log210\LivraisonBundle\Entity\Restaurant $restaurants
      */
-    public function removeRestaurant(Restaurant $restaurants)
+    public function removeRestaurant(Restaurant $restaurant)
     {
-        $this->restaurants->removeElement($restaurants);
+        if ($this->restaurants->contains($restaurant)) {
+            $this->restaurants->removeElement($restaurant);
+        }
+
+        if ($restaurant->getRestaurateur() === $this) {
+            $restaurant->setRestaurateur(null);
+        }
     }
     /**
      * Set restaurants
@@ -109,11 +121,19 @@ class Restaurateur extends User {
      * @param \Log210\LivraisonBundle\Entity\Restaurant $restaurants
      * @return Restaurateur
      */
-    public function setRestaurant(Restaurant $restaurants = null)
+    public function setRestaurant($restaurants = null)
     {
-        $this->restaurants = $restaurants;
+        foreach ($restaurants as $restaurant) {
+            if (!$this->restaurants->contains($restaurant)) {
+                $this->addRestaurant($restaurant);
+            }
+        }
 
-        return $this;
+        foreach ($this->restaurants as $restaurant) {
+            if (!$restaurants->contains($restaurant)) {
+               $this->removeRestaurant($restaurant);
+            }
+        }
     }
 
     /**

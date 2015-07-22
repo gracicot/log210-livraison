@@ -177,9 +177,12 @@ class CommandeController extends BaseController {
             return new Response("", Response::HTTP_NOT_FOUND);
 
         $found = false;
-        foreach ($user->getRestaurants() as $restaurant)
-            if ($restaurant->getId() === $commandeEntity->getId())
+        foreach ($user->getRestaurants() as $restaurant) {
+            if ($restaurant->getId() === $commandeEntity->getRestaurant()->getId()) {
                 $found = true;
+            }
+        }
+
         if (!$found)
             return new Response("", Response::HTTP_FORBIDDEN);
 
