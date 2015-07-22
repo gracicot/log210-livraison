@@ -4,8 +4,15 @@
 	<div class="dashboard">
 		<div class="row">
 			<div class="col-md-6">
-				<a href="{{ path('restaurant') }}">{{ 'retaurant'|trans|capitalize }}</a>
-				<a href="{{ path('restaurateur') }}">{{ 'restaurateur'|trans|capitalize }}</a>
+				{% if is_granted('ROLE_RESTAURATEUR') %}
+					<a href="{{ path('restaurant') }}">{{ 'retaurant'|trans|capitalize }}</a>
+				{% endif %}
+				{% if is_granted('ROLE_ENTREPRENEUR') or is_granted('ROLE_SUPER_ADMIN') %}
+					<a href="{{ path('restaurateur') }}">{{ 'restaurateur'|trans|capitalize }}</a>
+				{% endif %}
+				{% if is_granted('ROLE_LIVREUR') %}
+					<a href="{{ path('restaurant_order_list') }}">{{ 'retaurant'|trans|capitalize }}</a>
+				{% endif %}
 			</div>
 		</div>
 	</div>

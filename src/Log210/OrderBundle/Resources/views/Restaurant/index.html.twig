@@ -20,7 +20,13 @@
                                     title="{{ 'show'|trans|capitalize }}"
                                     href="{{ ngPath('restaurant_order_show', { 'id': 'entity.id' }) }}">
                                 </a>
-
+                                <a
+                                    class="btn btn-success glyphicon glyphicon-paste"
+                                    data-toggle="tooltip"
+                                    data-placement="left"
+                                    title="{{ 'commandes'|capitalize }}"
+                                    href="{{ ngPath('restaurant_order_status', { 'restaurant': 'entity.id' }) }}">
+                                </a>
                             </div>
                         </div>
                     </div>
