@@ -71,7 +71,23 @@ class RestaurateurController extends Controller
      */
     public function createAction(Request $request)
     {
-        return parent::createAction($request);
+        $service = $this->getRepository();
+        $entity = $this->getRepository()->makeEntity();
+        $form = $this->createCreateForm($entity, new RestaurateurNewType);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getEntityManager();
+            $em->persist($entity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl($this->getRoute('show'), ['id' => $entity->getId()]));
+        }
+
+        return [
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ];
     }
 
     /**
