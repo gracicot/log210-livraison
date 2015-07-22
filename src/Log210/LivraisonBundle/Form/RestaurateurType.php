@@ -19,7 +19,7 @@ class RestaurateurType extends AbstractType
             ->add('email', 'email')
             ->add('name')
             ->add('description')
-            ->add('restaurants')
+            ->add('restaurants', null, ['by_reference' => false])
         ;
     }
 
