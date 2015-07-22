@@ -8,6 +8,8 @@
     {% endif %}
     "adresse": "{{ commande.adresse }}",
     "etat": "{{ commande.etat }}",
+    "nom_client": "{{ commande.client.username }}",
+    "total": {{ commande.total }},
     "commande_plats": [
         {% set first = true %}
         {% for commandePlat in commande.commandePlats %}
