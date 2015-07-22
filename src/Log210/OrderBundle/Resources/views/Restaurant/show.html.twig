@@ -99,15 +99,17 @@
 
                 for (x in $scope.plats) {
                     plat = new Object();
+                    if($scope.plats[x].quantite != null)
+                    {
+                        plat.plat_id = $scope.plats[x].id;
+                        plat.quantity = $scope.plats[x].quantite;
 
-                    plat.plat_id = $scope.plats[x].id;
-                    plat.quantity = $scope.plats[x].quantite;
-
-                    commande.commande_plats.push(plat);
+                        commande.commande_plats.push(plat);
+                    }
                 }
                 console.log(commande);
-
-                apiClient.createCommande(commande, function(){ window.location = "../";});
+                $scope.loading++;
+                apiClient.createCommande(commande, function(){  window.location = "../";});
             };
         {% endblock %}
      {% endembed %}
