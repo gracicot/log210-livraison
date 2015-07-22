@@ -35,8 +35,11 @@
                 <div ng-repeat="plat in plats">
                     <div class="card card-plat-treeview">
                         <div class="row">
-                                <div class="col-xs-6">{{ "plat.name" |ngExpr}}</div>
-                                <div class="quantite col-xs-6"><input type="number" ng-model="plat.quantite" class="form-control" placeholder="Quantité" aria-describedby="basic-addon1"></div>
+                                <div class="col-xs-5">{{ "plat.name" |ngExpr}}</div>
+                                <div class="col-xs-1">{{ 'plat.prix'|ngExpr }}$</div>
+                                <div class="quantite col-xs-6">
+                                    <input type="number" ng-model="plat.quantite" class="form-control" placeholder="Quantité" aria-describedby="basic-addon1">
+                                </div>
                         </div>
                     </div>
                 </div>
