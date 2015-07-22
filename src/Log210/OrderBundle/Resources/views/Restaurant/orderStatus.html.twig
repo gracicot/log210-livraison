@@ -47,7 +47,8 @@
 
             $scope.changeStatus = function (commande, status) {
                 $scope.loading++;
-                apiClient.updateCommande(commande.id, apiClient.COMMANDE_EN_PREPARATION, function () {
+                apiClient.updateCommande(commande.id, status, function (data) {
+                    $scope.status = status;
                     $scope.loading--;
                 });
             };
