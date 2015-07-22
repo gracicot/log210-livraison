@@ -35,7 +35,7 @@
                 <div ng-repeat="plat in plats">
                     <div class="card card-plat-treeview">
                         <div class="row">
-                                <div class="col-xs-5">{{ "plat.name" |ngExpr}}</div>
+                                <div class="col-xs-5" ng-model="plat.name">{{ "plat.name" |ngExpr}}</div>
                                 <div class="col-xs-1">{{ 'plat.prix'|ngExpr }}$</div>
                                 <div class="quantite col-xs-6">
                                     <input type="number" ng-model="plat.quantite" class="form-control" placeholder="Quantité" aria-describedby="basic-addon1">
@@ -47,7 +47,7 @@
 
             </div>
             <a class="btn btn-default glyphicon glyphicon-chevron-left" href="{{ path('restaurant_order') }}">{{ 'back'|trans|capitalize }}</a>
-            <a class="btn btn-default glyphicon " data-toggle="modal" data-target="#myModal" >{{ 'commander'|trans|capitalize }}</a>
+            <a class="btn btn-default glyphicon " ng-click="sommaire()" data-toggle="modal" data-target="#myModal" >{{ 'commander'|trans|capitalize }}</a>
 
 
 
@@ -56,7 +56,11 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                            <h4 class="modal-title" id="myModalLabel">Commande</h4>
+                        </div>
+                        <div >
+                            <div id="sommaire" class="row">
+                            </div>
                         </div>
                         <div >
                             <div class="address col-xs-12"><input type="text" ng-model="address" class="form-control" placeholder="{{ app.user.address }}" aria-describedby="basic-addon1"></div>
@@ -81,6 +85,42 @@
             $scope.fetchSuccess = function (data) {
                 $scope.plats = data;
             };
+
+
+            $scope.sommaire=function()
+            {
+            console.log("sommaire");
+                var sommaire=[];
+                var conteur=0;
+                total=0;
+                $("#sommaire").empty();
+                for (x in $scope.plats) {
+                    plat = new Object();
+                    if($scope.plats[x].quantite != null)
+                    {
+                        conteur+=1;
+                        plat.plat_name = $scope.plats[x].name;
+                        plat.quantity = $scope.plats[x].quantite;
+                        $("#sommaire").append("<div id='" +conteur+ "' class='col-xs-11'><li style='border-bottom: thin dotted black;margin-top:20px;'></li></div>");
+                        $("#"+conteur+" li").append($scope.plats[x].quantite +" X ");
+                        $("#"+conteur+" li").append($scope.plats[x].name);
+
+                        soustotal=parseInt($scope.plats[x].quantite) * parseInt($scope.plats[x].prix);
+                        total+=soustotal;
+                        $("#"+conteur+" li").append("<span class='pull-right'></span>");
+                        $("#"+conteur+" li span").append(soustotal+"$");
+
+                    }
+                }
+                total=(total+(total*.14975)).toFixed(2);
+                conteur+=1;
+                $("#sommaire").append("<div id='" +conteur+ "' class='col-xs-11'><li style='border-bottom: thin dotted black;margin-top:20px;'></li></div>");
+                $("#"+conteur+" li").append("Total");
+                $("#"+conteur+" li").append("<span class='pull-right'></span>");
+                $("#"+conteur+" li span").append(total+"$");
+
+                console.log(total);
+            }
 
             $scope.passerCommande = function() {
 
