@@ -9,23 +9,24 @@
                         <div class="col-sm-9" style="border-bottom: thin dotted black;margin-top:20px;">
                             <div class="row">
                                 <div class="col-xs-6">
-                                    {{ 'commande.client.name'|ngExpr }}
+                                    {{ 'commande.nom_client'|ngExpr }}, 
+                                    {{ 'commande.date_heure'|ngExpr }}
                                 </div>
                                 <div class="col-xs-6 text-right">
-                                    {{ 'commande.total'|ngExpr }}
+                                    {{ 'commande.total'|ngExpr }}$
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-3">
-                            <div ng-if="commande.etat === 'commander'" class="text-right">
+                            <div ng-if="commande.etat == 'commander'" class="text-right">
                                 <div>Commandée</div>
                                 <a class="btn btn-success" ng-click="changeStatus(commande, apiClient.COMMANDE_EN_PREPARATION)">Preparer</a>
                             </div>
-                            <div ng-if="commande.etat === 'en preparation'" class="text-right">
+                            <div ng-if="commande.etat == 'en preparation'" class="text-right">
                                 <div>En préparation</div>
                                 <div><a class="btn btn-success" ng-click="changeStatus(commande, apiClient.COMMANDE_PRETE)">Prête</a></div>
                             </div>
-                            <div ng-if="commande.etat === 'prete'" class="text-right">
+                            <div ng-if="commande.etat == 'prete'" class="text-right">
                                 <div>Prête</div>
                             </div>
                         </div>
@@ -48,8 +49,9 @@
             $scope.changeStatus = function (commande, status) {
                 $scope.loading++;
                 apiClient.updateCommande(commande.id, status, function (data) {
-                    $scope.status = status;
+                    commande.etat = status;
                     $scope.loading--;
+                    $scope.$apply();
                 });
             };
         {% endblock %}
